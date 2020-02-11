@@ -7,22 +7,22 @@ var video = document.querySelector("video");
 document.addEventListener("keydown", event => {
 
     switch (event.key) {
-        case settings["accelerateKey"] || "d":
+        case settings["accelerateKey"] || "f":
             accelerate(video, settings["accelerateStep"]);
             break;
-        case settings["resetSpeedKey"] || "s":
+        case settings["resetSpeedKey"] || "d":
             setSpeed(video, settings["defaultPlaybackRate"]);
             break;
-        case settings["slowDownKey"] || "a":
+        case settings["slowDownKey"] || "s":
             slowDown(video, settings["slowDownStep"]);
             break;
 
 
 
-        case settings["advanceKey"] || "c":
+        case settings["advanceKey"] || "v":
             advance(video, settings["advanceStep"]);
             break;
-        case settings["playOrPauseKey"] || "x":
+        case settings["playOrPauseKey"] || "c":
             if (isVideoPlaying) {
                 pause(video);
                 isVideoPlaying = false;
@@ -31,25 +31,25 @@ document.addEventListener("keydown", event => {
                 isVideoPlaying = true;
             }
             break;
-        case settings["rewindKey"] || "z":
+        case settings["rewindKey"] || "x":
             rewind(video, settings["rewindStep"]);
             break;
 
 
 
-        case settings["volumeUpKey"] || "e":
+        case settings["volumeUpKey"] || "r":
             volumeUp(video, settings["volumeUpStep"]);
             break;
-        case settings["resetVolumeKey"] || "w":
+        case settings["resetVolumeKey"] || "e":
             setVolume(video, settings["defaultVolume"]);
             break;
-        case settings["volumeDownKey"] || "q":
+        case settings["volumeDownKey"] || "w":
             volumeDown(video, settings["volumeDownStep"]);
             break;
 
 
 
-        case settings["showControllerKey"] || "r":
+        case settings["showControllerKey"] || "z":
             showController(video);
             break;
 
