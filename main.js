@@ -1,8 +1,8 @@
 isVideoPlaying = false;
 
+video = document.querySelector("video");
 
 document.addEventListener("keydown", event => {
-    video = document.querySelector("video");
 
     switch (event.key) {
         case "d":
@@ -46,13 +46,36 @@ document.addEventListener("keydown", event => {
             break;
 
 
+
+        case "r":
+        case "f":
+        case "v":
+            showController(video);
+            break;
+
+
+
         default:
             break;
     }
 
-    showController(video);
-
 });
+
+video.addEventListener("ratechange", event => {
+
+    showController(event.target);
+});
+
+video.addEventListener("currenttimechange", event => {
+
+    //showController(event.target);
+});
+
+video.addEventListener("volumechange", event => {
+
+    //showController(event.target);
+});
+
 
 function showController(video) {
 
@@ -62,20 +85,22 @@ function showController(video) {
         }
     };
 
+    var format = (number) => {
+        return (Math.round(number * 100) / 100).toFixed(2);
+    };
+
     removeController();
 
     var controller = document.createElement("div");
     controller.innerHTML = `
-<div id="controller" style="position:fixed; top:10px; left:10px;">
-    <div>${video.currentTime}</div>
-    <div>${video.playbackRate}</div>
-    <div>${video.volume}</div>
+<div id="controller" style="position:fixed; top:10px; left:10px;color:white;background:black;opacity:0.6;padding:5px;border-radius:3px;">
+    <div><button onclick="slowDown(document.querySelector('video'))">-</button>  ${format(video.playbackRate)}  <button onclick="accelerate(document.querySelector('video'))">+</button></div>
 </div>
     `;
 
     document.firstElementChild.appendChild(controller);
 
-    setTimeout(removeController, 10000);
+    setTimeout(removeController, 6000);
 
 }
 
