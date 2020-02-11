@@ -1,3 +1,5 @@
+var settings = loadSettings();
+
 var isVideoPlaying = false;
 
 var video = document.querySelector("video");
@@ -5,22 +7,22 @@ var video = document.querySelector("video");
 document.addEventListener("keydown", event => {
 
     switch (event.key) {
-        case "d":
-            accelerate(video);
+        case settings["accelerateKey"] || "d":
+            accelerate(video, settings["accelerateStep"]);
             break;
-        case "s":
-            resetSpeed(video);
+        case settings["resetSpeedKey"] || "s":
+            setSpeed(video, settings["defaultPlaybackRate"]);
             break;
-        case "a":
-            slowDown(video);
+        case settings["slowDownKey"] || "a":
+            slowDown(video, settings["slowDownStep"]);
             break;
 
 
 
-        case "c":
-            advance(video);
+        case settings["advanceKey"] || "c":
+            advance(video, settings["advanceStep"]);
             break;
-        case "x":
+        case settings["playOrPauseKey"] || "x":
             if (isVideoPlaying) {
                 pause(video);
                 isVideoPlaying = false;
@@ -29,27 +31,25 @@ document.addEventListener("keydown", event => {
                 isVideoPlaying = true;
             }
             break;
-        case "z":
-            rewind(video);
+        case settings["rewindKey"] || "z":
+            rewind(video, settings["rewindStep"]);
             break;
 
 
 
-        case "e":
-            volumeUp(video);
+        case settings["volumeUpKey"] || "e":
+            volumeUp(video, settings["volumeUpStep"]);
             break;
-        case "w":
-            resetVolume(video);
+        case settings["resetVolumeKey"] || "w":
+            setVolume(video, settings["defaultVolume"]);
             break;
-        case "q":
-            volumeDown(video);
+        case settings["volumeDownKey"] || "q":
+            volumeDown(video, settings["volumeDownStep"]);
             break;
 
 
 
-        case "r":
-        case "f":
-        case "v":
+        case settings["showControllerKey"] || "r":
             showController(video);
             break;
 
@@ -76,31 +76,43 @@ video.addEventListener("volumechange", event => {
     //showController(event.target);
 });
 
+function loadSettings() {
 
-function showController(video) {
+    var settings = {};
 
-    var removeController = () => {
-        if (document.querySelector("#controller") !== null) {
-            document.querySelector("#controller").remove();
-        }
-    };
+    var names_str = [
+        "accelerateKey", "slowDownKey", "resetSpeedKey",
+        "volumeUpKey", "volumeDownKey", "resetVolumeKey",
+        "advanceKey", "rewindKey", "playOrPauseKey",
+        "showControllerKey"
+    ];
 
-    var format = (number) => {
-        return (Math.round(number * 100) / 100).toFixed(2);
-    };
+    chrome.storage.sync.get(names_str, s => {
 
-    removeController();
+        names_str.forEach(name => {
+            if (s[name] !== undefined) {
+                settings[name] = s[name];
+            }
+        });
 
-    var controller = document.createElement("div");
-    controller.innerHTML = `
-<div id="controller" style="position:fixed; top:10px; left:10px;color:white;background:black;opacity:0.6;padding:5px;border-radius:3px;">
-    <div><button onclick="slowDown(document.querySelector('video'))">-</button>  ${format(video.playbackRate)}  <button onclick="accelerate(document.querySelector('video'))">+</button></div>
-</div>
-    `;
+    });
 
-    document.firstElementChild.appendChild(controller);
+    names_int = [
+        "accelerateStep", "slowDownStep", "defaultPlaybackRate",
+        "volumeUpStep", "volumeDownStep", "defaultVolume",
+        "advanceStep", "rewindStep",
+    ];
 
-    setTimeout(removeController, 6000);
+    chrome.storage.sync.get(names_int, s => {
 
+        names_int.forEach(name => {
+            if (s[name] !== undefined) {
+                settings[name] = Number(s[name]);
+            }
+        });
+
+    });
+
+    return settings;
 }
 

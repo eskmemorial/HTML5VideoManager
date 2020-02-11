@@ -10,7 +10,9 @@ document.querySelectorAll("input").forEach(input => {
 chrome.storage.sync.get(names, settings => {
 
     names.forEach(name => {
-        document.querySelector(`input[name='${name}']`).setAttribute("value", settings[name]);
+        if (settings[name] !== undefined) {
+            document.querySelector(`input[name='${name}']`).setAttribute("value", settings[name]);
+        }
     });
 
 });

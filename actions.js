@@ -6,40 +6,40 @@ function pause(video) {
     video.pause();
 }
 
-function accelerate(video) {
-    video.playbackRate = Math.min(video.playbackRate + 0.1, 16);
+function accelerate(video, step) {
+    video.playbackRate = Math.min(video.playbackRate + step, 16);
 }
 
-function slowDown(video) {
-    video.playbackRate = Math.max(video.playbackRate - 0.1, 0.1);
+function slowDown(video, step) {
+    video.playbackRate = Math.max(video.playbackRate - step, 0.1);
 }
 
-function resetSpeed(video) {
-    video.playbackRate = video.defaultPlaybackRate;
+function setSpeed(video, playbackRate) {
+    video.playbackRate = playbackRate;
 }
 
-function advance(video) {
-    video.currentTime = Math.min(video.currentTime + 10, video.duration - 1);
+function advance(video, step) {
+    video.currentTime = Math.min(video.currentTime + step, video.duration - 1);
 
     var event = new Event("currenttimechange");
     video.dispatchEvent(event);
 }
 
-function rewind(video) {
-    video.currentTime = Math.max(video.currentTime - 10, 0);
+function rewind(video, step) {
+    video.currentTime = Math.max(video.currentTime - step, 0);
 
     var event = new Event("currenttimechange");
     video.dispatchEvent(event);
 }
 
-function volumeUp(video) {
-    video.volume = Math.min(video.volume + 0.05, 1);
+function volumeUp(video, step) {
+    video.volume = Math.min(video.volume + step, 1);
 }
 
-function volumeDown(video) {
-    video.volume = Math.max(video.volume - 0.05, 0);
+function volumeDown(video, step) {
+    video.volume = Math.max(video.volume - step, 0);
 }
 
-function resetVolume(video) {
-    video.volume = 0.5;
+function setVolume(video, volume) {
+    video.volume = volume;
 }

@@ -27,6 +27,7 @@
          "all_frames": true,
          "js": [
             "actions.js",
+            "controller.js",
             "main.js"
          ],
          "matches": [
