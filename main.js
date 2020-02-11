@@ -1,6 +1,6 @@
-isVideoPlaying = false;
+var isVideoPlaying = false;
 
-video = document.querySelector("video");
+var video = document.querySelector("video");
 
 document.addEventListener("keydown", event => {
 
