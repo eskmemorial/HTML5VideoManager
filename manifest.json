@@ -1,0 +1,40 @@
+{
+   "manifest_version": 2,
+   "name": "Html5 Video Manager",
+   "short_name": "VideoManager",
+   "version": "0.5.9",
+   "description": "You can manage playback rate, volume and current time of videos with shortcut keys.",
+   "homepage_url": "https://github.com/eskmemorial/Html5VideoManager",
+   "icons": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+   },
+   "permissions": [
+      "storage"
+   ],
+   "options_page": "options.html",
+   "browser_action": {
+      "default_icon": {
+         "19": "icons/icon19.png",
+         "38": "icons/icon38.png",
+         "48": "icons/icon48.png"
+      },
+      "default_popup": "popup.html"
+   },
+   "content_scripts": [
+      {
+         "all_frames": true,
+         "js": [
+            "actions.js",
+            "main.js"
+         ],
+         "matches": [
+            "http://*/*",
+            "https://*/*",
+            "file://*/*"
+         ],
+         "run_at": "document_end"
+      }
+   ]
+}
