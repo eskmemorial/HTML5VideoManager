@@ -7,7 +7,7 @@ function pause(video) {
 }
 
 function accelerate(video) {
-    video.playbackRate = Math.min(video.playbackRate + 0.1, 64);
+    video.playbackRate = Math.min(video.playbackRate + 0.1, 16);
 }
 
 function slowDown(video) {
@@ -20,10 +20,16 @@ function resetSpeed(video) {
 
 function advance(video) {
     video.currentTime = Math.min(video.currentTime + 10, video.duration - 1);
+
+    var event = new Event("currenttimechange");
+    video.dispatchEvent(event);
 }
 
 function rewind(video) {
     video.currentTime = Math.max(video.currentTime - 10, 0);
+
+    var event = new Event("currenttimechange");
+    video.dispatchEvent(event);
 }
 
 function volumeUp(video) {
