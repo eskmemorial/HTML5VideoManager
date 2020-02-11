@@ -23,9 +23,9 @@
         </div>
         <div>
             <label>reset key</label>
-            <input type="text" name="" minlength="1" maxlength="1" size="1">
+            <input type="text" name="resetSpeedKey" minlength="1" maxlength="1" size="1">
             <label>default playback rate</label>
-            <input type="number" step="0.1" min="0" max="16" value="1">
+            <input type="number" name="defaultPlaybackRate" step="0.1" min="0" max="16" value="1">
         </div>
 
     </div>
@@ -33,42 +33,43 @@
         <h2>Audio Volume</h2>
         <div>
             <label>volume up key</label>
-            <input type="text" minlength="1" maxlength="1" size="1">
+            <input type="text" name="volumeUpKey" minlength="1" maxlength="1" size="1">
             <label>volume up step</label>
-            <input type="number" step="0.1" min="0" max="1" value="0.05">
+            <input type="number" name="volumeUpStep" step="0.1" min="0" max="1" value="0.05">
         </div>
         <div>
             <label>volume down key</label>
-            <input type="text" minlength="1" maxlength="1" size="1">
+            <input type="text" name="volumeDownKey" minlength="1" maxlength="1" size="1">
             <label>volume down step</label>
-            <input type="number" step="0.1" min="0" max="1" value="0.05">
+            <input type="number" name="volumeDownStep" step="0.1" min="0" max="1" value="0.05">
         </div>
         <div>
             <label>reset key</label>
-            <input type="text" minlength="1" maxlength="1" size="1">
+            <input type="text" name="resetVolumeKey" minlength="1" maxlength="1" size="1">
             <label>default audio volume</label>
-            <input type="number" step="0.05" min="0" max="1" value="0.8">
+            <input type="number" name="defaultVolume" step="0.05" min="0" max="1" value="0.8">
         </div>
     </div>
     <div>
         <h2>Playback Time</h2>
         <div>
             <label>advance key</label>
-            <input type="text" minlength="1" maxlength="1" size="1">
+            <input type="text" name="advanceKey" minlength="1" maxlength="1" size="1">
             <label>advance step</label>
-            <input type="number" step="10" min="0" max="1024" value="10">
+            <input type="number" name="advanceStep" step="10" min="0" max="1024" value="10">
         </div>
         <div>
             <label>rewind key</label>
-            <input type="text" minlength="1" maxlength="1" size="1">
+            <input type="text" name="rewindKey" minlength="1" maxlength="1" size="1">
             <label>rewind step</label>
-            <input type="number" step="10" min="0" max="1024" value="10">
+            <input type="number" name="rewindStep" step="10" min="0" max="1024" value="10">
         </div>
         <div>
             <label>play or pause key</label>
-            <input type="text" minlength="1" maxlength="1" size="1">
+            <input type="text" name="playOrPauseKey" minlength="1" maxlength="1" size="1">
         </div>
     </div>
+    <button id="save">Save</button>
 
 
 </body>
