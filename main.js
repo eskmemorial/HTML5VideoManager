@@ -50,6 +50,32 @@ document.addEventListener("keydown", event => {
             break;
     }
 
-
+    showController(video);
 
 });
+
+function showController(video) {
+
+    var removeController = () => {
+        if (document.querySelector("#controller") !== null) {
+            document.querySelector("#controller").remove();
+        }
+    };
+
+    removeController();
+
+    var controller = document.createElement("div");
+    controller.innerHTML = `
+<div id="controller" style="position:fixed; top:10px; left:10px;">
+    <div>${video.currentTime}</div>
+    <div>${video.playbackRate}</div>
+    <div>${video.volume}</div>
+</div>
+    `;
+
+    document.firstElementChild.appendChild(controller);
+
+    setTimeout(removeController, 10000);
+
+}
+
