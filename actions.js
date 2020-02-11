@@ -31,7 +31,7 @@ function volumeUp(video) {
 }
 
 function volumeDown(video) {
-    video.volume = Math.min(video.volume - 0.05, 0);
+    video.volume = Math.max(video.volume - 0.05, 0);
 }
 
 function resetVolume(video) {
