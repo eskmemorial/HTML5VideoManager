@@ -1,87 +1,99 @@
 var settings = loadSettings();
 
-var isVideoPlaying = false;
+var videos = [];
 
-var video = document.querySelector("video");
+new MutationObserver(mutations => {
+
+    mutations.forEach(mutation => {
+
+        mutation.addedNodes.forEach(addedNode => {
+
+            if (addedNode.nodeName === "VIDEO") {
+
+                videos.push(new Video(addedNode));
+            }
+        });
+    });
+}).observe(document, { childList: true, subtree: true });
+
 
 document.addEventListener("keydown", event => {
 
     switch (event.key) {
-        case settings["accelerateKey"] || "f":
-            accelerate(video, settings["accelerateStep"]);
+        case settings["speedUpKey"] || "f":
+            videos.forEach(video => {
+                video.speedUp(settings["speedUpStep"]);
+            });
             break;
         case settings["resetSpeedKey"] || "d":
-            setSpeed(video, settings["defaultPlaybackRate"]);
+            videos.forEach(video => {
+                video.setSpeed(settings["defaultPlaybackRate"]);
+            });
             break;
-        case settings["slowDownKey"] || "s":
-            slowDown(video, settings["slowDownStep"]);
+        case settings["speedDownKey"] || "s":
+            videos.forEach(video => {
+                video.speedDown(settings["speedDownStep"]);
+            });
             break;
 
 
 
         case settings["advanceKey"] || "v":
-            advance(video, settings["advanceStep"]);
+            videos.forEach(video => {
+                video.advance(settings["advanceStep"]);
+            });
             break;
         case settings["playOrPauseKey"] || "c":
-            if (isVideoPlaying) {
-                pause(video);
-                isVideoPlaying = false;
-            } else {
-                play(video);
-                isVideoPlaying = true;
-            }
+            videos.forEach(video => {
+                if (video.paused()) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+            });
             break;
         case settings["rewindKey"] || "x":
-            rewind(video, settings["rewindStep"]);
+            videos.forEach(video => {
+                video.rewind(settings["rewindStep"]);
+            });
             break;
 
 
 
         case settings["volumeUpKey"] || "r":
-            volumeUp(video, settings["volumeUpStep"]);
+            videos.forEach(video => {
+                video.volumeUp(settings["volumeUpStep"]);
+            });
             break;
         case settings["resetVolumeKey"] || "e":
-            setVolume(video, settings["defaultVolume"]);
+            videos.forEach(video => {
+                video.setVolume(settings["defaultVolume"]);
+            });
             break;
         case settings["volumeDownKey"] || "w":
-            volumeDown(video, settings["volumeDownStep"]);
+            videos.forEach(video => {
+                video.volumeDown(settings["volumeDownStep"]);
+            });
             break;
 
 
 
         case settings["showControllerKey"] || "z":
-            showController(video);
-            break;
-
-
-
-        default:
+            videos.forEach(video => {
+                video.showController();
+            });
             break;
     }
 
 });
 
-video.addEventListener("ratechange", event => {
-
-    showController(event.target);
-});
-
-video.addEventListener("currenttimechange", event => {
-
-    //showController(event.target);
-});
-
-video.addEventListener("volumechange", event => {
-
-    //showController(event.target);
-});
 
 function loadSettings() {
 
     var settings = {};
 
     var names_str = [
-        "accelerateKey", "slowDownKey", "resetSpeedKey",
+        "speedUpKey", "speedDownKey", "resetSpeedKey",
         "volumeUpKey", "volumeDownKey", "resetVolumeKey",
         "advanceKey", "rewindKey", "playOrPauseKey",
         "showControllerKey"
@@ -98,7 +110,7 @@ function loadSettings() {
     });
 
     names_int = [
-        "accelerateStep", "slowDownStep", "defaultPlaybackRate",
+        "speedUpStep", "speedDownStep", "defaultPlaybackRate",
         "volumeUpStep", "volumeDownStep", "defaultVolume",
         "advanceStep", "rewindStep",
     ];
