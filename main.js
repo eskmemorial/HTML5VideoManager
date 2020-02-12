@@ -83,6 +83,9 @@ document.addEventListener("keydown", event => {
                 video.showController();
             });
             break;
+        case settings["reloadSettingsKey"] || "t":
+            settings = loadSettings();
+            break;
     }
 
 });
