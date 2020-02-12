@@ -109,7 +109,7 @@ function loadSettings() {
 
     });
 
-    names_int = [
+    var names_int = [
         "speedUpStep", "speedDownStep", "defaultPlaybackRate",
         "volumeUpStep", "volumeDownStep", "defaultVolume",
         "advanceStep", "rewindStep",
