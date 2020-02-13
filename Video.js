@@ -102,17 +102,17 @@ class Video {
 
         if (config.speed) {
             controller.innerHTML += `
-            <div><button onclick="speedDown(document.querySelector('video'))">-</button>  ${format(this.video.playbackRate)}  <button onclick="speedUp(document.querySelector('video'))">+</button></div>
+            <div>SPEED ${format(this.video.playbackRate)}</div>
         `;
         }
         if (config.volume) {
             controller.innerHTML += `
-            <div><button onclick="volumeDown(document.querySelector('video'))">-</button>  ${format(this.video.volume)}  <button onclick="volumeUp(document.querySelector('video'))">+</button></div>
+            <div>VOLUME ${format(this.video.volume)}</div>
      `;
         }
         if (config.currentTime) {
             controller.innerHTML += `
-            <div><button onclick="rewind(document.querySelector('video'))">-</button>  ${format(this.video.currentTime)}  <button onclick="advance(document.querySelector('video'))">+</button></div>
+            <div>TIME ${format(this.video.currentTime)}</div>
      `;
         }
 
