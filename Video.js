@@ -1,9 +1,11 @@
 class Video {
+
     video;
     vmId;
+
     constructor(video) {
         this.video = video;
-        this.videoId = Math.random().toString(36).substr(2, 9);
+        this.videoId = Math.random().toString().substr(2, 6);
 
         this.video.setAttribute("videoId", this.videoId);
 
@@ -81,10 +83,6 @@ class Video {
             }
         };
 
-        var format = (number) => {
-            return (Math.round(number * 100) / 100).toFixed(2);
-        };
-
         removeController();
 
         var controller = document.createElement("div");
@@ -106,17 +104,35 @@ class Video {
 
         if (config.speed) {
             controller.innerHTML += `
-            <div>SPEED ${format(this.video.playbackRate)}</div>
+            <div>SPEED x${(Math.round(this.video.playbackRate * 100) / 100).toFixed(2)}</div>
         `;
         }
         if (config.volume) {
             controller.innerHTML += `
-            <div>VOLUME ${format(this.video.volume)}</div>
+            <div>VOLUME ${(Math.round(this.video.volume * 100) / 100).toFixed(2)}</div>
      `;
         }
         if (config.currentTime) {
+
+            var formatTime = time => {
+
+                var date = new Date(Date.UTC(0, 0, 0, 0, 0, time, 0));
+
+                var timeString = "";
+                if (date.getUTCHours() > 0) {
+                    timeString += `${date.getUTCHours()}:`;
+                }
+                if (date.getUTCMinutes() > 0 || date.getUTCHours() > 0) {
+                    timeString += `${("00" + date.getUTCMinutes()).slice(-2)}:`;
+                }
+
+                timeString += `${("00" + date.getUTCSeconds()).slice(-2)}'`;
+
+                return timeString;
+            };
+
             controller.innerHTML += `
-            <div>TIME ${format(this.video.currentTime)}</div>
+            <div>TIME ${formatTime(this.video.currentTime)}</div>
      `;
         }
 
