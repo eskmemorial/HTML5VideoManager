@@ -4,7 +4,7 @@
    "short_name": "VideoManager",
    "version": "0.0.0",
    "description": "You can manage playback rate, volume and current time of videos with shortcut keys.",
-   "homepage_url": "https://github.com/eskmemorial/Html5VideoManager",
+   "homepage_url": "https://github.com/eskmemorial/HTML5VideoManager",
    "icons": {
       "64": "icon64.png"
    },
@@ -21,6 +21,7 @@
    "content_scripts": [
       {
          "all_frames": true,
+         "match_about_blank": true,
          "js": [
             "main.js",
             "Video.js"

@@ -5,7 +5,17 @@ class Video {
 
         this.video.addEventListener("ratechange", event => {
 
-            this.showController();
+            this.showController({ speed: true });
+        });
+
+        this.video.addEventListener("currenttimechange", event => {
+
+            this.showController({ currentTime: true });
+        });
+
+        this.video.addEventListener("volumechange", event => {
+
+            this.showController({ volume: true });
         });
     }
 
@@ -59,7 +69,7 @@ class Video {
         this.video.volume = volume;
     }
 
-    showController() {
+    showController(config) {
 
         var removeController = () => {
             if (document.querySelector("#controller") !== null) {
@@ -78,9 +88,9 @@ class Video {
 
         var style = `
     position:fixed;
-    top:10px;
-    left:10px;
-    z-index:1000;
+    top:${this.video.getBoundingClientRect().top + 5}px;
+    left:${this.video.getBoundingClientRect().left + 5}px;
+    z-index:65535;
     color:white;
     background:black;
     opacity:0.6;
@@ -88,9 +98,24 @@ class Video {
     border-radius:3px;
     `;
         controller.setAttribute("style", style);
-        controller.innerHTML = `
-        <div><button onclick="slowDown(document.querySelector('video'))">-</button>  ${format(this.video.playbackRate)}  <button onclick="accelerate(document.querySelector('video'))">+</button></div>
+        controller.innerHTML = "";
+
+        if (config.speed) {
+            controller.innerHTML += `
+            <div><button onclick="speedDown(document.querySelector('video'))">-</button>  ${format(this.video.playbackRate)}  <button onclick="speedUp(document.querySelector('video'))">+</button></div>
         `;
+        }
+        if (config.volume) {
+            controller.innerHTML += `
+            <div><button onclick="volumeDown(document.querySelector('video'))">-</button>  ${format(this.video.volume)}  <button onclick="volumeUp(document.querySelector('video'))">+</button></div>
+     `;
+        }
+        if (config.currentTime) {
+            controller.innerHTML += `
+            <div><button onclick="rewind(document.querySelector('video'))">-</button>  ${format(this.video.currentTime)}  <button onclick="advance(document.querySelector('video'))">+</button></div>
+     `;
+        }
+
 
         document.firstElementChild.appendChild(controller);
 

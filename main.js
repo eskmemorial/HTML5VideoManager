@@ -130,4 +130,3 @@ function loadSettings() {
 
     return settings;
 }
-
