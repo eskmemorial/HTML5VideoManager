@@ -1,6 +1,50 @@
 <h2>HTML5 Video Manager</h2>
+<a>Download(comming soon?)</a>
+<p>
+  This is an extension for Chromium Edge. You can manage playback rate, volume, advance and rewinding of videos in HTML5 with shortcut keys.
+</p>
+<h3>Context</h3>
+<p>There are many Chrome extensions which controlls video. I used <a
+    href="https://chrome.google.com/webstore/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk"
+    target="_blank" rel="noopener noreferrer">Video Speed Controller</a>.
+  This extension is convenient to manage playback rate, advance and rewind videos with quick shortcut.
+  On the other hand, Extensions which manage video for Chromium Edge is very few in number. For example, <a
+    href="https://microsoftedge.microsoft.com/addons/detail/mjhlabbcmjflkpjknnicihkfnmbdfced?hl=en-GB" target="_blank"
+    rel="noopener noreferrer">Global Speed</a> and <a
+    href="https://microsoftedge.microsoft.com/addons/detail/mfoipakdadgplilpebhnebgafaoofblh?hl=en-GB" target="_blank"
+    rel="noopener noreferrer">Video Speed Control</a>.
+  These extensions can controll playback rate but can't advance and rewind videos.
+  I developed this extension to use the same functions as Video Speed Controller in Chromium Edge.
+</p>
+<h3>Usage</h3>
+<p>Install this extension and play a video. Functions of each shortcut is below.</p>
+<h4>Playback rate</h4>
+<ul>
+  <li>「f」 : increases the playback rate</li>
+  <li>「s」 : decreases the playback rate</li>
+  <li>「d」 : set the playback rate default</li>
+</ul>
+<h4>Advance and rewinding</h4>
+<ul>
+  <li>「c」 : advances 15 seconds</li>
+  <li>「z」 : rewinds 15 seconds</li>
+  <li>「x」 : play or pause video</li>
+</ul>
+<h4>Volume</h4>
+<ul>
+  <li>「e」 : increses the volume</li>
+  <li>「q」 : decreases the volume</li>
+  <li>「w」 : set the volume default</li>
+</ul>
+<p>You can config shortcut key in setting page.</p>
+<h3>Thanks</h3>
+<p>
+  I studied many thigs, for example, how to write manifest.json, how to use MutationObserver and how to deal contents in iframe from <a href="https://github.com/igrigorik/videospeed" target="_blank" rel="noopener noreferrer">Video Speed
+</p>
+
+
+<h2>HTML5 Video Manager</h2>
 <a>ダウンロード(comming soon?)</a>
-<a href="https://github.com/eskmemorial/HTML5VideoManager" target="_blank" rel="noopener noreferrer">GitHub</a>
 <p>
   Chromium Edge用の拡張機能。動画の再生速度・音量の変更、再生時間のスキップおよび巻き戻しを、ショートカットキーから簡単に行えます。
 </p>
