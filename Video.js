@@ -1,7 +1,11 @@
 class Video {
     video;
+    vmId;
     constructor(video) {
         this.video = video;
+        this.videoId = Math.random().toString(36).substr(2, 9);
+
+        this.video.setAttribute("videoId", this.videoId);
 
         this.video.addEventListener("ratechange", event => {
 
@@ -72,8 +76,8 @@ class Video {
     showController(config) {
 
         var removeController = () => {
-            if (document.querySelector("#controller") !== null) {
-                document.querySelector("#controller").remove();
+            if (document.querySelector("#controller" + this.videoId) !== null) {
+                document.querySelector("#controller" + this.videoId).remove();
             }
         };
 
@@ -84,7 +88,7 @@ class Video {
         removeController();
 
         var controller = document.createElement("div");
-        controller.setAttribute("id", "controller");
+        controller.setAttribute("id", "controller" + this.videoId);
 
         var style = `
     position:fixed;

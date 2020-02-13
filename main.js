@@ -13,6 +13,14 @@ new MutationObserver(mutations => {
                 videos.push(new Video(addedNode));
             }
         });
+
+        mutation.removedNodes.forEach(removedNode => {
+
+            if (removedNode.nodeName === "VIDEO") {
+
+                videos = videos.filter(video => { video.videoId !== removedNode.getAttribute("videoId") });
+            }
+        });
     });
 }).observe(document, { childList: true, subtree: true });
 
@@ -80,7 +88,7 @@ document.addEventListener("keydown", event => {
 
         case settings["showControllerKey"] || "z":
             videos.forEach(video => {
-                video.showController();
+                video.showController({ speed: true, volume: true, currentTime: true });
             });
             break;
         case settings["reloadSettingsKey"] || "t":
