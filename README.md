@@ -18,10 +18,7 @@
             この拡張機能は、Chromium EdgeでもVideo Speed Controllerと同等の機能を利用するために開発されました。
         </p>
         <h3>使い方</h3>
-
-        <iframe width="900" height="506" src="https://www.youtube.com/embed/3P8PQ6uR1SE" frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        <p>この拡張機能をインストールしたうえで上の動画を再生してください。以下に各ショートカットキーの挙動を示します。</p>
+        <p>この拡張機能をインストールしたうえで何らかの動画を再生してください。以下に各ショートカットキーの挙動を示します。</p>
         <h4>再生速度</h4>
         <ul>
             <li>「f」 : 再生速度を一段階速くします。</li>
