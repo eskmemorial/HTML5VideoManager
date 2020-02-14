@@ -28,7 +28,6 @@
 <ul>
   <li>「c」 : advances 15 seconds</li>
   <li>「z」 : rewinds 15 seconds</li>
-  <li>「x」 : plays or pauses video</li>
 </ul>
 <h4>Volume</h4>
 <ul>
@@ -73,7 +72,6 @@
 <ul>
   <li>「c」 : 15秒先へスキップします。</li>
   <li>「z」 : 15秒前へ巻き戻しします。</li>
-  <li>「x」 : 動画を停止または再開します。</li>
 </ul>
 <h4>音量</h4>
 <ul>
