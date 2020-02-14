@@ -18,7 +18,7 @@ new MutationObserver(mutations => {
 
             if (removedNode.nodeName === "VIDEO") {
 
-                videos = videos.filter(video => { video.videoId !== removedNode.getAttribute("videoId") });
+                videos = videos.filter(video => video.videoId !== removedNode.getAttribute("videoId"));
             }
         });
     });
@@ -26,14 +26,15 @@ new MutationObserver(mutations => {
 
 
 document.addEventListener("keydown", event => {
-
+    console.log(event);
+    console.log(videos);
     switch (event.key) {
-        case settings["speedUpKey"] || "f":
+        case settings["speedUpKey"] || "d":
             videos.forEach(video => {
                 video.speedUp(settings["speedUpStep"]);
             });
             break;
-        case settings["resetSpeedKey"] || "d":
+        case settings["resetSpeedKey"] || "a":
             videos.forEach(video => {
                 video.setSpeed(settings["defaultPlaybackRate"]);
             });
@@ -46,12 +47,12 @@ document.addEventListener("keydown", event => {
 
 
 
-        case settings["advanceKey"] || "v":
+        case settings["advanceKey"] || "c":
             videos.forEach(video => {
                 video.advance(settings["advanceStep"]);
             });
             break;
-        case settings["rewindKey"] || "x":
+        case settings["rewindKey"] || "z":
             videos.forEach(video => {
                 video.rewind(settings["rewindStep"]);
             });
@@ -59,12 +60,12 @@ document.addEventListener("keydown", event => {
 
 
 
-        case settings["volumeUpKey"] || "r":
+        case settings["volumeUpKey"] || "e":
             videos.forEach(video => {
                 video.volumeUp(settings["volumeUpStep"]);
             });
             break;
-        case settings["resetVolumeKey"] || "e":
+        case settings["resetVolumeKey"] || "q":
             videos.forEach(video => {
                 video.setVolume(settings["defaultVolume"]);
             });
@@ -77,7 +78,7 @@ document.addEventListener("keydown", event => {
 
 
 
-        case settings["showControllerKey"] || "z":
+        case settings["showControllerKey"] || "r":
             videos.forEach(video => {
                 video.showController({ speed: true, volume: true, currentTime: true });
             });
@@ -86,6 +87,8 @@ document.addEventListener("keydown", event => {
             settings = loadSettings();
             break;
     }
+
+    event.stopImmediatePropagation();
 
 });
 

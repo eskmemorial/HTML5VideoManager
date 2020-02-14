@@ -1,7 +1,7 @@
 class Video {
 
     video;
-    vmId;
+    videoId;
 
     constructor(video) {
         this.video = video;
