@@ -51,15 +51,6 @@ document.addEventListener("keydown", event => {
                 video.advance(settings["advanceStep"]);
             });
             break;
-        case settings["playOrPauseKey"] || "c":
-            videos.forEach(video => {
-                if (video.paused()) {
-                    video.play();
-                } else {
-                    video.pause();
-                }
-            });
-            break;
         case settings["rewindKey"] || "x":
             videos.forEach(video => {
                 video.rewind(settings["rewindStep"]);
@@ -106,8 +97,8 @@ function loadSettings() {
     var names_str = [
         "speedUpKey", "speedDownKey", "resetSpeedKey",
         "volumeUpKey", "volumeDownKey", "resetVolumeKey",
-        "advanceKey", "rewindKey", "playOrPauseKey",
-        "showControllerKey"
+        "advanceKey", "rewindKey",
+        "showControllerKey", "reloadSettingsKey"
     ];
 
     chrome.storage.sync.get(names_str, s => {
