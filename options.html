@@ -9,136 +9,165 @@
             margin: auto;
         }
 
-        h1 {
-            border-bottom: black solid 3px;
+        main {
+            width: 600px;
+            margin: 0;
+        }
+
+        main h2 {
             font-size: 25px;
+            border-bottom: solid black 3px;
         }
 
-        body>div {
-            width: 97.5%;
+        main div {
             margin-left: 2.5%;
+            width: 97.5%;
         }
 
-        h2 {
-            border-bottom: black solid 2px;
+        main h3 {
             font-size: 20px;
+            border-bottom: solid black 2px;
         }
 
-        body>div>div {
-            width: 95%;
-            margin-left: 5%;
+        main h4 {
+            font-size: 18px;
         }
 
-        h3 {
-            font-size: 15px;
+        main label {
+            font-size: 18px;
         }
 
-        label {
-            font-size: 15px;
+        main p {
+            font-size: 18px;
+        }
+
+        main li {
+            font-size: 18px;
         }
 
         button#save {
             margin-top: 30px;
-            margin-bottom: 15px;
-        }
-
-        nav>a {
-            font-size: 15px;
-            display: block;
-            margin-bottom: 5px;
+            height: 30px;
+            width: 60px;
+            font-size: 20px;
         }
     </style>
 </head>
 
 <body>
-
-    <h1>Shortcut keys</h1>
-    <div>
-        <h2>Playback Rate</h2>
-        <div>
-            <h3>speed up</h3>
-            <label></label>key</label>
-            <input type="text" name="speedUpKey" minlength="1" maxlength="1" size="1" value="d">
-            <label>step</label>
-            <input type="number" name="speedUpStep" step="0.1" min="0" max="16" value="0.1">
+    <main>
+        <div id="shortcut_keys">
+            <h2>Setting of shortcut keys</h2>
+            <div>
+                <p>You can change shortcut keys and amount of increase/decrease.</p>
+                <h3>Playback Rate</h3>
+                <div>
+                    <h4>speed up</h4>
+                    <label>key</label>
+                    <input type="text" name="speedUpKey" minlength="1" maxlength="1" size="1" value="d">
+                    <label>amount</label>
+                    <input type="number" name="speedUpStep" step="0.1" min="0" max="16" value="0.1">
+                </div>
+                <div>
+                    <h4>speed down</h4>
+                    <label>key</label>
+                    <input type="text" name="speedDownKey" minlength="1" maxlength="1" size="1" value="a">
+                    <label>amount</label>
+                    <input type="number" name="speedDownStep" step="0.1" min="0" max="16" value="0.1">
+                </div>
+                <div>
+                    <h4>default playback rate</h4>
+                    <label>reset key</label>
+                    <input type="text" name="resetSpeedKey" minlength="1" maxlength="1" size="1" value="s">
+                    <label>default playback rate</label>
+                    <input type="number" name="defaultPlaybackRate" step="0.1" min="0" max="16" value="1">
+                </div>
+            </div>
+            <div>
+                <h3>Audio Volume</h3>
+                <div>
+                    <h4>volume up</h4>
+                    <label>key</label>
+                    <input type="text" name="volumeUpKey" minlength="1" maxlength="1" size="1" value="e">
+                    <label>amount</label>
+                    <input type="number" name="volumeUpStep" step="0.1" min="0" max="1" value="0.05">
+                </div>
+                <div>
+                    <h4>volume down</h4>
+                    <label>key</label>
+                    <input type="text" name="volumeDownKey" minlength="1" maxlength="1" size="1" value="q">
+                    <label>amount</label>
+                    <input type="number" name="volumeDownStep" step="0.1" min="0" max="1" value="0.05">
+                </div>
+                <div>
+                    <h4>default volume</h4>
+                    <label>reset key</label>
+                    <input type="text" name="resetVolumeKey" minlength="1" maxlength="1" size="1" value="w">
+                    <label>default volume</label>
+                    <input type="number" name="defaultVolume" step="0.05" min="0" max="1" value="0.8">
+                </div>
+            </div>
+            <div>
+                <h3>Playback Time</h3>
+                <div>
+                    <h4>advance</h4>
+                    <label>key</label>
+                    <input type="text" name="advanceKey" minlength="1" maxlength="1" size="1" value="c">
+                    <label>amount</label>
+                    <input type="number" name="advanceStep" step="5" min="0" max="1024" value="10">
+                </div>
+                <div>
+                    <h4>rewind</h4>
+                    <label>key</label>
+                    <input type="text" name="rewindKey" minlength="1" maxlength="1" size="1" value="z">
+                    <label>amount</label>
+                    <input type="number" name="rewindStep" step="5" min="0" max="1024" value="10">
+                </div>
+            </div>
+            <div>
+                <h3>Others</h3>
+                <div>
+                    <h4>show controller</h4>
+                    <label>key</label>
+                    <input type="text" name="showControllerKey" minlength="1" maxlength="1" size="1" value="r">
+                </div>
+                <div>
+                    <h4>reload settings without reloading webpage</h4>
+                    <label>key</label>
+                    <input type="text" name="reloadSettingsKey" minlength="1" maxlength="1" size="1" value="t">
+                </div>
+            </div>
+            <button id="save">save</button>
         </div>
-        <div>
-            <h3>speed down</h3>
-            <label>key</label>
-            <input type="text" name="speedDownKey" minlength="1" maxlength="1" size="1" value="a">
-            <label>step</label>
-            <input type="number" name="speedDownStep" step="0.1" min="0" max="16" value="0.1">
+        <div id="usage">
+            <h2>Usage</h2>
+            <div>
+                <ol>
+                    <li>Visit a webpage with a video, for example, <a href="https://www.youtube.com/watch?v=3P8PQ6uR1SE"
+                            target="_blank" rel="noopener noreferrer">this</a>.</li>
+                    <li>Click the video and play it if the video doesn't play automatically.</li>
+                    <li>Press shortcut keys when you are playing a video.</li>
+                </ol>
+                <p>If a video in &lt;iframe&gt; tag play automatically, you have to click the video to enable shortcut
+                    keys.</p>
+                <h3>Default shortcut keys and their functions</h3>
+                <ul>
+                    <li>d : increases the playback rate</li>
+                    <li>a : decreases the playback rate</li>
+                    <li>s : sets the playback rate as default</li>
+                    <li>c : advances 10 seconds</li>
+                    <li>z : rewinds 10 seconds</li>
+                    <li>e : increses the volume</li>
+                    <li>q : decreases the volume</li>
+                    <li>w : sets the volume as default</li>
+                    <li>r : shows the controller on the top-left of the video</li>
+                    <li>t : reloads the settings without reloading the webpage</li>
+                </ul>
+            </div>
         </div>
-        <div>
-            <h3>default playback rate</h3>
-            <label>reset key</label>
-            <input type="text" name="resetSpeedKey" minlength="1" maxlength="1" size="1" value="s">
-            <label>default playback rate</label>
-            <input type="number" name="defaultPlaybackRate" step="0.1" min="0" max="16" value="1">
-        </div>
-    </div>
-    <div>
-        <h2>Audio Volume</h2>
-        <div>
-            <h3>volume up</h3>
-            <label>key</label>
-            <input type="text" name="volumeUpKey" minlength="1" maxlength="1" size="1" value="e">
-            <label>step</label>
-            <input type="number" name="volumeUpStep" step="0.1" min="0" max="1" value="0.05">
-        </div>
-        <div>
-            <h3>volume down</h3>
-            <label>key</label>
-            <input type="text" name="volumeDownKey" minlength="1" maxlength="1" size="1" value="q">
-            <label>step</label>
-            <input type="number" name="volumeDownStep" step="0.1" min="0" max="1" value="0.05">
-        </div>
-        <div>
-            <h3>default volume</h3>
-            <label>reset key</label>
-            <input type="text" name="resetVolumeKey" minlength="1" maxlength="1" size="1" value="w">
-            <label>default volume</label>
-            <input type="number" name="defaultVolume" step="0.05" min="0" max="1" value="0.8">
-        </div>
-    </div>
-    <div>
-        <h2>Playback Time</h2>
-        <div>
-            <h3>advance</h3>
-            <label>key</label>
-            <input type="text" name="advanceKey" minlength="1" maxlength="1" size="1" value="c">
-            <label>step</label>
-            <input type="number" name="advanceStep" step="5" min="0" max="1024" value="10">
-        </div>
-        <div>
-            <h3>rewind</h3>
-            <label>key</label>
-            <input type="text" name="rewindKey" minlength="1" maxlength="1" size="1" value="z">
-            <label>step</label>
-            <input type="number" name="rewindStep" step="5" min="0" max="1024" value="10">
-        </div>
-    </div>
-    <div>
-        <h2>Others</h2>
-        <div>
-            <h3>show controller</h3>
-            <label>key</label>
-            <input type="text" name="showControllerKey" minlength="1" maxlength="1" size="1" value="r">
-        </div>
-        <div>
-            <h3>reload settings</h3>
-            <label>key</label>
-            <input type="text" name="reloadSettingsKey" minlength="1" maxlength="1" size="1" value="t">
-        </div>
-    </div>
-    <button id="save">Save</button>
-    <nav>
-        <a href="https://www.eskmemorial.jp/works/html5videomanager/" target="_blank" rel="noopener noreferrer">My
-            Website</a>
-        <a href="https://github.com/eskmemorial/HTML5VideoManager" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </nav>
+    </main>
+    <script src="options.js">
+    </script>
 </body>
-<script src="options.js">
-</script>
 
 </html>
