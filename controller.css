@@ -1,0 +1,13 @@
+div[id^="hvm_controller"] {
+    position: fixed;
+    z-index: 65535;
+    color: white;
+    background: black;
+    opacity: 0.6;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+div[id^="hvm_controller"]>div.speed, div.volume, div.time {
+    font-size: 15px;
+}

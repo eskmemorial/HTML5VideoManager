@@ -7,9 +7,14 @@ class Video {
         this.video = video;
         this.videoId = Math.random().toString().substr(2, 6);
 
-        this.video.setAttribute("videoId", this.videoId);
+        this.video.setAttribute("hvm_video_id", this.videoId);
 
         this.video.addEventListener("ratechange", event => {
+
+            this.showController({ speed: true });
+        });
+
+        this.video.addEventListener("ratenotchange", event => {
 
             this.showController({ speed: true });
         });
@@ -19,7 +24,17 @@ class Video {
             this.showController({ currentTime: true });
         });
 
+        this.video.addEventListener("currenttimenotchange", event => {
+
+            this.showController({ currentTime: true });
+        });
+
         this.video.addEventListener("volumechange", event => {
+
+            this.showController({ volume: true });
+        });
+
+        this.video.addEventListener("volumenotchange", event => {
 
             this.showController({ volume: true });
         });
@@ -37,88 +52,123 @@ class Video {
         this.video.pause();
     }
 
-    speedUp(step) {
-        this.video.playbackRate = Math.min(this.video.playbackRate + step, 16);
+    speedUp(amount) {
+
+        if (this.video.playbackRate === 16) {
+            let event = new Event("ratenotchange");
+            this.video.dispatchEvent(event);
+        } else {
+            this.video.playbackRate = Math.min(this.video.playbackRate + amount, 16);
+        }
     }
 
-    speedDown(step) {
-        this.video.playbackRate = Math.max(this.video.playbackRate - step, 0.1);
+    speedDown(amount) {
+
+        if (this.video.playbackRate === 0.1) {
+            let event = new Event("ratenotchange");
+            this.video.dispatchEvent(event);
+        } else {
+            this.video.playbackRate = Math.max(this.video.playbackRate - amount, 0.1);
+        }
     }
 
     setSpeed(playbackRate) {
         this.video.playbackRate = playbackRate;
     }
 
-    advance(step) {
-        this.video.currentTime = Math.min(this.video.currentTime + step, this.video.duration - 1);
+    advance(amount) {
 
-        var event = new Event("currenttimechange");
-        this.video.dispatchEvent(event);
+        if (this.video.currentTime === this.video.duration - 1) {
+            let event = new Event("currenttimenotchange");
+            this.video.dispatchEvent(event);
+        } else {
+            this.video.currentTime = Math.min(this.video.currentTime + amount, this.video.duration - 1);
+
+            let event = new Event("currenttimechange");
+            this.video.dispatchEvent(event);
+        }
     }
 
-    rewind(step) {
-        this.video.currentTime = Math.max(this.video.currentTime - step, 0);
+    rewind(amount) {
 
-        var event = new Event("currenttimechange");
-        this.video.dispatchEvent(event);
+        if (this.video.currentTime === 0) {
+            let event = new Event("currenttimenotchange");
+            this.video.dispatchEvent(event);
+        } else {
+            this.video.currentTime = Math.max(this.video.currentTime - amount, 0);
+
+            let event = new Event("currenttimechange");
+            this.video.dispatchEvent(event);
+        }
     }
 
-    volumeUp(step) {
-        this.video.volume = Math.min(this.video.volume + step, 1);
+    volumeUp(amount) {
+
+        if (this.video.volume === 1) {
+            let event = new Event("volumenotchange");
+            this.video.dispatchEvent(event);
+        } else {
+            this.video.volume = Math.min(this.video.volume + amount, 1);
+        }
     }
 
-    volumeDown(step) {
-        this.video.volume = Math.max(this.video.volume - step, 0);
+    volumeDown(amount) {
+
+        if (this.video.volume === 0) {
+            let event = new Event("volumenotchange");
+            this.video.dispatchEvent(event);
+        } else {
+            this.video.volume = Math.max(this.video.volume - amount, 0);
+        }
     }
 
     setVolume(volume) {
-        this.video.volume = volume;
+
+        if (this.video.volume === volume) {
+            let event = new Event("volumenotchanged");
+            this.video.dispatchEvent(event);
+        } else {
+            this.video.volume = volume;
+        }
     }
 
     showController(config) {
 
-        var removeController = () => {
-            if (document.querySelector("#controller" + this.videoId) !== null) {
-                document.querySelector("#controller" + this.videoId).remove();
+        const removeController = () => {
+            if (document.querySelector("#hvm_controller" + this.videoId) !== null) {
+                document.querySelector("#hvm_controller" + this.videoId).remove();
             }
         };
 
         removeController();
 
-        var controller = document.createElement("div");
-        controller.setAttribute("id", "controller" + this.videoId);
+        let controller = document.createElement("div");
+        controller.setAttribute("id", "hvm_controller" + this.videoId);
 
-        var style = `
-    position:fixed;
+        const style = `
     top:${this.video.getBoundingClientRect().top + 5}px;
     left:${this.video.getBoundingClientRect().left + 5}px;
-    z-index:65535;
-    color:white;
-    background:black;
-    opacity:0.6;
-    padding:5px;
-    border-radius:3px;
     `;
         controller.setAttribute("style", style);
         controller.innerHTML = "";
 
-        if (config.speed) {
+        if (config.speed === true) {
             controller.innerHTML += `
-            <div>SPEED x${(Math.round(this.video.playbackRate * 100) / 100).toFixed(2)}</div>
+            <div class="speed">SPEED x${(Math.round(this.video.playbackRate * 100) / 100).toFixed(2)}</div>
         `;
         }
-        if (config.volume) {
+        if (config.volume === true) {
             controller.innerHTML += `
-            <div>VOLUME ${(Math.round(this.video.volume * 100) / 100).toFixed(2)}</div>
+            <div class="volume">VOLUME ${(Math.round(this.video.volume * 100) / 100).toFixed(2)}</div>
      `;
         }
-        if (config.currentTime) {
+        if (config.currentTime === true) {
 
-            var formatTime = time => {
+            const formatTime = time => {
 
-                var date = new Date(Date.UTC(0, 0, 0, 0, 0, time, 0));
+                const date = new Date(Date.UTC(0, 0, 0, 0, 0, time, 0));
 
-                var timeString = "";
+                let timeString = "";
                 if (date.getUTCHours() > 0) {
                     timeString += `${date.getUTCHours()}:`;
                 }
@@ -132,7 +182,7 @@ class Video {
             };
 
             controller.innerHTML += `
-            <div>TIME ${formatTime(this.video.currentTime)}</div>
+            <div class="time">TIME ${formatTime(this.video.currentTime)}</div>
      `;
         }
 

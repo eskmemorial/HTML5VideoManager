@@ -1,6 +1,6 @@
-var settings = loadSettings();
+let settings = loadSettings();
 
-var videos = [];
+let videos = [];
 
 new MutationObserver(mutations => {
 
@@ -9,7 +9,6 @@ new MutationObserver(mutations => {
         mutation.addedNodes.forEach(addedNode => {
 
             if (addedNode.nodeName === "VIDEO") {
-
                 videos.push(new Video(addedNode));
             }
         });
@@ -17,31 +16,43 @@ new MutationObserver(mutations => {
         mutation.removedNodes.forEach(removedNode => {
 
             if (removedNode.nodeName === "VIDEO") {
-
-                videos = videos.filter(video => video.videoId !== removedNode.getAttribute("videoId"));
+                videos = videos.filter(video => video.videoId !== removedNode.getAttribute("hvm_video_id"));
             }
         });
     });
-}).observe(document, { childList: true, subtree: true });
+
+}).observe(document, { childList: true, subtree: true, attributes: true, characterData: true });
 
 
 document.addEventListener("keydown", event => {
-    console.log(event);
-    console.log(videos);
+
+    //MutationObserver can't find <video> in websites below (why?).
+    //http://video.fc2.com/
+    //https://www.dailymotion.com/
+    //...
+
+    //Videos in these websites have to be found by querySelectorAll().
+    document.querySelectorAll("video").forEach(video => {
+
+        if (video.getAttribute("hvm_video_id") === null) {
+            videos.push(new Video(video));
+        }
+    });
+
     switch (event.key) {
         case settings["speedUpKey"] || "d":
             videos.forEach(video => {
-                video.speedUp(settings["speedUpStep"]);
+                video.speedUp(settings["speedUpAmount"]);
             });
             break;
-        case settings["resetSpeedKey"] || "a":
+        case settings["resetSpeedKey"] || "s":
             videos.forEach(video => {
                 video.setSpeed(settings["defaultPlaybackRate"]);
             });
             break;
-        case settings["speedDownKey"] || "s":
+        case settings["speedDownKey"] || "a":
             videos.forEach(video => {
-                video.speedDown(settings["speedDownStep"]);
+                video.speedDown(settings["speedDownAmount"]);
             });
             break;
 
@@ -49,12 +60,12 @@ document.addEventListener("keydown", event => {
 
         case settings["advanceKey"] || "c":
             videos.forEach(video => {
-                video.advance(settings["advanceStep"]);
+                video.advance(settings["advanceAmount"]);
             });
             break;
         case settings["rewindKey"] || "z":
             videos.forEach(video => {
-                video.rewind(settings["rewindStep"]);
+                video.rewind(settings["rewindAmount"]);
             });
             break;
 
@@ -62,7 +73,7 @@ document.addEventListener("keydown", event => {
 
         case settings["volumeUpKey"] || "e":
             videos.forEach(video => {
-                video.volumeUp(settings["volumeUpStep"]);
+                video.volumeUp(settings["volumeUpAmount"]);
             });
             break;
         case settings["resetVolumeKey"] || "q":
@@ -72,7 +83,7 @@ document.addEventListener("keydown", event => {
             break;
         case settings["volumeDownKey"] || "w":
             videos.forEach(video => {
-                video.volumeDown(settings["volumeDownStep"]);
+                video.volumeDown(settings["volumeDownAmount"]);
             });
             break;
 
@@ -88,16 +99,14 @@ document.addEventListener("keydown", event => {
             break;
     }
 
-    event.stopImmediatePropagation();
-
 });
 
 
 function loadSettings() {
 
-    var settings = {};
+    let settings = {};
 
-    var names_str = [
+    const names_str = [
         "speedUpKey", "speedDownKey", "resetSpeedKey",
         "volumeUpKey", "volumeDownKey", "resetVolumeKey",
         "advanceKey", "rewindKey",
@@ -114,10 +123,10 @@ function loadSettings() {
 
     });
 
-    var names_int = [
-        "speedUpStep", "speedDownStep", "defaultPlaybackRate",
-        "volumeUpStep", "volumeDownStep", "defaultVolume",
-        "advanceStep", "rewindStep",
+    const names_int = [
+        "speedUpAmount", "speedDownAmount", "defaultPlaybackRate",
+        "volumeUpAmount", "volumeDownAmount", "defaultVolume",
+        "advanceAmount", "rewindAmount",
     ];
 
     chrome.storage.sync.get(names_int, s => {

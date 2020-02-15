@@ -26,6 +26,9 @@
             "main.js",
             "Video.js"
          ],
+         "css": [
+            "controller.css"
+         ],
          "matches": [
             "*://*/*"
          ],
