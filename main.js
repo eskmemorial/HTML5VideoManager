@@ -2,6 +2,19 @@ let settings = loadSettings();
 
 let videos = [];
 
+new MutationObserver(mutations => {
+
+    mutations.forEach(mutation => {
+
+        mutation.removedNodes.forEach(removedNode => {
+
+            if (removedNode.nodeName === "VIDEO") {
+                videos = videos.filter(video => video.videoId !== removedNode.getAttribute("hvm_video_id"));
+            }
+        });
+    });
+}).observe(document, { childList: true, subtree: true, attributes: true, characterData: true });
+
 
 document.addEventListener("keydown", event => {
 
