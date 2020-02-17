@@ -13,7 +13,7 @@ new MutationObserver(mutations => {
             }
         });
     });
-}).observe(document, { childList: true, subtree: true, attributes: true, characterData: true });
+}).observe(document, { childList: true, subtree: true });
 
 
 document.addEventListener("keydown", event => {
@@ -37,14 +37,14 @@ document.addEventListener("keydown", event => {
                 video.speedUp(settings["speedUpAmount"] || 0.1);
             });
             break;
-        case settings["resetSpeedKey"] || "s":
-            videos.forEach(video => {
-                video.setSpeed(settings["defaultPlaybackRate"] || 1);
-            });
-            break;
         case settings["speedDownKey"] || "a":
             videos.forEach(video => {
                 video.speedDown(settings["speedDownAmount"] || 0.1);
+            });
+            break;
+        case settings["resetSpeedKey"] || "s":
+            videos.forEach(video => {
+                video.setSpeed(settings["defaultPlaybackRate"] || 1);
             });
             break;
 
@@ -60,6 +60,11 @@ document.addEventListener("keydown", event => {
                 video.rewind(settings["rewindAmount"] || 10);
             });
             break;
+        case settings["pauseKey"] || "x":
+            videos.forEach(video => {
+                video.pause();
+            });
+            break;
 
 
 
@@ -68,22 +73,32 @@ document.addEventListener("keydown", event => {
                 video.volumeUp(settings["volumeUpAmount"] || 0.1);
             });
             break;
-        case settings["resetVolumeKey"] || "w":
-            videos.forEach(video => {
-                video.setVolume(settings["defaultVolume"] || 0.6);
-            });
-            break;
         case settings["volumeDownKey"] || "q":
             videos.forEach(video => {
                 video.volumeDown(settings["volumeDownAmount"] || 0.1);
             });
             break;
+        case settings["resetVolumeKey"] || "w":
+            videos.forEach(video => {
+                video.setVolume(settings["defaultVolume"] || 0.6);
+            });
+            break;
+
 
 
 
         case settings["showControllerKey"] || "r":
             videos.forEach(video => {
-                video.showController({ speed: true, volume: true, currentTime: true });
+                video.showController({ speed: true, volume: true, currentTime: true, loop: true });
+            });
+            break;
+        case settings["loopKey"] || "v":
+            videos.forEach(video => {
+                if (video.looping()) {
+                    video.disableLoop();
+                } else {
+                    video.enableLoop();
+                }
             });
             break;
         case settings["reloadSettingsKey"] || "t":
@@ -101,8 +116,8 @@ function loadSettings() {
     const names_str = [
         "speedUpKey", "speedDownKey", "resetSpeedKey",
         "volumeUpKey", "volumeDownKey", "resetVolumeKey",
-        "advanceKey", "rewindKey",
-        "showControllerKey", "reloadSettingsKey"
+        "advanceKey", "rewindKey", "pauseKey",
+        "showControllerKey", "loopKey", "reloadSettingsKey"
     ];
 
     chrome.storage.sync.get(names_str, s => {

@@ -32,4 +32,6 @@ document.querySelector("#save").addEventListener("click", event => {
 
     chrome.storage.sync.set(settings, () => { });
 
+    alert("saved!");
+
 });

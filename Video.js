@@ -38,10 +38,24 @@ class Video {
 
             this.showController({ volume: true });
         });
+
+        this.video.addEventListener("loopchange", event => {
+
+            this.showController({ loop: true });
+        });
+
+        this.video.addEventListener("loopnotchange", event => {
+
+            this.showController({ loop: true });
+        });
     }
 
     paused() {
         return this.video.paused;
+    }
+
+    looping() {
+        return this.video.loop;
     }
 
     play() {
@@ -125,10 +139,34 @@ class Video {
     setVolume(volume) {
 
         if (this.video.volume === volume) {
-            let event = new Event("volumenotchanged");
+            let event = new Event("volumenotchange");
             this.video.dispatchEvent(event);
         } else {
             this.video.volume = volume;
+        }
+    }
+
+    enableLoop() {
+
+        if (this.video.loop) {
+            let event = new Event("loopnotchange");
+            this.video.dispatchEvent(event);
+        } else {
+            this.video.loop = true;
+            let event = new Event("loopchange");
+            this.video.dispatchEvent(event);
+        }
+    }
+
+    disableLoop() {
+
+        if (!this.video.loop) {
+            let event = new Event("loopnotchange");
+            this.video.dispatchEvent(event);
+        } else {
+            this.video.loop = false;
+            let event = new Event("loopchange");
+            this.video.dispatchEvent(event);
         }
     }
 
@@ -183,6 +221,11 @@ class Video {
 
             controller.innerHTML += `
             <div class="time">TIME ${formatTime(this.video.currentTime)}</div>
+     `;
+        }
+        if (config.loop === true) {
+            controller.innerHTML += `
+            <div class="loop">LOOP ${this.video.loop ? "TRUE" : "FALSE"}</div>
      `;
         }
 
