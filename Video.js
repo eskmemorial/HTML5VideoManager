@@ -1,3 +1,5 @@
+//This class is NOT thread safe.
+//Don't access latestControllerTag at the same time.
 class Video {
 
     video;
@@ -171,6 +173,8 @@ class Video {
         }
     }
 
+    //This function is NOT thread safe.
+    //You can read comment about flow of process near the end of this function.
     showController(config) {
 
         const removeController = (controllerTag) => {
@@ -194,12 +198,12 @@ class Video {
             if (config.speed === true) {
                 controller.innerHTML += `
             <div class="speed">SPEED x${(Math.round(this.video.playbackRate * 100) / 100).toFixed(2)}</div>
-        `;
+            `;
             }
             if (config.volume === true) {
                 controller.innerHTML += `
             <div class="volume">VOLUME ${(Math.round(this.video.volume * 100) / 100).toFixed(2)}</div>
-     `;
+            `;
             }
             if (config.currentTime === true) {
 
@@ -222,20 +226,21 @@ class Video {
 
                 controller.innerHTML += `
             <div class="time">TIME ${formatTime(this.video.currentTime)}</div>
-     `;
+            `;
             }
             if (config.loop === true) {
                 controller.innerHTML += `
             <div class="loop">LOOP ${this.video.loop ? "TRUE" : "FALSE"}</div>
-     `;
+            `;
             }
 
             return controller;
         }
 
+        //controllerTag is a unique id of controller.
+        //This tag is given to controller when controller node is created.
 
-
-
+        //remove controller if it already exists.
         removeController(this.latestControllerTag);
 
         const controllerTag = Math.random().toString().substr(2, 6);
@@ -244,6 +249,9 @@ class Video {
 
         this.latestControllerTag = controllerTag;
 
+        //find controller identified by controllerTag and remove it after specific time pass.
+        //if showController() is called before controller is removed by function below,
+        //removeController(this.latestControllerTag) removes the controller.
         setTimeout(removeController, 3 * 1000, controllerTag);
 
     }

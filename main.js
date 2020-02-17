@@ -18,7 +18,7 @@ new MutationObserver(mutations => {
 
 document.addEventListener("keydown", event => {
 
-    //MutationObserver can't find <video> in websites below (why?).
+    //MutationObserver can't find added <video> in websites below (why?).
     //http://video.fc2.com/
     //https://www.dailymotion.com/
     //...
