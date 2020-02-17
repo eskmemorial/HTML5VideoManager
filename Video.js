@@ -2,6 +2,7 @@ class Video {
 
     video;
     videoId;
+    latestControllerTag = "";
 
     constructor(video) {
         this.video = video;
@@ -172,71 +173,79 @@ class Video {
 
     showController(config) {
 
-        const removeController = () => {
-            if (document.querySelector("#hvm_controller" + this.videoId) !== null) {
-                document.querySelector("#hvm_controller" + this.videoId).remove();
+        const removeController = (controllerTag) => {
+            if (document.querySelector(`div[id^="hvm_controller${this.videoId}${controllerTag}"]`) !== null) {
+                document.querySelector(`div[id^="hvm_controller${this.videoId}${controllerTag}"]`).remove();
             }
         };
 
-        removeController();
+        const createControllerNode = (controllerTag) => {
 
-        let controller = document.createElement("div");
-        controller.setAttribute("id", "hvm_controller" + this.videoId);
+            let controller = document.createElement("div");
+            controller.setAttribute("id", "hvm_controller" + this.videoId + controllerTag);
 
-        const style = `
+            const style = `
     top:${this.video.getBoundingClientRect().top + 5}px;
     left:${this.video.getBoundingClientRect().left + 5}px;
     `;
-        controller.setAttribute("style", style);
-        controller.innerHTML = "";
+            controller.setAttribute("style", style);
+            controller.innerHTML = "";
 
-        if (config.speed === true) {
-            controller.innerHTML += `
+            if (config.speed === true) {
+                controller.innerHTML += `
             <div class="speed">SPEED x${(Math.round(this.video.playbackRate * 100) / 100).toFixed(2)}</div>
         `;
-        }
-        if (config.volume === true) {
-            controller.innerHTML += `
+            }
+            if (config.volume === true) {
+                controller.innerHTML += `
             <div class="volume">VOLUME ${(Math.round(this.video.volume * 100) / 100).toFixed(2)}</div>
      `;
-        }
-        if (config.currentTime === true) {
+            }
+            if (config.currentTime === true) {
 
-            const formatTime = time => {
+                const formatTime = time => {
 
-                const date = new Date(Date.UTC(0, 0, 0, 0, 0, time, 0));
+                    const date = new Date(Date.UTC(0, 0, 0, 0, 0, time, 0));
 
-                let timeString = "";
-                if (date.getUTCHours() > 0) {
-                    timeString += `${date.getUTCHours()}:`;
-                }
-                if (date.getUTCMinutes() > 0 || date.getUTCHours() > 0) {
-                    timeString += `${("00" + date.getUTCMinutes()).slice(-2)}:`;
-                }
+                    let formattedTime = "";
+                    if (date.getUTCHours() > 0) {
+                        formattedTime += `${date.getUTCHours()}:`;
+                    }
+                    if (date.getUTCMinutes() > 0 || date.getUTCHours() > 0) {
+                        formattedTime += `${("00" + date.getUTCMinutes()).slice(-2)}:`;
+                    }
 
-                timeString += `${("00" + date.getUTCSeconds()).slice(-2)}'`;
+                    formattedTime += `${("00" + date.getUTCSeconds()).slice(-2)}'`;
 
-                return timeString;
-            };
+                    return formattedTime;
+                };
 
-            controller.innerHTML += `
+                controller.innerHTML += `
             <div class="time">TIME ${formatTime(this.video.currentTime)}</div>
      `;
-        }
-        if (config.loop === true) {
-            controller.innerHTML += `
+            }
+            if (config.loop === true) {
+                controller.innerHTML += `
             <div class="loop">LOOP ${this.video.loop ? "TRUE" : "FALSE"}</div>
      `;
+            }
+
+            return controller;
         }
 
 
-        document.firstElementChild.appendChild(controller);
 
-        setTimeout(removeController, 6000);
+
+        removeController(this.latestControllerTag);
+
+        const controllerTag = Math.random().toString().substr(2, 6);
+
+        document.firstElementChild.appendChild(createControllerNode(controllerTag));
+
+        this.latestControllerTag = controllerTag;
+
+        setTimeout(removeController, 3 * 1000, controllerTag);
 
     }
-
-
-
 
 }
