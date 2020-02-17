@@ -121,6 +121,7 @@ class Video {
 
     volumeUp(amount) {
 
+        this.video.muted = false;
         if (this.video.volume === 1) {
             let event = new Event("volumenotchange");
             this.video.dispatchEvent(event);
@@ -141,6 +142,7 @@ class Video {
 
     setVolume(volume) {
 
+        this.video.muted = false;
         if (this.video.volume === volume) {
             let event = new Event("volumenotchange");
             this.video.dispatchEvent(event);
