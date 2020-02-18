@@ -31,19 +31,22 @@ document.addEventListener("keydown", event => {
         }
     });
 
+
+    let targetVideo = videos.filter(video => !video.paused());
+
     switch (event.key) {
         case settings["speedUpKey"] || "d":
-            videos.forEach(video => {
+            targetVideo.forEach(video => {
                 video.speedUp(settings["speedUpAmount"] || 0.1);
             });
             break;
         case settings["speedDownKey"] || "a":
-            videos.forEach(video => {
+            targetVideo.forEach(video => {
                 video.speedDown(settings["speedDownAmount"] || 0.1);
             });
             break;
         case settings["resetSpeedKey"] || "s":
-            videos.forEach(video => {
+            targetVideo.forEach(video => {
                 video.setSpeed(settings["defaultPlaybackRate"] || 1);
             });
             break;
@@ -51,17 +54,17 @@ document.addEventListener("keydown", event => {
 
 
         case settings["advanceKey"] || "c":
-            videos.forEach(video => {
+            targetVideo.forEach(video => {
                 video.advance(settings["advanceAmount"] || 10);
             });
             break;
         case settings["rewindKey"] || "z":
-            videos.forEach(video => {
+            targetVideo.forEach(video => {
                 video.rewind(settings["rewindAmount"] || 10);
             });
             break;
         case settings["pauseKey"] || "x":
-            videos.forEach(video => {
+            targetVideo.forEach(video => {
                 video.pause();
             });
             break;
@@ -69,17 +72,17 @@ document.addEventListener("keydown", event => {
 
 
         case settings["volumeUpKey"] || "e":
-            videos.forEach(video => {
+            targetVideo.forEach(video => {
                 video.volumeUp(settings["volumeUpAmount"] || 0.1);
             });
             break;
         case settings["volumeDownKey"] || "q":
-            videos.forEach(video => {
+            targetVideo.forEach(video => {
                 video.volumeDown(settings["volumeDownAmount"] || 0.1);
             });
             break;
         case settings["resetVolumeKey"] || "w":
-            videos.forEach(video => {
+            targetVideo.forEach(video => {
                 video.setVolume(settings["defaultVolume"] || 0.6);
             });
             break;
@@ -88,7 +91,7 @@ document.addEventListener("keydown", event => {
 
 
         case settings["showControllerKey"] || "r":
-            videos.forEach(video => {
+            targetVideo.forEach(video => {
                 video.showController({ speed: true, volume: true, currentTime: true });
             });
             break;
