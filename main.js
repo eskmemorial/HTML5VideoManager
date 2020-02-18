@@ -89,16 +89,7 @@ document.addEventListener("keydown", event => {
 
         case settings["showControllerKey"] || "r":
             videos.forEach(video => {
-                video.showController({ speed: true, volume: true, currentTime: true, loop: true });
-            });
-            break;
-        case settings["loopKey"] || "v":
-            videos.forEach(video => {
-                if (video.looping()) {
-                    video.disableLoop();
-                } else {
-                    video.enableLoop();
-                }
+                video.showController({ speed: true, volume: true, currentTime: true });
             });
             break;
         case settings["reloadSettingsKey"] || "t":
@@ -117,7 +108,7 @@ function loadSettings() {
         "speedUpKey", "speedDownKey", "resetSpeedKey",
         "volumeUpKey", "volumeDownKey", "resetVolumeKey",
         "advanceKey", "rewindKey", "pauseKey",
-        "showControllerKey", "loopKey", "reloadSettingsKey"
+        "showControllerKey", "reloadSettingsKey"
     ];
 
     chrome.storage.sync.get(names_str, s => {

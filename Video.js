@@ -90,7 +90,13 @@ class Video {
     }
 
     setSpeed(playbackRate) {
-        this.video.playbackRate = playbackRate;
+
+        if (this.video.playbackRate === playbackRate) {
+            let event = new Event("ratenotchange");
+            this.video.dispatchEvent(event);
+        } else {
+            this.video.playbackRate = playbackRate;
+        }
     }
 
     advance(amount) {
