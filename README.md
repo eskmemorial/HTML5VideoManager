@@ -16,15 +16,16 @@
                     of this extension.</p>
                 <h3>Default shortcut keys and their functions</h3>
                 <ul>
-                    <li>d : increases the playback rate</li>
-                    <li>a : decreases the playback rate</li>
-                    <li>s : sets the playback rate as default</li>
-                    <li>c : advances 10 seconds</li>
-                    <li>z : rewinds 10 seconds</li>
-                    <li>e : increses the volume</li>
-                    <li>q : decreases the volume</li>
-                    <li>w : sets the volume as default</li>
-                    <li>r : shows the controller on the top-left of the video</li>
-                    <li>t : reloads the settings without reloading the webpage</li>
+                    <li>d : increase playback speed</li>
+                    <li>a : decrease playback speed</li>
+                    <li>s : set playback speed as default</li>
+                    <li>c : advance video by 10 seconds</li>
+                    <li>z : rewind video by 10 seconds</li>
+                    <li>x : pause video</li>
+                    <li>e : increse volume</li>
+                    <li>q : decrease volume</li>
+                    <li>w : set volume as default</li>
+                    <li>r : show controller on the top-left of the video</li>
+                    <li>t : reload settings without reloading the webpage</li>
                 </ul>
             </div>
