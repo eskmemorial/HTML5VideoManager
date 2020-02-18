@@ -2,7 +2,7 @@
    "manifest_version": 2,
    "name": "HTML5 Video Manager",
    "short_name": "VideoManager",
-   "version": "0.0.0",
+   "version": "1.0.0",
    "description": "You can control speed,volume and current time of videos with shortcut keys.",
    "homepage_url": "https://github.com/eskmemorial/HTML5VideoManager",
    "icons": {
