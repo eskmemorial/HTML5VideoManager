@@ -15,6 +15,12 @@ new MutationObserver(mutations => {
     });
 }).observe(document, { childList: true, subtree: true });
 
+chrome.runtime.sendMessage(
+    {
+        type: "removeBadgeText"
+    },
+    response => { }
+);
 
 document.addEventListener("keydown", event => {
 
