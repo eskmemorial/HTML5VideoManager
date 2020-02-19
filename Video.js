@@ -15,6 +15,14 @@ class Video {
         this.video.addEventListener("ratechange", event => {
 
             this.showController({ speed: true });
+
+            chrome.runtime.sendMessage(
+                {
+                    type: "setBadgeText",
+                    value: "x" + this.video.playbackRate.toFixed(2)
+                },
+                response => { }
+            );
         });
 
         this.video.addEventListener("ratenotchange", event => {
