@@ -6,11 +6,17 @@ class Video {
     videoId;
     latestControllerTag = "";
 
-    constructor(video) {
+    constructor(video, speed) {
         this.video = video;
         this.videoId = Math.random().toString().substr(2, 6);
 
         this.video.setAttribute("hvm_video_id", this.videoId);
+
+
+
+        this.video.playbackRate = speed;
+
+
 
         this.video.addEventListener("ratechange", event => {
 
@@ -22,6 +28,8 @@ class Video {
                     value: "x" + this.video.playbackRate.toFixed(2)
                 }
             );
+
+            chrome.storage.sync.set({ lastSpeed: this.video.playbackRate }, () => { });
         });
 
         this.video.addEventListener("ratenotchange", event => {
