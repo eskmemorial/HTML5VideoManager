@@ -20,8 +20,7 @@ class Video {
                 {
                     type: "setBadgeText",
                     value: "x" + this.video.playbackRate.toFixed(2)
-                },
-                response => { }
+                }
             );
         });
 
