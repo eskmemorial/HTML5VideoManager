@@ -1,6 +1,6 @@
 <h1>HTML5 Video Manager</h1>
 <a href="https://microsoftedge.microsoft.com/addons/detail/afmgoimoifomnlifnmkenmdhhlmfnhon" target="_blank"
-            rel="noopener noreferrer">ダウンロード</a>
+            rel="noopener noreferrer">Download</a>
 <h2>Usage</h2>
             <div>
                 <ol>
