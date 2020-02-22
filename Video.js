@@ -6,19 +6,26 @@ class Video {
     videoId;
     latestControllerTag = "";
 
-    constructor(video, speed) {
+    constructor(video) {
         this.video = video;
         this.videoId = Math.random().toString().substr(2, 6);
 
         this.video.setAttribute("hvm_video_id", this.videoId);
 
 
+        this.video.addEventListener("play", () => {
 
-        this.video.playbackRate = speed;
+            chrome.storage.sync.get("lastSpeed", storage => {
+
+                this.video.playbackRate = Number(storage.lastSpeed);
+            });
+        });
 
 
 
-        this.video.addEventListener("ratechange", event => {
+
+
+        this.video.addEventListener("hvm_ratechange", event => {
 
             this.showController({ speed: true });
 
@@ -91,6 +98,8 @@ class Video {
             this.video.dispatchEvent(event);
         } else {
             this.video.playbackRate = Math.min(this.video.playbackRate + amount, 16);
+            let event = new Event("hvm_ratechange");
+            this.video.dispatchEvent(event);
         }
     }
 
@@ -101,6 +110,8 @@ class Video {
             this.video.dispatchEvent(event);
         } else {
             this.video.playbackRate = Math.max(this.video.playbackRate - amount, 0.1);
+            let event = new Event("hvm_ratechange");
+            this.video.dispatchEvent(event);
         }
     }
 
@@ -111,6 +122,8 @@ class Video {
             this.video.dispatchEvent(event);
         } else {
             this.video.playbackRate = playbackRate;
+            let event = new Event("hvm_ratechange");
+            this.video.dispatchEvent(event);
         }
     }
 
