@@ -210,7 +210,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
             videos.forEach(video => { video.release(); });
 
-            video = [];
+            videos = [];
 
             videoObserver.disconnect();
         }
