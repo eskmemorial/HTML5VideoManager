@@ -1,12 +1,13 @@
 chrome.runtime.onMessage.addListener(
-    (request, sender, sendResponse) => {
-        if (request["type"] === "setBadgeText") {
-            chrome.browserAction.setBadgeText({ text: request["value"] });
+    (message, sender, sendResponse) => {
+
+        if (message.type === "setBadgeText") {
+            chrome.browserAction.setBadgeText({ text: message.value });
         }
-        if (request["type"] === "removeBadgeText") {
+        if (message.type === "removeBadgeText") {
+
             chrome.browserAction.setBadgeText({ text: "" });
         }
         return true;
     }
 );
-

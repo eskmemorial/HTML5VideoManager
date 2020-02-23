@@ -4,7 +4,43 @@ class Video {
 
     video;
     videoId;
+    defaultVolumme = 1;
     latestControllerTag = "";
+
+    setSpeedAsLastSpeed = () => {
+        chrome.storage.sync.get("lastSpeed", storage => {
+
+            this.video.playbackRate = storage.lastSpeed;
+        });
+    };
+
+    saveSpeed = () => {
+
+        chrome.storage.sync.set({ lastSpeed: this.video.playbackRate }, () => { });
+    };
+
+    setBadgeText = () => {
+
+        chrome.runtime.sendMessage(
+            {
+                type: "setBadgeText",
+                value: "x" + this.video.playbackRate.toFixed(2)
+            }
+        );
+    };
+
+    showControllerSpeed = () => {
+        this.showController({ speed: true });
+    };
+
+    showControllerCurrentTime = () => {
+        this.showController({ currentTime: true });
+    };
+
+    showControllerVolume = () => {
+        this.showController({ volume: true });
+    };
+
 
     constructor(video) {
         this.video = video;
@@ -12,70 +48,70 @@ class Video {
 
         this.video.setAttribute("hvm_video_id", this.videoId);
 
+        this.defaultVolumme = this.video.volume;
 
-        this.video.addEventListener("play", () => {
+        chrome.runtime.sendMessage(
+            {
+                type: "setBadgeText",
+                value: "x" + this.video.playbackRate.toFixed(2)
+            }
+        );
 
-            chrome.storage.sync.get("lastSpeed", storage => {
+        chrome.storage.sync.get("lastSpeed", storage => {
 
-                this.video.playbackRate = storage.lastSpeed;
-            });
+            this.video.playbackRate = storage.lastSpeed;
         });
 
 
 
 
 
-        this.video.addEventListener("hvm_ratechange", event => {
+        this.video.addEventListener("play", this.setSpeedAsLastSpeed);
 
-            chrome.storage.sync.set({ lastSpeed: this.video.playbackRate }, () => { });
-        });
+        this.video.addEventListener("hvm_ratechange", this.saveSpeed);
 
-        this.video.addEventListener("ratechange", event => {
+        this.video.addEventListener("ratechange", this.setBadgeText);
+        this.video.addEventListener("ratechange", this.showController);
 
-            this.showController({ speed: true });
+        this.video.addEventListener("ratenotchange", this.showController);
 
-            chrome.runtime.sendMessage(
-                {
-                    type: "setBadgeText",
-                    value: "x" + this.video.playbackRate.toFixed(2)
-                }
-            );
-        });
+        this.video.addEventListener("currenttimechange", this.showControllerCurrentTime);
 
-        this.video.addEventListener("ratenotchange", event => {
+        this.video.addEventListener("currenttimenotchange", this.showControllerCurrentTime);
 
-            this.showController({ speed: true });
-        });
+        this.video.addEventListener("volumechange", this.showControllerVolume);
 
-        this.video.addEventListener("currenttimechange", event => {
+        this.video.addEventListener("volumenotchange", this.showControllerVolume);
+    }
 
-            this.showController({ currentTime: true });
-        });
+    release() {
 
-        this.video.addEventListener("currenttimenotchange", event => {
+        this.video.removeAttribute("hvm_video_id");
+        if (this.video.defaultMuted) {
+            this.video.muted = true;
+        } else {
+            this.video.volume = this.defaultVolumme;
+        }
+        this.video.playbackRate = this.video.defaultPlaybackRate;
 
-            this.showController({ currentTime: true });
-        });
 
-        this.video.addEventListener("volumechange", event => {
 
-            this.showController({ volume: true });
-        });
+        this.video.removeEventListener("play", this.setSpeedAsLastSpeed);
 
-        this.video.addEventListener("volumenotchange", event => {
+        this.video.removeEventListener("hvm_ratechange", this.saveSpeed);
 
-            this.showController({ volume: true });
-        });
+        this.video.removeEventListener("ratechange", this.setBadgeText);
+        this.video.removeEventListener("ratechange", this.showController);
 
-        this.video.addEventListener("loopchange", event => {
+        this.video.removeEventListener("ratenotchange", this.showController);
 
-            this.showController({ loop: true });
-        });
+        this.video.removeEventListener("currenttimechange", this.showControllerCurrentTime);
 
-        this.video.addEventListener("loopnotchange", event => {
+        this.video.removeEventListener("currenttimenotchange", this.showControllerCurrentTime);
 
-            this.showController({ loop: true });
-        });
+        this.video.removeEventListener("volumechange", this.showControllerVolume);
+
+        this.video.removeEventListener("volumenotchange", this.showControllerVolume);
     }
 
     paused() {

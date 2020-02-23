@@ -37,6 +37,39 @@ let loadSettings = callback => {
     });
 };
 
+let addUnlistedVideos = () => {
+
+    document.querySelectorAll("video").forEach(video => {
+
+        if (video.getAttribute("hvm_video_id") === null) {
+            videos.push(new Video(video));
+        }
+    });
+};
+
+
+let videos = [];
+
+let videoObserver = new MutationObserver(mutations => {
+
+    mutations.forEach(mutation => {
+
+        mutation.addedNodes.forEach(addedNode => {
+
+            if (addedNode.nodeName === "VIDEO") {
+                videos.push(new Video(addedNode));
+            }
+        });
+
+        mutation.removedNodes.forEach(removedNode => {
+
+            if (removedNode.nodeName === "VIDEO") {
+                videos = videos.filter(video => video.videoId !== removedNode.getAttribute("hvm_video_id"));
+            }
+        });
+    });
+});
+
 
 loadSettings(() => {
     let event = new Event("settingsloaded");
@@ -47,59 +80,22 @@ loadSettings(() => {
 
 document.addEventListener("settingsloaded", () => {
 
-    let videos = [];
+    if (settings.enable) {
 
-    let addUnlistedVideos = () => {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', addUnlistedVideos());
+        } else {
+            addUnlistedVideos();
+        }
 
-        document.querySelectorAll("video").forEach(video => {
-
-            if (video.getAttribute("hvm_video_id") === null) {
-                videos.push(new Video(video));
-            }
-        });
-    };
-
-
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', addUnlistedVideos());
-    } else {
-        addUnlistedVideos();
+        videoObserver.observe(document, { childList: true, subtree: true });
     }
 
 
 
 
 
-    new MutationObserver(mutations => {
 
-        mutations.forEach(mutation => {
-
-            mutation.addedNodes.forEach(addedNode => {
-
-                if (addedNode.nodeName === "VIDEO") {
-                    videos.push(new Video(addedNode));
-                }
-            });
-
-            mutation.removedNodes.forEach(removedNode => {
-
-                if (removedNode.nodeName === "VIDEO") {
-                    videos = videos.filter(video => video.videoId !== removedNode.getAttribute("hvm_video_id"));
-                }
-            });
-        });
-    }).observe(document, { childList: true, subtree: true });
-
-
-
-
-    chrome.runtime.sendMessage(
-        {
-            type: "setBadgeText",
-            value: "x" + settings.lastSpeed.toFixed(2)
-        }
-    );
 
 
 
@@ -189,12 +185,26 @@ document.addEventListener("settingsloaded", () => {
                     break;
             }
 
-
         });
-
-
     });
-
-
 });
 
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+
+    if (message.type === "extensionEnable") {
+
+        if (message.value) {
+
+            addUnlistedVideos();
+            videoObserver.observe(document, { childList: true, subtree: true });
+        } else {
+
+            videos.forEach(video => { video.release(); });
+
+            video = [];
+
+            videoObserver.disconnect();
+        }
+    }
+});

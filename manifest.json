@@ -9,7 +9,8 @@
       "64": "icon64.png"
    },
    "permissions": [
-      "storage"
+      "storage",
+      "tabs"
    ],
    "options_page": "options.html",
    "browser_action": {
