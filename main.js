@@ -19,6 +19,7 @@ let settings = {
     advanceAmount: 10,
     rewindAmount: 10,
     lastSpeed: 1,
+    enable: true
 };
 
 let loadSettings = callback => {
@@ -28,15 +29,10 @@ let loadSettings = callback => {
         Object.keys(settings).forEach(name => {
 
             if (storage[name] !== undefined) {
-
-                if (typeof settings[name] === "string") {
-                    settings[name] = storage[name];
-                }
-                if (typeof settings[name] === "number") {
-                    settings[name] = Number(storage[name]);
-                }
+                settings[name] = storage[name];
             }
         });
+
         callback();
     });
 };
@@ -110,81 +106,93 @@ document.addEventListener("settingsloaded", () => {
 
     document.addEventListener("keydown", keyDownEvent => {
 
-        //MutationObserver can't find added <video> in websites below (why?).
-        //http://video.fc2.com/
-        //https://www.dailymotion.com/
-        //...
+        chrome.storage.sync.get("enable", storage => {
 
-        //Videos in these websites have to be found by querySelectorAll().
-        addUnlistedVideos();
-
-        let targetVideo = videos.filter(video => !video.paused());
-
-        switch (keyDownEvent.key) {
-            case settings.speedUpKey:
-                targetVideo.forEach(video => {
-                    video.speedUp(settings.speedUpAmount);
-                });
-                break;
-            case settings.speedDownKey:
-                targetVideo.forEach(video => {
-                    video.speedDown(settings.speedDownAmount);
-                });
-                break;
-            case settings.resetSpeedKey:
-                targetVideo.forEach(video => {
-                    video.setSpeed(settings.defaultPlaybackRate);
-                });
-                break;
+            if (storage.enable === false) {
+                return;
+            }
 
 
+            //MutationObserver can't find added <video> in websites below (why?).
+            //http://video.fc2.com/
+            //https://www.dailymotion.com/
+            //...
 
-            case settings.advanceKey:
-                targetVideo.forEach(video => {
-                    video.advance(settings.advanceAmount);
-                });
-                break;
-            case settings.rewindKey:
-                targetVideo.forEach(video => {
-                    video.rewind(settings.rewindAmount);
-                });
-                break;
-            case settings.pauseKey:
-                targetVideo.forEach(video => {
-                    video.pause();
-                });
-                break;
+            //Videos in these websites have to be found by querySelectorAll().
+            addUnlistedVideos();
+
+            let targetVideo = videos.filter(video => !video.paused());
+
+            switch (keyDownEvent.key) {
+                case settings.speedUpKey:
+                    targetVideo.forEach(video => {
+                        video.speedUp(settings.speedUpAmount);
+                    });
+                    break;
+                case settings.speedDownKey:
+                    targetVideo.forEach(video => {
+                        video.speedDown(settings.speedDownAmount);
+                    });
+                    break;
+                case settings.resetSpeedKey:
+                    targetVideo.forEach(video => {
+                        video.setSpeed(settings.defaultPlaybackRate);
+                    });
+                    break;
 
 
 
-            case settings.olumeUpKey:
-                targetVideo.forEach(video => {
-                    video.volumeUp(settings.volumeUpAmount);
-                });
-                break;
-            case settings.volumeDownKey:
-                targetVideo.forEach(video => {
-                    video.volumeDown(settings.volumeDownAmount);
-                });
-                break;
-            case settings.resetVolumeKey:
-                targetVideo.forEach(video => {
-                    video.setVolume(settings.defaultVolume);
-                });
-                break;
+                case settings.advanceKey:
+                    targetVideo.forEach(video => {
+                        video.advance(settings.advanceAmount);
+                    });
+                    break;
+                case settings.rewindKey:
+                    targetVideo.forEach(video => {
+                        video.rewind(settings.rewindAmount);
+                    });
+                    break;
+                case settings.pauseKey:
+                    targetVideo.forEach(video => {
+                        video.pause();
+                    });
+                    break;
+
+
+
+                case settings.olumeUpKey:
+                    targetVideo.forEach(video => {
+                        video.volumeUp(settings.volumeUpAmount);
+                    });
+                    break;
+                case settings.volumeDownKey:
+                    targetVideo.forEach(video => {
+                        video.volumeDown(settings.volumeDownAmount);
+                    });
+                    break;
+                case settings.resetVolumeKey:
+                    targetVideo.forEach(video => {
+                        video.setVolume(settings.defaultVolume);
+                    });
+                    break;
 
 
 
 
-            case settings.showControllerKey:
-                targetVideo.forEach(video => {
-                    video.showController({ speed: true, volume: true, currentTime: true });
-                });
-                break;
-            case settings.reloadSettingsKey:
-                loadSettings();
-                break;
-        }
+                case settings.showControllerKey:
+                    targetVideo.forEach(video => {
+                        video.showController({ speed: true, volume: true, currentTime: true });
+                    });
+                    break;
+                case settings.reloadSettingsKey:
+                    loadSettings(() => { });
+                    break;
+            }
+
+
+        });
+
+
     });
 
 

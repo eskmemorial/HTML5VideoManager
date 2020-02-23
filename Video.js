@@ -17,7 +17,7 @@ class Video {
 
             chrome.storage.sync.get("lastSpeed", storage => {
 
-                this.video.playbackRate = Number(storage.lastSpeed);
+                this.video.playbackRate = storage.lastSpeed;
             });
         });
 
@@ -27,6 +27,11 @@ class Video {
 
         this.video.addEventListener("hvm_ratechange", event => {
 
+            chrome.storage.sync.set({ lastSpeed: this.video.playbackRate }, () => { });
+        });
+
+        this.video.addEventListener("ratechange", event => {
+
             this.showController({ speed: true });
 
             chrome.runtime.sendMessage(
@@ -35,8 +40,6 @@ class Video {
                     value: "x" + this.video.playbackRate.toFixed(2)
                 }
             );
-
-            chrome.storage.sync.set({ lastSpeed: this.video.playbackRate }, () => { });
         });
 
         this.video.addEventListener("ratenotchange", event => {
