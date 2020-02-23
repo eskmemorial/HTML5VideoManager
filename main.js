@@ -37,7 +37,7 @@ let loadSettings = callback => {
     });
 };
 
-let addUnlistedVideos = () => {
+let makeVideoList = () => {
 
     document.querySelectorAll("video").forEach(video => {
 
@@ -45,6 +45,17 @@ let addUnlistedVideos = () => {
             videos.push(new Video(video));
         }
     });
+
+    let videoIds = [];
+
+    document.querySelectorAll("video").forEach(video => {
+
+        if (video.getAttribute("hvm_video_id") !== null) {
+            videoIds.push(video.getAttribute("hvm_video_id"));
+        }
+    });
+
+    videos = videos.filter(video => videoIds.find(id => video.videoId === id) !== undefined);
 };
 
 
@@ -83,9 +94,9 @@ document.addEventListener("settingsloaded", () => {
     if (settings.enable) {
 
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', addUnlistedVideos());
+            document.addEventListener('DOMContentLoaded', makeVideoList());
         } else {
-            addUnlistedVideos();
+            makeVideoList();
         }
 
         videoObserver.observe(document, { childList: true, subtree: true });
@@ -122,7 +133,9 @@ document.addEventListener("settingsloaded", () => {
             //...
 
             //Videos in these websites have to be found by querySelectorAll().
-            addUnlistedVideos();
+            makeVideoList();
+
+
 
             let targetVideo = videos.filter(video => !video.paused());
 
@@ -204,7 +217,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         if (message.value) {
 
-            addUnlistedVideos();
+            makeVideoList();
             videoObserver.observe(document, { childList: true, subtree: true });
         } else {
 
