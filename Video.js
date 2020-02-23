@@ -30,14 +30,17 @@ class Video {
     };
 
     showControllerSpeed = () => {
+
         this.showController({ speed: true });
     };
 
     showControllerCurrentTime = () => {
+
         this.showController({ currentTime: true });
     };
 
     showControllerVolume = () => {
+
         this.showController({ volume: true });
     };
 
@@ -71,9 +74,9 @@ class Video {
         this.video.addEventListener("hvm_ratechange", this.saveSpeed);
 
         this.video.addEventListener("ratechange", this.setBadgeText);
-        this.video.addEventListener("ratechange", this.showController);
+        this.video.addEventListener("ratechange", this.showControllerSpeed);
 
-        this.video.addEventListener("ratenotchange", this.showController);
+        this.video.addEventListener("ratenotchange", this.showControllerSpeed);
 
         this.video.addEventListener("currenttimechange", this.showControllerCurrentTime);
 
@@ -101,9 +104,9 @@ class Video {
         this.video.removeEventListener("hvm_ratechange", this.saveSpeed);
 
         this.video.removeEventListener("ratechange", this.setBadgeText);
-        this.video.removeEventListener("ratechange", this.showController);
+        this.video.removeEventListener("ratechange", this.showControllerSpeed);
 
-        this.video.removeEventListener("ratenotchange", this.showController);
+        this.video.removeEventListener("ratenotchange", this.showControllerSpeed);
 
         this.video.removeEventListener("currenttimechange", this.showControllerCurrentTime);
 

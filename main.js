@@ -89,6 +89,13 @@ document.addEventListener("settingsloaded", () => {
         }
 
         videoObserver.observe(document, { childList: true, subtree: true });
+    } else {
+        chrome.runtime.sendMessage(
+            {
+                type: "setIcon",
+                value: { path: "icon64_disabled.png" }
+            }
+        );
     }
 
 
@@ -156,7 +163,7 @@ document.addEventListener("settingsloaded", () => {
 
 
 
-                case settings.olumeUpKey:
+                case settings.volumeUpKey:
                     targetVideo.forEach(video => {
                         video.volumeUp(settings.volumeUpAmount);
                     });
@@ -177,6 +184,7 @@ document.addEventListener("settingsloaded", () => {
 
                 case settings.showControllerKey:
                     targetVideo.forEach(video => {
+
                         video.showController({ speed: true, volume: true, currentTime: true });
                     });
                     break;

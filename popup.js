@@ -25,12 +25,16 @@ function enableExtension() {
         document.querySelector("#enable").setAttribute("style", "display:none;");
         document.querySelector("#disable").setAttribute("style", "display:inline-block;");
 
-        chrome.browserAction.setIcon({ path: "icon64.png" }, () => { });
-    });
+        chrome.runtime.sendMessage(
+            {
+                type: "setIcon",
+                value: { path: "icon64.png" }
+            }
+        );
 
-
-    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-        chrome.tabs.sendMessage(tabs[0].id, { type: "extensionEnable", value: true });
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            chrome.tabs.sendMessage(tabs[0].id, { type: "extensionEnable", value: true });
+        });
     });
 }
 
@@ -41,7 +45,12 @@ function disableExtension() {
         document.querySelector("#disable").setAttribute("style", "display:none;");
         document.querySelector("#enable").setAttribute("style", "display:inline-block;");
 
-        chrome.browserAction.setIcon({ path: "icon64_disabled.png" }, () => { });
+        chrome.runtime.sendMessage(
+            {
+                type: "setIcon",
+                value: { path: "icon64_disabled.png" }
+            }
+        );
 
         chrome.runtime.sendMessage(
             {
