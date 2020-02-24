@@ -9,7 +9,7 @@ chrome.runtime.onMessage.addListener(
                 chrome.browserAction.setBadgeText({ text: "" });
                 break;
             case "setIcon":
-                chrome.browserAction.setIcon(message.value, () => { });
+                chrome.browserAction.setIcon(message.value);
                 break;
 
         }

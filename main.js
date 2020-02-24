@@ -8,6 +8,7 @@ let settings = {
     advanceKey: "c",
     rewindKey: "z",
     pauseKey: "x",
+    abLoopKey: "v",
     showControllerKey: "r",
     reloadSettingsKey: "t",
     speedUpAmount: 0.1,
@@ -37,6 +38,13 @@ let loadSettings = callback => {
     });
 };
 
+
+
+
+
+
+let videos = [];
+
 let makeVideoList = () => {
 
     document.querySelectorAll("video").forEach(video => {
@@ -57,9 +65,6 @@ let makeVideoList = () => {
 
     videos = videos.filter(video => videoIds.find(id => video.videoId === id) !== undefined);
 };
-
-
-let videos = [];
 
 let videoObserver = new MutationObserver(mutations => {
 
@@ -82,12 +87,16 @@ let videoObserver = new MutationObserver(mutations => {
 });
 
 
+
+
+
+
+
+
 loadSettings(() => {
     let event = new Event("settingsloaded");
     document.dispatchEvent(event);
 });
-
-
 
 document.addEventListener("settingsloaded", () => {
 
@@ -171,6 +180,11 @@ document.addEventListener("settingsloaded", () => {
                 case settings.pauseKey:
                     targetVideo.forEach(video => {
                         video.pause();
+                    });
+                    break;
+                case settings.abLoopKey:
+                    targetVideo.forEach(video => {
+                        video.abLoop();
                     });
                     break;
 

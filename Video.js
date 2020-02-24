@@ -6,6 +6,8 @@ class Video {
     videoId;
     defaultVolumme = 1;
     latestControllerTag = "";
+    abLoopTime = { a: null, b: null };
+    abLoopTimeoutID;
 
     setSpeedAsLastSpeed = () => {
         chrome.storage.sync.get("lastSpeed", storage => {
@@ -192,6 +194,31 @@ class Video {
 
             let event = new Event("currenttimechange");
             this.video.dispatchEvent(event);
+        }
+    }
+
+    abLoop() {
+
+        if (this.abLoopTime.a === null && this.abLoopTime.b === null) {
+
+            this.abLoopTime.a = this.video.currentTime;
+        } else if (this.abLoopTime.a !== null && this.abLoopTime.b === null) {
+
+            this.abLoopTime.b = this.video.currentTime;
+
+            let abLoopRecursive = () => {
+
+                this.video.currentTime = Math.min(this.abLoopTime.a, this.abLoopTime.b);
+                this.abLoopTimeoutID = setTimeout(abLoopRecursive, Math.abs(this.abLoopTime.a - this.abLoopTime.b) * 1000);
+            };
+
+            abLoopRecursive();
+
+        } else {
+
+            this.abLoopTime.a = null;
+            this.abLoopTime.b = null;
+            clearTimeout(this.abLoopTimeoutID);
         }
     }
 
