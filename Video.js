@@ -112,6 +112,10 @@ class Video {
         }
         this.video.playbackRate = this.video.defaultPlaybackRate;
 
+        clearTimeout(this.abLoopTimeoutID);
+        this.abLoopTime.a = null;
+        this.abLoopTime.b = null;
+
 
 
         this.video.removeEventListener("play", this.setSpeedAsLastSpeed);
@@ -123,7 +127,10 @@ class Video {
 
         this.video.removeEventListener("ratenotchange", this.showControllerSpeed);
 
+        this.video.removeEventListener("seeked", this.checkInAB);
+
         this.video.removeEventListener("currenttimechange", this.showControllerCurrentTime);
+        this.video.removeEventListener("currenttimechange", this.checkInAB);
 
         this.video.removeEventListener("currenttimenotchange", this.showControllerCurrentTime);
 
