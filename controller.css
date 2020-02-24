@@ -8,6 +8,6 @@ div[id^="hvm_controller"] {
     border-radius: 3px;
 }
 
-div[id^="hvm_controller"]>div.speed, div.volume, div.time, div.loop {
+div[id^="hvm_controller"]>div {
     font-size: 15px;
 }

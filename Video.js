@@ -46,6 +46,16 @@ class Video {
         this.showController({ volume: true });
     };
 
+    checkInAB = () => {
+
+        if (Math.min(this.abLoopTime.a, this.abLoopTime.b) <= this.video.currentTime && this.video.currentTime <= Math.max(this.abLoopTime.a, this.abLoopTime.b)) {
+
+        } else {
+            clearTimeout(this.abLoopTimeoutID);
+            this.abLoopTime.a = null;
+            this.abLoopTime.b = null;
+        }
+    }
 
     constructor(video) {
         this.video = video;
@@ -80,7 +90,10 @@ class Video {
 
         this.video.addEventListener("ratenotchange", this.showControllerSpeed);
 
+        this.video.addEventListener("seeked", this.checkInAB);
+
         this.video.addEventListener("currenttimechange", this.showControllerCurrentTime);
+        this.video.addEventListener("currenttimechange", this.checkInAB);
 
         this.video.addEventListener("currenttimenotchange", this.showControllerCurrentTime);
 
@@ -121,10 +134,6 @@ class Video {
 
     paused() {
         return this.video.paused;
-    }
-
-    looping() {
-        return this.video.loop;
     }
 
     play() {
@@ -202,6 +211,7 @@ class Video {
         if (this.abLoopTime.a === null && this.abLoopTime.b === null) {
 
             this.abLoopTime.a = this.video.currentTime;
+            this.showController({ abLoopA: true, abLoopB: false });
         } else if (this.abLoopTime.a !== null && this.abLoopTime.b === null) {
 
             this.abLoopTime.b = this.video.currentTime;
@@ -209,16 +219,18 @@ class Video {
             let abLoopRecursive = () => {
 
                 this.video.currentTime = Math.min(this.abLoopTime.a, this.abLoopTime.b);
-                this.abLoopTimeoutID = setTimeout(abLoopRecursive, Math.abs(this.abLoopTime.a - this.abLoopTime.b) * 1000);
+                this.abLoopTimeoutID = setTimeout(abLoopRecursive, Math.abs(this.abLoopTime.a - this.abLoopTime.b) * 1000 / this.video.playbackRate);
+                this.showController({ abLoopA: true, abLoopB: true });
             };
 
             abLoopRecursive();
 
         } else {
 
+            clearTimeout(this.abLoopTimeoutID);
             this.abLoopTime.a = null;
             this.abLoopTime.b = null;
-            clearTimeout(this.abLoopTimeoutID);
+            this.showController({ abLoopClear: true });
         }
     }
 
@@ -254,30 +266,6 @@ class Video {
         }
     }
 
-    enableLoop() {
-
-        if (this.video.loop) {
-            let event = new Event("loopnotchange");
-            this.video.dispatchEvent(event);
-        } else {
-            this.video.loop = true;
-            let event = new Event("loopchange");
-            this.video.dispatchEvent(event);
-        }
-    }
-
-    disableLoop() {
-
-        if (!this.video.loop) {
-            let event = new Event("loopnotchange");
-            this.video.dispatchEvent(event);
-        } else {
-            this.video.loop = false;
-            let event = new Event("loopchange");
-            this.video.dispatchEvent(event);
-        }
-    }
-
     //This function is NOT thread safe.
     //You can read comment about flow of process near the end of this function.
     showController(config) {
@@ -286,6 +274,23 @@ class Video {
             if (document.querySelector(`div[id^="hvm_controller${this.videoId}${controllerTag}"]`) !== null) {
                 document.querySelector(`div[id^="hvm_controller${this.videoId}${controllerTag}"]`).remove();
             }
+        };
+
+        const formatTime = time => {
+
+            const date = new Date(Date.UTC(0, 0, 0, 0, 0, time, 0));
+
+            let formattedTime = "";
+            if (date.getUTCHours() > 0) {
+                formattedTime += `${date.getUTCHours()}:`;
+            }
+            if (date.getUTCMinutes() > 0 || date.getUTCHours() > 0) {
+                formattedTime += `${("00" + date.getUTCMinutes()).slice(-2)}:`;
+            }
+
+            formattedTime += `${("00" + date.getUTCSeconds()).slice(-2)}'`;
+
+            return formattedTime;
         };
 
         const createControllerNode = (controllerTag) => {
@@ -312,31 +317,26 @@ class Video {
             }
             if (config.currentTime === true) {
 
-                const formatTime = time => {
 
-                    const date = new Date(Date.UTC(0, 0, 0, 0, 0, time, 0));
-
-                    let formattedTime = "";
-                    if (date.getUTCHours() > 0) {
-                        formattedTime += `${date.getUTCHours()}:`;
-                    }
-                    if (date.getUTCMinutes() > 0 || date.getUTCHours() > 0) {
-                        formattedTime += `${("00" + date.getUTCMinutes()).slice(-2)}:`;
-                    }
-
-                    formattedTime += `${("00" + date.getUTCSeconds()).slice(-2)}'`;
-
-                    return formattedTime;
-                };
 
                 controller.innerHTML += `
             <div class="time">TIME ${formatTime(this.video.currentTime)}</div>
             `;
             }
-            if (config.loop === true) {
+            if (config.abLoopA === true) {
                 controller.innerHTML += `
-            <div class="loop">LOOP ${this.video.loop ? "TRUE" : "FALSE"}</div>
-            `;
+                <div class="ab-loop-a">LOOP FROM ${formatTime(Math.min(this.abLoopTime.a || this.video.duration, this.abLoopTime.b || this.video.duration))}</div>
+                `;
+            }
+            if (config.abLoopB === true) {
+                controller.innerHTML += `
+                <div class="ab-loop-b">LOOP TO ${formatTime(Math.max(this.abLoopTime.a || 0, this.abLoopTime.b || 0))}</div>
+                `;
+            }
+            if (config.abLoopClear === true) {
+                controller.innerHTML += `
+                <div class="ab-loop-clear">LOOP CLEAR</div>
+                `;
             }
 
             return controller;
