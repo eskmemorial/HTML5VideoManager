@@ -1,7 +1,8 @@
 <h1>HTML5 Video Manager</h1>
 <a href="https://microsoftedge.microsoft.com/addons/detail/afmgoimoifomnlifnmkenmdhhlmfnhon" target="_blank"
             rel="noopener noreferrer">Download</a>
-<h2>Usage</h2>
+<div id="usage">
+            <h2>Usage</h2>
             <div>
                 <ol>
                     <li>Visit a webpage with a video, for example, <a href="https://www.youtube.com/watch?v=3P8PQ6uR1SE"
@@ -27,5 +28,9 @@
                     <li>w : set volume as default</li>
                     <li>r : show controller on the top-left of the video</li>
                     <li>t : reload settings without reloading the webpage</li>
+                    <li>v : first press, register "A" time of AB loop. second press, register "B" time of AB loop.
+                        third
+                        press, clear AB loop.</li>
                 </ul>
             </div>
+        </div>
