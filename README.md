@@ -1,8 +1,7 @@
 <h1>HTML5 Video Manager</h1>
 <a href="https://microsoftedge.microsoft.com/addons/detail/afmgoimoifomnlifnmkenmdhhlmfnhon" target="_blank"
             rel="noopener noreferrer">Download</a>
-<div id="usage">
-            <h2>Usage</h2>
+<h2>Usage</h2>
             <div>
                 <ol>
                     <li>Visit a webpage with a video, for example, <a href="https://www.youtube.com/watch?v=3P8PQ6uR1SE"
@@ -19,7 +18,7 @@
                 <ul>
                     <li>d : increase playback speed</li>
                     <li>a : decrease playback speed</li>
-                    <li>s : set playback speed as default</li>
+                    <li>s : set playback speed as default or favorite speed</li>
                     <li>c : advance video by 10 seconds</li>
                     <li>z : rewind video by 10 seconds</li>
                     <li>x : pause video</li>
@@ -33,4 +32,3 @@
                         press, clear AB loop.</li>
                 </ul>
             </div>
-        </div>
