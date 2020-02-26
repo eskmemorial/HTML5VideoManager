@@ -65,17 +65,8 @@ class Video {
 
         this.defaultVolumme = this.video.volume;
 
-        chrome.runtime.sendMessage(
-            {
-                type: "setBadgeText",
-                value: "x" + this.video.playbackRate.toFixed(2)
-            }
-        );
-
-        chrome.storage.sync.get("lastSpeed", storage => {
-
-            this.video.playbackRate = storage.lastSpeed;
-        });
+        this.setBadgeText();
+        this.setSpeedAsLastSpeed();
 
 
 
@@ -141,6 +132,10 @@ class Video {
 
     paused() {
         return this.video.paused;
+    }
+
+    currentSpeed() {
+        return this.video.playbackRate;
     }
 
     play() {

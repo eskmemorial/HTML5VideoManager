@@ -13,7 +13,8 @@ let settings = {
     abLoopKey: "v",
     speedUpAmount: 0.1,
     speedDownAmount: 0.1,
-    defaultPlaybackRate: 1,
+    defaultSpeed: 1,
+    favoriteSpeed: 2,
     volumeUpAmount: 0.1,
     volumeDownAmount: 0.1,
     defaultVolume: 0.8,
@@ -161,7 +162,11 @@ document.addEventListener("settingsloaded", () => {
                     break;
                 case settings.resetSpeedKey:
                     targetVideo.forEach(video => {
-                        video.setSpeed(settings.defaultPlaybackRate);
+                        if (video.currentSpeed() === settings.favoriteSpeed) {
+                            video.setSpeed(settings.defaultSpeed);
+                        } else {
+                            video.setSpeed(settings.favoriteSpeed);
+                        }
                     });
                     break;
 
