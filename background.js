@@ -4,6 +4,7 @@ chrome.runtime.onMessage.addListener(
         switch (message.type) {
             case "setBadgeText":
                 chrome.browserAction.setBadgeText({ text: message.value });
+                chrome.browserAction.setBadgeBackgroundColor({ color: "#007FFF" });
                 break;
             case "removeBadgeText":
                 chrome.browserAction.setBadgeText({ text: "" });
