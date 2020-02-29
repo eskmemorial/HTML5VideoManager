@@ -31,7 +31,9 @@
             "controller.css"
          ],
          "matches": [
-            "*://*/*"
+            "https://*/*",
+            "http://*/*",
+            "file: //*/*"
          ],
          "run_at": "document_start"
       }
