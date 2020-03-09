@@ -129,7 +129,7 @@ document.addEventListener("settingsloaded", () => {
 
 
     document.addEventListener("keydown", keyDownEvent => {
-
+        console.log(document.querySelector("iframe").contentWindow);
         chrome.storage.sync.get("enable", storage => {
 
             if (storage.enable === false) {
