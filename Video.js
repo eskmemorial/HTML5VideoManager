@@ -1,5 +1,3 @@
-//This class is NOT thread safe.
-//Don't access latestControllerTag at the same time.
 class Video {
 
     video;
