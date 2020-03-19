@@ -104,7 +104,7 @@ document.addEventListener("settingsloaded", () => {
     if (settings.enable) {
 
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', makeVideoList());
+            document.addEventListener('DOMContentLoaded', makeVideoList);
         } else {
             makeVideoList();
         }
