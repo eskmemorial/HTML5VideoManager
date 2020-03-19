@@ -216,7 +216,7 @@ class Video {
 
             this.abLoopTime.b = this.video.currentTime;
 
-            let abLoopRecursive = () => {
+            const abLoopRecursive = () => {
 
                 this.video.currentTime = Math.min(this.abLoopTime.a, this.abLoopTime.b);
                 this.abLoopTimeoutID = setTimeout(abLoopRecursive, Math.abs(this.abLoopTime.a - this.abLoopTime.b) * 1000 / this.video.playbackRate);

@@ -24,7 +24,7 @@ let settings = {
     enable: true
 };
 
-let loadSettings = callback => {
+const loadSettings = callback => {
 
     chrome.storage.sync.get(Object.keys(settings), storage => {
 
@@ -46,7 +46,7 @@ let loadSettings = callback => {
 
 let videos = [];
 
-let makeVideoList = () => {
+const makeVideoList = () => {
 
     document.querySelectorAll("video").forEach(video => {
 
@@ -67,7 +67,7 @@ let makeVideoList = () => {
     videos = videos.filter(video => videoIds.find(id => video.videoId === id) !== undefined);
 };
 
-let videoObserver = new MutationObserver(mutations => {
+const videoObserver = new MutationObserver(mutations => {
 
     mutations.forEach(mutation => {
 
@@ -147,7 +147,7 @@ document.addEventListener("settingsloaded", () => {
 
 
 
-            let targetVideo = videos.filter(video => !video.paused());
+            const targetVideo = videos.filter(video => !video.paused());
 
             switch (keyDownEvent.key) {
                 case settings.speedUpKey:
