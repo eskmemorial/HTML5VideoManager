@@ -13,6 +13,7 @@ let settings = {
         keyCodeStr: "KeyA",
         amount: 0.1,
         func: (targetVideos, setting) => {
+
             targetVideos.forEach(video => {
                 video.speedDown(setting.amount);
             });
@@ -25,7 +26,7 @@ let settings = {
 
             targetVideos.forEach(video => {
                 if (video.currentSpeed() === setting.favoriteSpeed) {
-                    video.setDefaultSpeed();
+                    video.setSpeed(1);
                 } else {
                     video.setSpeed(setting.favoriteSpeed);
                 }
@@ -52,11 +53,51 @@ let settings = {
             });
         }
     },
+    pause: {
+        keyCodeStr: "KeyV",
+        func: (targetVideos, setting) => {
+
+            targetVideos.forEach(video => {
+                video.pause();
+            });
+        }
+    },
     abLoop: {
         keyCodeStr: "KeyC",
         func: (targetVideos, setting) => {
+
             targetVideos.forEach(video => {
                 video.abLoop();
+            });
+        }
+    },
+    volumeUp: {
+        keyCodeStr: "KeyW",
+        amount: 0.05,
+        func: (targetVideos, setting) => {
+
+            targetVideos.forEach(video => {
+                video.volumeUp(setting.amount);
+            });
+        }
+    },
+    volumeDown: {
+        keyCodeStr: "KeyQ",
+        amount: 0.05,
+        func: (targetVideos, setting) => {
+
+            targetVideos.forEach(video => {
+                video.volumeDown(setting.amount);
+            });
+        }
+    },
+    mute: {
+        keyCodeStr: "KeyE",
+        amount: 0.05,
+        func: (targetVideos, setting) => {
+
+            targetVideos.forEach(video => {
+                video.setVolume(0);
             });
         }
     }
