@@ -10,7 +10,9 @@ class Video {
     setSpeedAsLastSpeed = () => {
         chrome.storage.sync.get("lastSpeed", storage => {
 
-            this.video.playbackRate = storage.lastSpeed;
+            if (storage.lastSpeed !== undefined) {
+                this.video.playbackRate = storage.lastSpeed;
+            }
         });
     };
 
@@ -175,6 +177,18 @@ class Video {
             this.video.dispatchEvent(event);
         } else {
             this.video.playbackRate = playbackRate;
+            let event = new Event("hvm_ratechange");
+            this.video.dispatchEvent(event);
+        }
+    }
+
+    setDefaultSpeed() {
+
+        if (this.video.playbackRate === this.video.defaultPlaybackRate) {
+            let event = new Event("ratenotchange");
+            this.video.dispatchEvent(event);
+        } else {
+            this.video.playbackRate = this.video.defaultPlaybackRate;
             let event = new Event("hvm_ratechange");
             this.video.dispatchEvent(event);
         }

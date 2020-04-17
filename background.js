@@ -12,7 +12,6 @@ chrome.runtime.onMessage.addListener(
             case "setIcon":
                 chrome.browserAction.setIcon(message.value);
                 break;
-
         }
 
         return true;

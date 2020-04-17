@@ -1,49 +1,3 @@
-let settings = {
-    speedUpKey: "d",
-    speedDownKey: "a",
-    resetSpeedKey: "s",
-    volumeUpKey: "e",
-    volumeDownKey: "q",
-    resetVolumeKey: "w",
-    advanceKey: "c",
-    rewindKey: "z",
-    pauseKey: "x",
-    showControllerKey: "r",
-    reloadSettingsKey: "t",
-    abLoopKey: "v",
-    speedUpAmount: 0.1,
-    speedDownAmount: 0.1,
-    defaultSpeed: 1,
-    favoriteSpeed: 2,
-    volumeUpAmount: 0.1,
-    volumeDownAmount: 0.1,
-    defaultVolume: 0.8,
-    advanceAmount: 10,
-    rewindAmount: 10,
-    lastSpeed: 1,
-    enable: true
-};
-
-const loadSettings = callback => {
-
-    chrome.storage.sync.get(Object.keys(settings), storage => {
-
-        Object.keys(settings).forEach(name => {
-
-            if (storage[name] !== undefined) {
-                settings[name] = storage[name];
-            }
-        });
-
-        callback();
-    });
-};
-
-
-
-
-
-
 let videos = [];
 
 const makeVideoList = () => {
@@ -67,7 +21,8 @@ const makeVideoList = () => {
     videos = videos.filter(video => videoIds.find(id => video.videoId === id) !== undefined);
 };
 
-const videoObserver = new MutationObserver(mutations => {
+// MutationObserver cannot find some videos.
+let videoObserver = new MutationObserver(mutations => {
 
     mutations.forEach(mutation => {
 
@@ -87,164 +42,31 @@ const videoObserver = new MutationObserver(mutations => {
     });
 });
 
+videoObserver.observe(document, { childList: true, subtree: true });
 
 
 
+document.addEventListener("keydown", keyDownEvent => {
 
+    chrome.storage.sync.get(["isEnabled", "settings"], storage => {
 
-
-
-loadSettings(() => {
-    let event = new Event("settingsloaded");
-    document.dispatchEvent(event);
-});
-
-document.addEventListener("settingsloaded", () => {
-
-    if (settings.enable) {
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', makeVideoList);
-        } else {
-            makeVideoList();
+        if (storage.isEnabled === false) {
+            return;
         }
 
-        videoObserver.observe(document, { childList: true, subtree: true });
-    } else {
-        chrome.runtime.sendMessage(
-            {
-                type: "setIcon",
-                value: { path: "icon64_disabled.png" }
-            }
-        );
-    }
+        if (storage.settings !== undefined) {
+            settings = storage.settings;
+        }
 
+        makeVideoList();
 
+        const targetVideos = videos.filter(video => !video.paused());
 
-
-
-
-
-
-
-
-    document.addEventListener("keydown", keyDownEvent => {
-
-        chrome.storage.sync.get("enable", storage => {
-
-            if (storage.enable === false) {
-                return;
-            }
-
-
-            //MutationObserver can't find added <video> in websites below (why?).
-            //http://video.fc2.com/
-            //https://www.dailymotion.com/
-            //...
-
-            //Videos in these websites have to be found by querySelectorAll().
-            makeVideoList();
-
-
-
-            const targetVideo = videos.filter(video => !video.paused());
-
-            switch (keyDownEvent.key) {
-                case settings.speedUpKey:
-                    targetVideo.forEach(video => {
-                        video.speedUp(settings.speedUpAmount);
-                    });
-                    break;
-                case settings.speedDownKey:
-                    targetVideo.forEach(video => {
-                        video.speedDown(settings.speedDownAmount);
-                    });
-                    break;
-                case settings.resetSpeedKey:
-                    targetVideo.forEach(video => {
-                        if (video.currentSpeed() === settings.favoriteSpeed) {
-                            video.setSpeed(settings.defaultSpeed);
-                        } else {
-                            video.setSpeed(settings.favoriteSpeed);
-                        }
-                    });
-                    break;
-
-
-
-                case settings.advanceKey:
-                    targetVideo.forEach(video => {
-                        video.advance(settings.advanceAmount);
-                    });
-                    break;
-                case settings.rewindKey:
-                    targetVideo.forEach(video => {
-                        video.rewind(settings.rewindAmount);
-                    });
-                    break;
-                case settings.pauseKey:
-                    targetVideo.forEach(video => {
-                        video.pause();
-                    });
-                    break;
-                case settings.abLoopKey:
-                    targetVideo.forEach(video => {
-                        video.abLoop();
-                    });
-                    break;
-
-
-
-                case settings.volumeUpKey:
-                    targetVideo.forEach(video => {
-                        video.volumeUp(settings.volumeUpAmount);
-                    });
-                    break;
-                case settings.volumeDownKey:
-                    targetVideo.forEach(video => {
-                        video.volumeDown(settings.volumeDownAmount);
-                    });
-                    break;
-                case settings.resetVolumeKey:
-                    targetVideo.forEach(video => {
-                        video.setVolume(settings.defaultVolume);
-                    });
-                    break;
-
-
-
-
-                case settings.showControllerKey:
-                    targetVideo.forEach(video => {
-
-                        video.showController({ speed: true, volume: true, currentTime: true });
-                    });
-                    break;
-                case settings.reloadSettingsKey:
-                    loadSettings(() => { });
-                    break;
-            }
-
-        });
+        Object.keys(settings)
+            .filter(action => settings[action].keyCodeStr !== undefined && settings[action].keyCodeStr === keyDownEvent.code)
+            .forEach(action => {
+                settings[action].func(targetVideos, settings[action]);
+            });
     });
 });
 
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-
-    if (message.type === "extensionEnable") {
-
-        if (message.value) {
-
-            makeVideoList();
-            videoObserver.observe(document, { childList: true, subtree: true });
-        } else {
-
-            videos.forEach(video => { video.release(); });
-
-            videos = [];
-
-            videoObserver.disconnect();
-        }
-    }
-});
