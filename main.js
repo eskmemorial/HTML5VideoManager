@@ -74,6 +74,5 @@ document.addEventListener("keydown", keyDownEvent => {
                 settings[action].func(targetVideos, settings[action]);
             });
     });
-
 });
 

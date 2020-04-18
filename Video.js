@@ -18,7 +18,7 @@ class Video {
 
     saveSpeed = () => {
 
-        chrome.storage.sync.set({ lastSpeed: this.video.playbackRate }, () => { });
+        chrome.storage.sync.set({ lastSpeed: this.video.playbackRate });
     };
 
     setBadgeText = () => {
