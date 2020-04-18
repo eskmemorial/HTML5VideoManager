@@ -321,35 +321,33 @@ class Video {
 
             if (config.speed === true) {
                 controller.innerHTML += `
-            <div class="speed">SPEED x${(Math.round(this.video.playbackRate * 100) / 100).toFixed(2)}</div>
+            <div class="speed">x${(Math.round(this.video.playbackRate * 100) / 100).toFixed(2)}</div>
             `;
             }
             if (config.volume === true) {
                 controller.innerHTML += `
-            <div class="volume">VOLUME ${(Math.round(this.video.volume * 100) / 100).toFixed(2)}</div>
+            <div class="volume">${(Math.round(this.video.volume * 100) / 100).toFixed(2)}</div>
             `;
             }
             if (config.currentTime === true) {
 
-
-
                 controller.innerHTML += `
-            <div class="time">TIME ${formatTime(this.video.currentTime)}</div>
+            <div class="time">${formatTime(this.video.currentTime)}</div>
             `;
             }
             if (config.abLoopA === true) {
                 controller.innerHTML += `
-                <div class="ab-loop-a">LOOP FROM ${formatTime(Math.min(this.abLoopTime.a || this.video.duration, this.abLoopTime.b || this.video.duration))}</div>
+                <div class="ab-loop-a">${formatTime(Math.min(this.abLoopTime.a || this.video.duration, this.abLoopTime.b || this.video.duration))}</div>
                 `;
             }
             if (config.abLoopB === true) {
                 controller.innerHTML += `
-                <div class="ab-loop-b">LOOP TO ${formatTime(Math.max(this.abLoopTime.a || 0, this.abLoopTime.b || 0))}</div>
+                <div class="ab-loop-b">${formatTime(Math.max(this.abLoopTime.a || 0, this.abLoopTime.b || 0))}</div>
                 `;
             }
             if (config.abLoopClear === true) {
                 controller.innerHTML += `
-                <div class="ab-loop-clear">LOOP CLEAR</div>
+                <div class="ab-loop-clear"></div>
                 `;
             }
 
@@ -371,7 +369,7 @@ class Video {
         //find controller identified by controllerTag and remove it after specific time pass.
         //if showController() is called before controller is removed by function below,
         //removeController(this.latestControllerTag) removes the controller.
-        setTimeout(removeController, 3 * 1000, controllerTag);
+        setTimeout(removeController, 150 * 1000, controllerTag);
 
     }
 

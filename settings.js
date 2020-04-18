@@ -2,6 +2,7 @@ let settings = {
     speedUp: {
         keyCodeStr: "KeyS",
         amount: 0.1,
+        isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
@@ -12,6 +13,7 @@ let settings = {
     speedDown: {
         keyCodeStr: "KeyA",
         amount: 0.1,
+        isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
@@ -22,6 +24,7 @@ let settings = {
     favoriteSpeed: {
         keyCodeStr: "KeyD",
         favoriteSpeed: 2,
+        isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
@@ -36,6 +39,7 @@ let settings = {
     advanceTime: {
         keyCodeStr: "KeyX",
         amount: 15,
+        isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
@@ -46,6 +50,7 @@ let settings = {
     rewindTime: {
         keyCodeStr: "KeyZ",
         amount: 15,
+        isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
@@ -55,6 +60,7 @@ let settings = {
     },
     pause: {
         keyCodeStr: "KeyV",
+        isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
@@ -64,6 +70,7 @@ let settings = {
     },
     abLoop: {
         keyCodeStr: "KeyC",
+        isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
@@ -74,6 +81,7 @@ let settings = {
     volumeUp: {
         keyCodeStr: "KeyW",
         amount: 0.05,
+        isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
@@ -84,6 +92,7 @@ let settings = {
     volumeDown: {
         keyCodeStr: "KeyQ",
         amount: 0.05,
+        isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
@@ -93,6 +102,7 @@ let settings = {
     },
     mute: {
         keyCodeStr: "KeyE",
+        isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
@@ -102,6 +112,7 @@ let settings = {
     },
     showController: {
         keyCodeStr: "KeyR",
+        isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {

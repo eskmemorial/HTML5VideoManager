@@ -11,3 +11,36 @@ div[id^="hvm_controller"] {
 div[id^="hvm_controller"]>div {
     font-size: 15px;
 }
+
+div[id^="hvm_controller"]>div::before {
+    content: "";
+    height: 15px;
+    width: 15px;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: -2.25px;
+}
+
+div.speed::before {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/speed.svg");
+}
+
+div.volume::before {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/volume.svg");
+}
+
+div.time::before {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/time.svg");
+}
+
+div.ab-loop-a::before {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/loop.svg");
+}
+
+div.ab-loop-b::before {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/loop.svg");
+}
+
+div.ab-loop-clear::before {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/loop.svg");
+}

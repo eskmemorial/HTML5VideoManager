@@ -56,93 +56,87 @@
 
 <body>
     <main>
-        <div id="shortcut_keys">
-            <h2>Setting of shortcut keys</h2>
-            <div>
-                <p>You can change shortcut keys and amount of increase/decrease.</p>
-                <h3>Playback Rate</h3>
-                <div id="speedUp">
-                    <h4>speed up</h4>
-                    <label>key</label>
-                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyS">
-                    <label>amount</label>
-                    <input type="number" name="amount" valuetype="number" step="0.1" min="0" max="16" value="0.1">
-                </div>
-                <div id="speedDown">
-                    <h4>speed down</h4>
-                    <label>key</label>
-                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyS">
-                    <label>amount</label>
-                    <input type="number" name="amount" valuetype="number" step="0.1" min="0" max="16" value="0.1">
-                </div>
-                <div id="favoriteSpeed">
-                    <h4>favorite speed</h4>
-                    <label>key</label>
-                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyS">
-                    <label>amount</label>
-                    <input type="number" name="favoriteSpeed" valuetype="number" step="0.1" min="0" max="16"
-                        value="0.1">
-                </div>
-            </div>
-            <div>
-                <h3>Audio Volume</h3>
-                <div id="volumeUp">
-                    <h4>volume up</h4>
-                    <label>key</label>
-                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyO">
-                    <label>amount</label>
-                    <input type="number" name="amount" valuetype="number" step="0.1" min="0" max="1" value="0.05">
-                </div>
-                <div id="volumeDown">
-                    <h4>volume down</h4>
-                    <label>key</label>
-                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyO">
-                    <label>amount</label>
-                    <input type="number" name="amount" valuetype="number" step="0.1" min="0" max="1" value="0.05">
-                </div>
-                <div id="mute">
-                    <h4>mute</h4>
-                    <label>key</label>
-                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyO">
-                    <label>amount</label>
-                    <input type="number" name="amount" valuetype="number" step="0.1" min="0" max="1" value="0.05">
-                </div>
-            </div>
-            <div>
-                <h3>Playback Time</h3>
-                <div id="advanceTime">
-                    <h4>advance</h4>
-                    <label>key</label>
-                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyX">
-                    <label>amount</label>
-                    <input type="number" name="amount" valuetype="number" step="5" min="0" max="1024" value="10">
-                </div>
-                <div id="rewindTime">
-                    <h4>rewind</h4>
-                    <label>key</label>
-                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyX">
-                    <label>amount</label>
-                    <input type="number" name="amount" valuetype="number" step="5" min="0" max="1024" value="10">
-                </div>
-                <div id="pause">
-                    <h4>pause</h4>
-                    <label>key</label>
-                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyX">
-                </div>
-            </div>
-            <div>
-                <h3>Others</h3>
-                <div id="showController">
-                    <h4>show controller</h4>
-                    <label>key</label>
-                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyX">
-                </div>
-                <div id="abLoop">
-                    <h4>AB loop</h4>
-                    <label>key</label>
-                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyX">
-                </div>
-            </div>
+        <div id="speedUp">
+            <h4>speed up</h4>
+            <input type="checkbox" name="isEnabled">
+            <label>key</label>
+            <input type="text" name="keyCodeStr" value="KeyS" readonly>
+            <label>amount</label>
+            <input type="number" name="amount" step="0.1" min="0" max="16" value="0.1">
+        </div>
+        <div id="speedDown">
+            <h4>speed down</h4>
+            <input type="checkbox" name="isEnabled">
+            <label>key</label>
+            <input type="text" name="keyCodeStr" value="KeyS" readonly>
+            <label>amount</label>
+            <input type="number" name="amount" step="0.1" min="0" max="16" value="0.1">
+        </div>
+        <div id="favoriteSpeed">
+            <h4>favorite speed</h4>
+            <input type="checkbox" name="isEnabled">
+            <label>key</label>
+            <input type="text" name="keyCodeStr" value="KeyS" readonly>
+            <label>amount</label>
+            <input type="number" name="favoriteSpeed" step="0.1" min="0" max="16" value="0.1">
+        </div>
+        <div id="volumeUp">
+            <h4>volume up</h4>
+            <input type="checkbox" name="isEnabled">
+            <label>key</label>
+            <input type="text" name="keyCodeStr" value="KeyO" readonly>
+            <label>amount</label>
+            <input type="number" name="amount" step="0.1" min="0" max="1" value="0.05">
+        </div>
+        <div id="volumeDown">
+            <h4>volume down</h4>
+            <input type="checkbox" name="isEnabled">
+            <label>key</label>
+            <input type="text" name="keyCodeStr" value="KeyO" readonly>
+            <label>amount</label>
+            <input type="number" name="amount" step="0.1" min="0" max="1" value="0.05">
+        </div>
+        <div id="mute">
+            <h4>mute</h4>
+            <input type="checkbox" name="isEnabled">
+            <label>key</label>
+            <input type="text" name="keyCodeStr" value="KeyO" readonly>
+            <label>amount</label>
+            <input type="number" name="amount" step="0.1" min="0" max="1" value="0.05">
+        </div>
+        <div id="advanceTime">
+            <h4>advance</h4>
+            <input type="checkbox" name="isEnabled">
+            <label>key</label>
+            <input type="text" name="keyCodeStr" value="KeyX" readonly>
+            <label>amount</label>
+            <input type="number" name="amount" step="5" min="0" max="1024" value="10">
+        </div>
+        <div id="rewindTime">
+            <h4>rewind</h4>
+            <input type="checkbox" name="isEnabled">
+            <label>key</label>
+            <input type="text" name="keyCodeStr" value="KeyX" readonly>
+            <label>amount</label>
+            <input type="number" name="amount" step="5" min="0" max="1024" value="10">
+        </div>
+        <div id="pause">
+            <h4>pause</h4>
+            <input type="checkbox" name="isEnabled">
+            <label>key</label>
+            <input type="text" name="keyCodeStr" value="KeyX" readonly>
+        </div>
+        <div id="showController">
+            <h4>show controller</h4>
+            <input type="checkbox" name="isEnabled">
+            <label>key</label>
+            <input type="text" name="keyCodeStr" value="KeyX" readonly>
+        </div>
+        <div id="abLoop">
+            <h4>AB loop</h4>
+            <input type="checkbox" name="isEnabled">
+            <label>key</label>
+            <input type="text" name="keyCodeStr" value="KeyX" readonly>
         </div>
     </main>
     <script src="settings.js"></script>

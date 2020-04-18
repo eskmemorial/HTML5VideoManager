@@ -69,7 +69,7 @@ document.addEventListener("keydown", keyDownEvent => {
         const targetVideos = videos.filter(video => !video.paused());
 
         Object.keys(settings)
-            .filter(action => settings[action].keyCodeStr !== undefined && settings[action].keyCodeStr === keyDownEvent.code)
+            .filter(action => settings[action].keyCodeStr === keyDownEvent.code && settings[action].isEnabled)
             .forEach(action => {
                 settings[action].func(targetVideos, settings[action]);
             });

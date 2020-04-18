@@ -6,7 +6,7 @@
    "description": "You can control speed,volume, current time and AB loop of videos with shortcut keys.",
    "homepage_url": "https://github.com/eskmemorial/HTML5VideoManager",
    "icons": {
-      "64": "icon64.png"
+      "64": "img/icon64.png"
    },
    "permissions": [
       "storage",
@@ -15,7 +15,7 @@
    "options_page": "options.html",
    "browser_action": {
       "default_icon": {
-         "64": "icon64.png"
+         "64": "img/icon64.png"
       },
       "default_popup": "popup.html"
    },
@@ -44,5 +44,9 @@
          "background.js"
       ],
       "presistent": false
-   }
+   },
+   "web_accessible_resources": [
+      "*.png",
+      "*.svg"
+   ]
 }
