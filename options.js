@@ -1,45 +1,43 @@
-let names = []
+chrome.storage.sync.get("settings", storage => {
 
-document.querySelectorAll("input").forEach(input => {
-    names.push(input.getAttribute("name"));
-});
+    if (storage.settings !== undefined) {
+        settings = storage.settings;
+    }
 
+    Object.keys(settings).forEach(action => {
 
-chrome.storage.sync.get(names, settings => {
+        Object.keys(settings[action]).filter(prop => prop !== "func").forEach(prop => {
 
-    names.forEach(name => {
-        if (settings[name] !== undefined) {
-            document.querySelector(`input[name='${name}']`).setAttribute("value", settings[name].toString());
-        }
+            document.querySelector(`#${action}>input[name="${prop}"]`).setAttribute("value", settings[action][prop]);
+        });
     });
-
 });
 
 
 
 
 
-document.querySelector("#save").addEventListener("click", event => {
 
-    let settings = {};
+const saveSettings = () => {
 
+    Object.keys(settings).forEach(action => {
+        Object.keys(settings[action]).filter(prop => prop !== "func").forEach(prop => {
 
-    document.querySelectorAll("input").forEach(input => {
+            const elem = document.querySelector(`#${action}>input[name="${prop}"]`);
 
-        switch (input.getAttribute("valuetype")) {
-            case "string":
-                settings[input.getAttribute("name")] = input.value;
-                break;
-
-            case "number":
-                settings[input.getAttribute("name")] = Number(input.value);
-                break;
-        }
-
+            switch (elem.getAttribute("type")) {
+                case "text":
+                    settings[action][prop] = elem.value;
+                    break;
+                case "number":
+                    settings[action][prop] = Number(elem.value);
+                    break;
+            }
+        });
     });
+    chrome.storage.sync.set({ settings: settings });
+}
 
-    chrome.storage.sync.set(settings, () => { });
 
-    alert("saved!");
 
-});
+document.querySelectorAll("input").forEach(input => input.addEventListener("change", saveSettings));

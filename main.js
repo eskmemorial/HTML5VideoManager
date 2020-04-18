@@ -1,6 +1,6 @@
 let videos = [];
 
-const makeVideoList = () => {
+const findVideos = () => {
 
     document.querySelectorAll("video").forEach(video => {
 
@@ -55,10 +55,16 @@ document.addEventListener("keydown", keyDownEvent => {
         }
 
         if (storage.settings !== undefined) {
-            settings = storage.settings;
+            Object.keys(storage.settings).forEach(action => {
+
+                Object.keys(storage.settings[action]).forEach(prop => {
+
+                    settings[action][prop] = storage.settings[action][prop];
+                });
+            });
         }
 
-        makeVideoList();
+        findVideos();
 
         const targetVideos = videos.filter(video => !video.paused());
 
@@ -68,5 +74,6 @@ document.addEventListener("keydown", keyDownEvent => {
                 settings[action].func(targetVideos, settings[action]);
             });
     });
+
 });
 

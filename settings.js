@@ -19,7 +19,7 @@ let settings = {
             });
         }
     },
-    resetSpeed: {
+    favoriteSpeed: {
         keyCodeStr: "KeyD",
         favoriteSpeed: 2,
         func: (targetVideos, setting) => {
@@ -93,11 +93,19 @@ let settings = {
     },
     mute: {
         keyCodeStr: "KeyE",
-        amount: 0.05,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
                 video.setVolume(0);
+            });
+        }
+    },
+    showController: {
+        keyCodeStr: "KeyR",
+        func: (targetVideos, setting) => {
+
+            targetVideos.forEach(video => {
+                video.showController({ speed: true, volume: true, currentTime: true });
             });
         }
     }

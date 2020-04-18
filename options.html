@@ -61,166 +61,91 @@
             <div>
                 <p>You can change shortcut keys and amount of increase/decrease.</p>
                 <h3>Playback Rate</h3>
-                <div>
+                <div id="speedUp">
                     <h4>speed up</h4>
                     <label>key</label>
-                    <input type="text" name="speedUpKey" valuetype="string" minlength="1" maxlength="1" size="1"
-                        value="d">
+                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyS">
                     <label>amount</label>
-                    <input type="number" name="speedUpAmount" valuetype="number" step="0.1" min="0" max="16"
-                        value="0.1">
+                    <input type="number" name="amount" valuetype="number" step="0.1" min="0" max="16" value="0.1">
                 </div>
-                <div>
+                <div id="speedDown">
                     <h4>speed down</h4>
                     <label>key</label>
-                    <input type="text" name="speedDownKey" valuetype="string" minlength="1" maxlength="1" size="1"
-                        value="a">
+                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyS">
                     <label>amount</label>
-                    <input type="number" name="speedDownAmount" valuetype="number" step="0.1" min="0" max="16"
-                        value="0.1">
+                    <input type="number" name="amount" valuetype="number" step="0.1" min="0" max="16" value="0.1">
                 </div>
-                <div>
-                    <h4>default and favorite speed</h4>
-                    <label>reset key</label>
-                    <input type="text" name="resetSpeedKey" valuetype="string" minlength="1" maxlength="1" size="1"
-                        value="s">
-                    <label>default speed</label>
-                    <input type="number" name="defaultSpeed" valuetype="number" step="0.1" min="0" max="16" value="1">
-                    <label>favorite speed</label>
-                    <input type="number" name="favoriteSpeed" valuetype="number" step="0.1" min="0" max="16" value="2">
+                <div id="favoriteSpeed">
+                    <h4>favorite speed</h4>
+                    <label>key</label>
+                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyS">
+                    <label>amount</label>
+                    <input type="number" name="favoriteSpeed" valuetype="number" step="0.1" min="0" max="16"
+                        value="0.1">
                 </div>
             </div>
             <div>
                 <h3>Audio Volume</h3>
-                <div>
+                <div id="volumeUp">
                     <h4>volume up</h4>
                     <label>key</label>
-                    <input type="text" name="volumeUpKey" valuetype="string" minlength="1" maxlength="1" size="1"
-                        value="e">
+                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyO">
                     <label>amount</label>
-                    <input type="number" name="volumeUpAmount" valuetype="number" step="0.1" min="0" max="1"
-                        value="0.05">
+                    <input type="number" name="amount" valuetype="number" step="0.1" min="0" max="1" value="0.05">
                 </div>
-                <div>
+                <div id="volumeDown">
                     <h4>volume down</h4>
                     <label>key</label>
-                    <input type="text" name="volumeDownKey" valuetype="string" minlength="1" maxlength="1" size="1"
-                        value="q">
+                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyO">
                     <label>amount</label>
-                    <input type="number" name="volumeDownAmount" valuetype="number" step="0.1" min="0" max="1"
-                        value="0.05">
+                    <input type="number" name="amount" valuetype="number" step="0.1" min="0" max="1" value="0.05">
                 </div>
-                <div>
-                    <h4>default volume</h4>
-                    <label>reset key</label>
-                    <input type="text" name="resetVolumeKey" valuetype="string" minlength="1" maxlength="1" size="1"
-                        value="w">
-                    <label>default volume</label>
-                    <input type="number" name="defaultVolume" valuetype="number" step="0.05" min="0" max="1"
-                        value="0.8">
+                <div id="mute">
+                    <h4>mute</h4>
+                    <label>key</label>
+                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyO">
+                    <label>amount</label>
+                    <input type="number" name="amount" valuetype="number" step="0.1" min="0" max="1" value="0.05">
                 </div>
             </div>
             <div>
                 <h3>Playback Time</h3>
-                <div>
+                <div id="advanceTime">
                     <h4>advance</h4>
                     <label>key</label>
-                    <input type="text" name="advanceKey" valuetype="string" minlength="1" maxlength="1" size="1"
-                        value="c">
+                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyX">
                     <label>amount</label>
-                    <input type="number" name="advanceAmount" valuetype="number" step="5" min="0" max="1024" value="10">
+                    <input type="number" name="amount" valuetype="number" step="5" min="0" max="1024" value="10">
                 </div>
-                <div>
+                <div id="rewindTime">
                     <h4>rewind</h4>
                     <label>key</label>
-                    <input type="text" name="rewindKey" valuetype="string" minlength="1" maxlength="1" size="1"
-                        value="z">
+                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyX">
                     <label>amount</label>
-                    <input type="number" name="rewindAmount" valuetype="number" step="5" min="0" max="1024" value="10">
+                    <input type="number" name="amount" valuetype="number" step="5" min="0" max="1024" value="10">
                 </div>
-                <div>
+                <div id="pause">
                     <h4>pause</h4>
                     <label>key</label>
-                    <input type="text" name="pauseKey" valuetype="string" minlength="1" maxlength="1" size="1"
-                        value="x">
+                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyX">
                 </div>
             </div>
             <div>
                 <h3>Others</h3>
-                <div>
+                <div id="showController">
                     <h4>show controller</h4>
                     <label>key</label>
-                    <input type="text" name="showControllerKey" valuetype="string" minlength="1" maxlength="1" size="1"
-                        value="r">
+                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyX">
                 </div>
-                <div>
-                    <h4>reload settings without reloading webpage</h4>
-                    <label>key</label>
-                    <input type="text" name="reloadSettingsKey" valuetype="string" minlength="1" maxlength="1" size="1"
-                        value="t">
-                </div>
-                <div>
+                <div id="abLoop">
                     <h4>AB loop</h4>
                     <label>key</label>
-                    <input type="text" name="abLoopKey" valuetype="string" minlength="1" maxlength="1" size="1"
-                        value="v">
+                    <input type="text" name="keyCodeStr" valuetype="string" value="KeyX">
                 </div>
-            </div>
-            <button id="save">save</button>
-        </div>
-        <div id="usage">
-            <h2>Usage</h2>
-            <div>
-                <ol>
-                    <li>Visit a webpage with a video, for example, <a href="https://www.youtube.com/watch?v=3P8PQ6uR1SE"
-                            target="_blank" rel="noopener noreferrer">this</a>.</li>
-                    <li>Click the video and play it if the video doesn't play automatically.</li>
-                    <li>Press shortcut keys when you are playing a video.</li>
-                </ol>
-                <p>If a video in &lt;iframe&gt; tag plays automatically, you have to click the video to enable shortcut
-                    keys.</p>
-                <p>If the webpage has the same shortcut key as that of this extension, you have to change the shortcut
-                    key of this extension.</p>
-                <h3>Default shortcut keys and their functions</h3>
-                <ul>
-                    <li>d : increase playback speed</li>
-                    <li>a : decrease playback speed</li>
-                    <li>s : set playback speed as default or favorite speed</li>
-                    <li>c : advance video by 10 seconds</li>
-                    <li>z : rewind video by 10 seconds</li>
-                    <li>x : pause video</li>
-                    <li>e : increse volume</li>
-                    <li>q : decrease volume</li>
-                    <li>w : set volume as default</li>
-                    <li>r : show controller on the top-left of the video</li>
-                    <li>t : reload settings without reloading the webpage</li>
-                    <li>v : first press, register "A" time of AB loop. second press, register "B" time of AB loop. third
-                        press, clear AB loop.</li>
-                </ul>
-            </div>
-        </div>
-        <div id="privacy_policy">
-            <h2>Privacy Policy</h2>
-            <div>
-                <ul>
-                    <li>This extension doesn't collect personal information.</li>
-                    <li>This extension doesn't send information to any server except below.</li>
-                    <li>This extension sends information to Microsoft's server to sync customized data between different
-                        devices which you log in with the same Microsoft account. The shared data is below.
-                        <ul>
-                            <li>setting of shortcut keys</li>
-                            <li>setting of amount of increase or decrease of speed, volume and skip</li>
-                            <li>default speed</li>
-                            <li>favorite speed</li>
-                            <li>default volume</li>
-                            <li>last speed which you set</li>
-                            <li>whether extention is enabled or disabled</li>
-                        </ul>
-                    </li>
-                </ul>
             </div>
         </div>
     </main>
+    <script src="settings.js"></script>
     <script src="options.js">
     </script>
 </body>
