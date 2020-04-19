@@ -87,3 +87,129 @@ document.querySelectorAll("input[name='keyCodeStr']").forEach(input => input.add
     document.addEventListener("keyup", monitorKey);
 }));
 
+
+
+
+
+
+
+function enableExtension() {
+
+    chrome.storage.sync.set({ enable: true }, () => {
+
+        document.querySelector("#switch_btn").src = "img/on.png";
+
+        chrome.runtime.sendMessage(
+            {
+                type: "setIcon",
+                value: { path: "img/icon64.png" }
+            }
+        );
+
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            chrome.tabs.sendMessage(tabs[0].id, { type: "enableExtension", value: true });
+        });
+    });
+
+    enableControllPanel();
+}
+
+
+function disableExtension() {
+
+    chrome.storage.sync.set({ enable: false }, () => {
+
+        document.querySelector("#switch_btn").src = "img/off.png";
+
+        chrome.runtime.sendMessage(
+            {
+                type: "setIcon",
+                value: { path: "img/icon64_disabled.png" }
+            }
+        );
+
+        chrome.runtime.sendMessage(
+            {
+                type: "removeBadgeText"
+            }
+        );
+
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+
+            chrome.tabs.sendMessage(tabs[0].id, { type: "enableExtension", value: false });
+        });
+    });
+
+    disableControllPanel();
+}
+
+
+
+chrome.storage.sync.get("isEnabled", storage => {
+
+    if (storage.isEnabled !== false) {
+        enableExtension();
+    } else {
+        disableExtension();
+    }
+});
+
+
+
+document.querySelector("header>img").addEventListener("click", () => {
+
+    chrome.storage.sync.get("isEnabled", storage => {
+
+        if (storage.isEnabled !== false) {
+            chrome.storage.sync.set({ isEnabled: false }, disableExtension);
+        } else {
+            chrome.storage.sync.set({ isEnabled: true }, enableExtension);
+        }
+    });
+});
+
+
+
+const enableControllPanel = () => {
+
+    document.querySelectorAll("div.action").forEach(action => {
+
+        action.removeAttribute("disabled");
+    });
+    document.querySelectorAll("div.action input").forEach(input => {
+
+        input.removeAttribute("disabled");
+    });
+    document.querySelectorAll("div.action button").forEach(button => {
+
+        button.removeAttribute("disabled");
+    });
+};
+
+const disableControllPanel = () => {
+
+    document.querySelectorAll("div.action").forEach(action => {
+
+        action.setAttribute("disabled", "");
+    });
+    document.querySelectorAll("div.action input").forEach(input => {
+
+        input.setAttribute("disabled", "");
+    });
+    document.querySelectorAll("div.action button").forEach(button => {
+
+        button.setAttribute("disabled", "");
+    });
+};
+
+
+document.querySelectorAll("div.action button").forEach(button => {
+
+    button.addEventListener("click", clickEvent => {
+
+        const input = clickEvent.srcElement.parentElement.querySelector("input");
+        input.value = Number(input.value) + Number(button.getAttribute("step"));
+
+        input.dispatchEvent(new Event("change"));
+    });
+});

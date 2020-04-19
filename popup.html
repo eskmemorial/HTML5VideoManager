@@ -4,6 +4,15 @@
 <head>
   <title>Popup@Html5VideoManager</title>
   <style>
+    header {
+      height: 32px;
+      padding: 0px 5px;
+    }
+
+    header img {
+      height: 32px;
+    }
+
     main {
       width: 300px;
       margin: auto;
@@ -17,6 +26,10 @@
       margin: 10px 0px;
 
       background-color: rgb(242, 255, 240);
+    }
+
+    div.action[disabled] {
+      background-color: rgb(231, 231, 231);
     }
 
     div.action>div.checkbox.withvalue {
@@ -66,6 +79,7 @@
 </head>
 
 <body>
+  <header><img src="img/on.png" id="switch_btn"></header>
   <main>
     <div id="speedUp" class="action">
       <div class="checkbox withvalue">
@@ -77,11 +91,11 @@
           <input type="text" name="keyCodeStr" value="KeyS" readonly>
         </div>
         <div class="bottom">
-          <button>&lt;&lt;</button>
-          <button>&lt;</button>
+          <button step="-0.1">&lt;&lt;</button>
+          <button step="-0.01">&lt;</button>
           <input type="number" name="amount" step="0.1" min="0" max="16" value="0.1">
-          <button>&gt;</button>
-          <button>&gt;&gt;</button>
+          <button step="0.01">&gt;</button>
+          <button step="0.1">&gt;&gt;</button>
         </div>
       </div>
     </div>
@@ -95,11 +109,11 @@
           <input type="text" name="keyCodeStr" value="KeyS" readonly>
         </div>
         <div class="bottom">
-          <button>&lt;&lt;</button>
-          <button>&lt;</button>
+          <button step="-0.1">&lt;&lt;</button>
+          <button step="-0.01">&lt;</button>
           <input type="number" name="amount" step="0.1" min="0" max="16" value="0.1">
-          <button>&gt;</button>
-          <button>&gt;&gt;</button>
+          <button step="0.01">&gt;</button>
+          <button step="0.1">&gt;&gt;</button>
         </div>
       </div>
     </div>
@@ -113,11 +127,11 @@
           <input type="text" name="keyCodeStr" value="KeyS" readonly>
         </div>
         <div class="bottom">
-          <button>&lt;&lt;</button>
-          <button>&lt;</button>
+          <button step="-0.1">&lt;&lt;</button>
+          <button step="-0.01">&lt;</button>
           <input type="number" name="favoriteSpeed" step="0.1" min="0" max="16" value="0.1">
-          <button>&gt;</button>
-          <button>&gt;&gt;</button>
+          <button step="0.01">&gt;</button>
+          <button step="0.1">&gt;&gt;</button>
         </div>
       </div>
     </div>
@@ -131,11 +145,11 @@
           <input type="text" name="keyCodeStr" value="KeyO" readonly>
         </div>
         <div class="bottom">
-          <button>&lt;&lt;</button>
-          <button>&lt;</button>
+          <button step="-0.1">&lt;&lt;</button>
+          <button step="-0.01">&lt;</button>
           <input type="number" name="amount" step="0.1" min="0" max="1" value="0.05">
-          <button>&gt;</button>
-          <button>&gt;&gt;</button>
+          <button step="0.01">&gt;</button>
+          <button step="0.1">&gt;&gt;</button>
         </div>
       </div>
     </div>
@@ -149,29 +163,22 @@
           <input type="text" name="keyCodeStr" value="KeyO" readonly>
         </div>
         <div class="bottom">
-          <button>&lt;&lt;</button>
-          <button>&lt;</button>
+          <button step="-0.1">&lt;&lt;</button>
+          <button step="-0.01">&lt;</button>
           <input type="number" name="amount" step="0.1" min="0" max="1" value="0.05">
-          <button>&gt;</button>
-          <button>&gt;&gt;</button>
+          <button step="0.01">&gt;</button>
+          <button step="0.1">&gt;&gt;</button>
         </div>
       </div>
     </div>
     <div id="mute" class="action">
-      <div class="checkbox withvalue">
+      <div class="checkbox withoutvalue">
         <input type="checkbox" name="isEnabled">
       </div>
       <div class="content">
         <div class="top">
           <label>mute</label>
           <input type="text" name="keyCodeStr" value="KeyO" readonly>
-        </div>
-        <div class="bottom">
-          <button>&lt;&lt;</button>
-          <button>&lt;</button>
-          <input type="number" name="amount" step="0.1" min="0" max="1" value="0.05">
-          <button>&gt;</button>
-          <button>&gt;&gt;</button>
         </div>
       </div>
     </div>
@@ -185,11 +192,11 @@
           <input type="text" name="keyCodeStr" value="KeyX" readonly>
         </div>
         <div class="bottom">
-          <button>&lt;&lt;</button>
-          <button>&lt;</button>
+          <button step="-5">&lt;&lt;</button>
+          <button step="-1">&lt;</button>
           <input type="number" name="amount" step="5" min="0" max="1024" value="10">
-          <button>&gt;</button>
-          <button>&gt;&gt;</button>
+          <button step="1">&gt;</button>
+          <button step="5">&gt;&gt;</button>
         </div>
       </div>
     </div>
@@ -203,11 +210,11 @@
           <input type="text" name="keyCodeStr" value="KeyX" readonly>
         </div>
         <div class="bottom">
-          <button>&lt;&lt;</button>
-          <button>&lt;</button>
+          <button step="-5">&lt;&lt;</button>
+          <button step="-1">&lt;</button>
           <input type="number" name="amount" step="5" min="0" max="1024" value="10">
-          <button>&gt;</button>
-          <button>&gt;&gt;</button>
+          <button step="1">&gt;</button>
+          <button step="5">&gt;&gt;</button>
         </div>
       </div>
     </div>
