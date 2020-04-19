@@ -43,7 +43,33 @@ let videoObserver = new MutationObserver(mutations => {
     });
 });
 
-videoObserver.observe(document, { childList: true, subtree: true });
+
+
+
+
+chrome.storage.sync.get("isEnabled", storage => {
+
+    if (storage.isEnabled !== false) {
+
+        videoObserver.observe(document, { childList: true, subtree: true });
+
+        if (document.readyState === 'loading') {
+
+            document.addEventListener('DOMContentLoaded', findVideos);
+        } else {
+            findVideos();
+        }
+    } else {
+        chrome.runtime.sendMessage(
+            {
+                type: "setIcon",
+                value: { path: "icon64_disabled.png" }
+            }
+        );
+    }
+});
+
+
 
 
 
@@ -77,3 +103,26 @@ document.addEventListener("keydown", keyDownEvent => {
     });
 });
 
+
+
+
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+
+    if (message.type === "enableExtension") {
+
+        if (message.value) {
+
+            videoObserver.observe(document, { childList: true, subtree: true });
+
+            findVideos();
+        } else {
+
+            videoObserver.disconnect();
+
+            videos.forEach(video => { video.release(); });
+
+            videos = [];
+        }
+    }
+});

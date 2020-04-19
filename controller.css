@@ -1,5 +1,5 @@
 div[id^="hvm_controller"] {
-    position: fixed;
+    position: absolute;
     z-index: 65535;
     color: white;
     background: black;
@@ -41,6 +41,6 @@ div.ab-loop-b::before {
     background: url("chrome-extension://__MSG_@@extension_id__/img/loop.svg");
 }
 
-div.ab-loop-clear::before {
-    background: url("chrome-extension://__MSG_@@extension_id__/img/loop.svg");
+div.ab-loop-clear {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/loop_clear.svg");
 }

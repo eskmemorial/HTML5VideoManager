@@ -234,7 +234,7 @@ class Video {
 
                 this.video.currentTime = Math.min(this.abLoopTime.a, this.abLoopTime.b);
                 this.abLoopTimeoutID = setTimeout(abLoopRecursive, Math.abs(this.abLoopTime.a - this.abLoopTime.b) * 1000 / this.video.playbackRate);
-                this.showController({ abLoopA: true, abLoopB: true });
+                this.showController({ abLoopA: false, abLoopB: true });
             };
 
             abLoopRecursive();
@@ -337,12 +337,12 @@ class Video {
             }
             if (config.abLoopA === true) {
                 controller.innerHTML += `
-                <div class="ab-loop-a">${formatTime(Math.min(this.abLoopTime.a || this.video.duration, this.abLoopTime.b || this.video.duration))}</div>
+                <div class="ab-loop-a">${formatTime(Math.min(this.abLoopTime.a || this.video.duration, this.abLoopTime.b || this.video.duration))} -> </div>
                 `;
             }
             if (config.abLoopB === true) {
                 controller.innerHTML += `
-                <div class="ab-loop-b">${formatTime(Math.max(this.abLoopTime.a || 0, this.abLoopTime.b || 0))}</div>
+                <div class="ab-loop-b">${formatTime(Math.min(this.abLoopTime.a || this.video.duration, this.abLoopTime.b || this.video.duration))} -> ${formatTime(Math.max(this.abLoopTime.a || 0, this.abLoopTime.b || 0))}</div>
                 `;
             }
             if (config.abLoopClear === true) {
@@ -369,7 +369,7 @@ class Video {
         //find controller identified by controllerTag and remove it after specific time pass.
         //if showController() is called before controller is removed by function below,
         //removeController(this.latestControllerTag) removes the controller.
-        setTimeout(removeController, 150 * 1000, controllerTag);
+        setTimeout(removeController, 3 * 1000, controllerTag);
 
     }
 

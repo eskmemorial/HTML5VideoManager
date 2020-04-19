@@ -83,7 +83,7 @@ document.querySelectorAll("input[name='keyCodeStr']").forEach(input => input.add
         document.removeEventListener("keyup", monitorKey);
     };
 
-    clickEvent.target.value = "press key . . .";
+    clickEvent.target.value = "press a key . . .";
     document.addEventListener("keyup", monitorKey);
 }));
 
