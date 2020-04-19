@@ -2,8 +2,10 @@ document.querySelectorAll("input[name='isEnabled']").forEach(checkbox => checkbo
 
     if (event.srcElement.checked) {
         event.target.value = "true";
+        event.srcElement.parentElement.parentElement.setAttribute("isEnabled", "true");
     } else {
         event.target.value = "false";
+        event.srcElement.parentElement.parentElement.setAttribute("isEnabled", "false");
     }
 }));
 
@@ -30,8 +32,10 @@ chrome.storage.sync.get("settings", storage => {
 
         if (settings[action].isEnabled) {
             document.querySelector(`#${action} input[name='isEnabled']`).setAttribute("checked", "");
+            document.querySelector(`#${action}`).setAttribute("isEnabled", "true");
         } else {
             document.querySelector(`#${action} input[name='isEnabled']`).removeAttribute("checked");
+            document.querySelector(`#${action}`).setAttribute("isEnabled", "false");
         }
     });
 });
