@@ -208,7 +208,20 @@ document.querySelectorAll("div.action button").forEach(button => {
     button.addEventListener("click", clickEvent => {
 
         const input = clickEvent.srcElement.parentElement.querySelector("input");
-        input.value = Number(input.value) + Number(button.getAttribute("step"));
+        const newVal = Math.round((Number(input.value) + Number(button.getAttribute("step"))) * 100) / 100;
+
+        let fractionDigits = 0;
+        if (input.getAttribute("valType") === "float") {
+            fractionDigits = 2;
+        }
+
+        if (newVal < Number(input.min)) {
+            input.value = Number(input.min).toFixed(fractionDigits);
+        } else if (Number(input.max) < newVal) {
+            input.value = Number(input.max).toFixed(fractionDigits);
+        } else {
+            input.value = newVal.toFixed(fractionDigits);
+        }
 
         input.dispatchEvent(new Event("change"));
     });
