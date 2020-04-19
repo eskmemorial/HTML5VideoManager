@@ -1,23 +1,253 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 
 <head>
   <title>Popup@Html5VideoManager</title>
   <style>
-    button {
-      font-size: 15px;
-      margin: 2.5px;
-      width: 80px;
-      height: 30px;
+    main {
+      width: 300px;
+      margin: auto;
+    }
+
+    div.action {
+
+      border: 1px black solid;
+      border-radius: 5px;
+      padding: 12px 0px;
+      margin: 10px 0px;
+
+      background-color: rgb(242, 255, 240);
+    }
+
+    div.action>div.checkbox.withvalue {
+      display: inline-block;
+      vertical-align: 15px;
+    }
+
+    div.action>div.checkbox.withoutvalue {
+      display: inline-block;
+      vertical-align: baseline;
+    }
+
+    div.action>div.content {
+      display: inline-block;
+    }
+
+    div.content>div.bottom {
+      margin-top: 10px;
+    }
+
+    div.action input[name="isEnabled"] {
+      width: 40px;
+    }
+
+    div.action div.label {
+      width: 120px;
+      display: inline-block;
+      font-size: 18px;
+    }
+
+    div.action input[name="keyCodeStr"] {
+      width: 100px;
+      text-align: center;
+    }
+
+    div.action input[type="number"] {
+      width: 100px;
+      text-align: center;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
   </style>
 </head>
 
 <body>
-  <button id="enable">Enable</button>
-  <button id="disable">Disable</button>
-  <button id="open_options">Settings</button>
-  <script src="popup.js"></script>
+  <main>
+    <div id="speedUp" class="action">
+      <div class="checkbox withvalue">
+        <input type="checkbox" name="isEnabled">
+      </div>
+      <div class="content">
+        <div class="top">
+          <div class="label">speed up</div>
+          <input type="text" name="keyCodeStr" value="KeyS" readonly>
+        </div>
+        <div class="bottom">
+          <button>&lt;&lt;</button>
+          <button>&lt;</button>
+          <input type="number" name="amount" step="0.1" min="0" max="16" value="0.1">
+          <button>&gt;</button>
+          <button>&gt;&gt;</button>
+        </div>
+      </div>
+    </div>
+    <div id="speedDown" class="action">
+      <div class="checkbox withvalue">
+        <input type="checkbox" name="isEnabled">
+      </div>
+      <div class="content">
+        <div class="top">
+          <div class="label">speed down</div>
+          <input type="text" name="keyCodeStr" value="KeyS" readonly>
+        </div>
+        <div class="bottom">
+          <button>&lt;&lt;</button>
+          <button>&lt;</button>
+          <input type="number" name="amount" step="0.1" min="0" max="16" value="0.1">
+          <button>&gt;</button>
+          <button>&gt;&gt;</button>
+        </div>
+      </div>
+    </div>
+    <div id="favoriteSpeed" class="action">
+      <div class="checkbox withvalue">
+        <input type="checkbox" name="isEnabled">
+      </div>
+      <div class="content">
+        <div class="top">
+          <div class="label">favorite speed</div>
+          <input type="text" name="keyCodeStr" value="KeyS" readonly>
+        </div>
+        <div class="bottom">
+          <button>&lt;&lt;</button>
+          <button>&lt;</button>
+          <input type="number" name="favoriteSpeed" step="0.1" min="0" max="16" value="0.1">
+          <button>&gt;</button>
+          <button>&gt;&gt;</button>
+        </div>
+      </div>
+    </div>
+    <div id="volumeUp" class="action">
+      <div class="checkbox withvalue">
+        <input type="checkbox" name="isEnabled">
+      </div>
+      <div class="content">
+        <div class="top">
+          <div class="label">volume up</div>
+          <input type="text" name="keyCodeStr" value="KeyO" readonly>
+        </div>
+        <div class="bottom">
+          <button>&lt;&lt;</button>
+          <button>&lt;</button>
+          <input type="number" name="amount" step="0.1" min="0" max="1" value="0.05">
+          <button>&gt;</button>
+          <button>&gt;&gt;</button>
+        </div>
+      </div>
+    </div>
+    <div id="volumeDown" class="action">
+      <div class="checkbox withvalue">
+        <input type="checkbox" name="isEnabled">
+      </div>
+      <div class="content">
+        <div class="top">
+          <div class="label">volume down</div>
+          <input type="text" name="keyCodeStr" value="KeyO" readonly>
+        </div>
+        <div class="bottom">
+          <button>&lt;&lt;</button>
+          <button>&lt;</button>
+          <input type="number" name="amount" step="0.1" min="0" max="1" value="0.05">
+          <button>&gt;</button>
+          <button>&gt;&gt;</button>
+        </div>
+      </div>
+    </div>
+    <div id="mute" class="action">
+      <div class="checkbox withvalue">
+        <input type="checkbox" name="isEnabled">
+      </div>
+      <div class="content">
+        <div class="top">
+          <div class="label">mute</div>
+          <input type="text" name="keyCodeStr" value="KeyO" readonly>
+        </div>
+        <div class="bottom">
+          <button>&lt;&lt;</button>
+          <button>&lt;</button>
+          <input type="number" name="amount" step="0.1" min="0" max="1" value="0.05">
+          <button>&gt;</button>
+          <button>&gt;&gt;</button>
+        </div>
+      </div>
+    </div>
+    <div id="advanceTime" class="action">
+      <div class="checkbox withvalue">
+        <input type="checkbox" name="isEnabled">
+      </div>
+      <div class="content">
+        <div class="top">
+          <div class="label">advance</div>
+          <input type="text" name="keyCodeStr" value="KeyX" readonly>
+        </div>
+        <div class="bottom">
+          <button>&lt;&lt;</button>
+          <button>&lt;</button>
+          <input type="number" name="amount" step="5" min="0" max="1024" value="10">
+          <button>&gt;</button>
+          <button>&gt;&gt;</button>
+        </div>
+      </div>
+    </div>
+    <div id="rewindTime" class="action">
+      <div class="checkbox withvalue">
+        <input type="checkbox" name="isEnabled">
+      </div>
+      <div class="content">
+        <div class="top">
+          <div class="label">rewind</div>
+          <input type="text" name="keyCodeStr" value="KeyX" readonly>
+        </div>
+        <div class="bottom">
+          <button>&lt;&lt;</button>
+          <button>&lt;</button>
+          <input type="number" name="amount" step="5" min="0" max="1024" value="10">
+          <button>&gt;</button>
+          <button>&gt;&gt;</button>
+        </div>
+      </div>
+    </div>
+    <div id="pause" class="action">
+      <div class="checkbox withoutvalue">
+        <input type="checkbox" name="isEnabled">
+      </div>
+      <div class="content">
+        <div class="top">
+          <div class="label">pause</div>
+          <input type="text" name="keyCodeStr" value="KeyX" readonly>
+        </div>
+      </div>
+    </div>
+    <div id="showController" class="action">
+      <div class="checkbox withoutvalue">
+        <input type="checkbox" name="isEnabled">
+      </div>
+      <div class="content">
+        <div class="top">
+          <div class="label">show panel</div>
+          <input type="text" name="keyCodeStr" value="KeyX" readonly>
+        </div>
+      </div>
+    </div>
+    <div id="abLoop" class="action">
+      <div class="checkbox withoutvalue">
+        <input type="checkbox" name="isEnabled">
+      </div>
+      <div class="content">
+        <div class="top">
+          <div class="label">AB loop</div>
+          <input type="text" name="keyCodeStr" value="KeyX" readonly>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="settings.js"></script>
+  <script src="popup.js">
+  </script>
 </body>
 
 </html>

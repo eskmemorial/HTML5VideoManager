@@ -22,6 +22,7 @@ const findVideos = () => {
 };
 
 // MutationObserver cannot find some videos.
+// findVideos() picks up those videos.
 let videoObserver = new MutationObserver(mutations => {
 
     mutations.forEach(mutation => {
