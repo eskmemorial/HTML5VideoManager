@@ -59,7 +59,7 @@ let settings = {
         }
     },
     pause: {
-        keyCodeStr: "KeyV",
+        keyCodeStr: "KeyC",
         isEnabled: true,
         func: (targetVideos, setting) => {
 
@@ -69,7 +69,7 @@ let settings = {
         }
     },
     abLoop: {
-        keyCodeStr: "KeyC",
+        keyCodeStr: "KeyV",
         isEnabled: true,
         func: (targetVideos, setting) => {
 

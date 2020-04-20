@@ -80,15 +80,26 @@ document.querySelectorAll("input").forEach(input => {
 
 document.querySelectorAll("input[name='keyCodeStr']").forEach(input => input.addEventListener("click", clickEvent => {
 
+    const oldVal = clickEvent.target.value;
+
     const monitorKey = keyUpEvent => {
 
         clickEvent.target.value = keyUpEvent.code;
 
         document.removeEventListener("keyup", monitorKey);
+        document.removeEventListener("mousedown", monitorMouseDown);
+    };
+
+    const monitorMouseDown = () => {
+
+        clickEvent.target.value = oldVal;
+        document.removeEventListener("keyup", monitorKey);
+        document.removeEventListener("mousedown", monitorMouseDown);
     };
 
     clickEvent.target.value = "press a key . . .";
     document.addEventListener("keyup", monitorKey);
+    document.addEventListener("mousedown", monitorMouseDown);
 }));
 
 
@@ -214,17 +225,12 @@ document.querySelectorAll("div.action button").forEach(button => {
         const input = clickEvent.srcElement.parentElement.querySelector("input");
         const newVal = Math.round((Number(input.value) + Number(button.getAttribute("step"))) * 100) / 100;
 
-        let fractionDigits = 0;
-        if (input.getAttribute("valType") === "float") {
-            fractionDigits = 2;
-        }
-
         if (newVal < Number(input.min)) {
-            input.value = Number(input.min).toFixed(fractionDigits);
+            input.value = Number(input.min);
         } else if (Number(input.max) < newVal) {
-            input.value = Number(input.max).toFixed(fractionDigits);
+            input.value = Number(input.max);
         } else {
-            input.value = newVal.toFixed(fractionDigits);
+            input.value = newVal;
         }
 
         input.dispatchEvent(new Event("change"));
