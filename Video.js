@@ -313,8 +313,8 @@ class Video {
             controller.setAttribute("id", "hvm_controller" + this.videoId + controllerTag);
 
             const style = `
-    top:${this.video.getBoundingClientRect().top + 5}px;
-    left:${this.video.getBoundingClientRect().left + 5}px;
+    top:${window.pageYOffset + this.video.getBoundingClientRect().top + 5}px;
+    left:${window.pageXOffset + this.video.getBoundingClientRect().left + 5}px;
     `;
             controller.setAttribute("style", style);
             controller.innerHTML = "";
