@@ -2,7 +2,7 @@ class Video {
 
     video;
     videoId;
-    defaultVolumme = 1;
+    defaultVolume = 1;
     latestControllerTag = "";
     abLoopTime = { a: null, b: null };
     abLoopTimeoutID;
@@ -16,7 +16,7 @@ class Video {
         });
     };
 
-    saveSpeed = () => {
+    saveLastSpeed = () => {
 
         chrome.storage.sync.set({ lastSpeed: this.video.playbackRate });
     };
@@ -63,7 +63,7 @@ class Video {
 
         this.video.setAttribute("hvm_video_id", this.videoId);
 
-        this.defaultVolumme = this.video.volume;
+        this.defaultVolume = this.video.volume;
 
         this.setBadgeText();
         this.setSpeedAsLastSpeed();
@@ -74,23 +74,17 @@ class Video {
 
         this.video.addEventListener("play", this.setSpeedAsLastSpeed);
 
-        this.video.addEventListener("hvm_ratechange", this.saveSpeed);
+        this.video.addEventListener("hvm_ratechanged", this.saveLastSpeed);
 
         this.video.addEventListener("ratechange", this.setBadgeText);
         this.video.addEventListener("ratechange", this.showControllerSpeed);
 
-        this.video.addEventListener("ratenotchange", this.showControllerSpeed);
-
         this.video.addEventListener("seeked", this.checkInAB);
 
-        this.video.addEventListener("currenttimechange", this.showControllerCurrentTime);
-        this.video.addEventListener("currenttimechange", this.checkInAB);
+        this.video.addEventListener("trycurrenttimechange", this.showControllerCurrentTime);
+        this.video.addEventListener("trycurrenttimechange", this.checkInAB);
 
-        this.video.addEventListener("currenttimenotchange", this.showControllerCurrentTime);
-
-        this.video.addEventListener("volumechange", this.showControllerVolume);
-
-        this.video.addEventListener("volumenotchange", this.showControllerVolume);
+        this.video.addEventListener("tryvolumechange", this.showControllerVolume);
     }
 
     release() {
@@ -99,7 +93,7 @@ class Video {
         if (this.video.defaultMuted) {
             this.video.muted = true;
         } else {
-            this.video.volume = this.defaultVolumme;
+            this.video.volume = this.defaultVolume;
         }
         this.video.playbackRate = this.video.defaultPlaybackRate;
 
@@ -111,23 +105,17 @@ class Video {
 
         this.video.removeEventListener("play", this.setSpeedAsLastSpeed);
 
-        this.video.removeEventListener("hvm_ratechange", this.saveSpeed);
+        this.video.removeEventListener("hvm_ratechanged", this.saveLastSpeed);
 
         this.video.removeEventListener("ratechange", this.setBadgeText);
         this.video.removeEventListener("ratechange", this.showControllerSpeed);
 
-        this.video.removeEventListener("ratenotchange", this.showControllerSpeed);
-
         this.video.removeEventListener("seeked", this.checkInAB);
 
-        this.video.removeEventListener("currenttimechange", this.showControllerCurrentTime);
-        this.video.removeEventListener("currenttimechange", this.checkInAB);
+        this.video.removeEventListener("trycurrenttimechange", this.showControllerCurrentTime);
+        this.video.removeEventListener("trycurrenttimechange", this.checkInAB);
 
-        this.video.removeEventListener("currenttimenotchange", this.showControllerCurrentTime);
-
-        this.video.removeEventListener("volumechange", this.showControllerVolume);
-
-        this.video.removeEventListener("volumenotchange", this.showControllerVolume);
+        this.video.removeEventListener("tryvolumechange", this.showControllerVolume);
     }
 
     paused() {
@@ -153,39 +141,24 @@ class Video {
         newSpeed = newSpeed < 0 ? 0 : newSpeed;
         newSpeed = 16 < newSpeed ? 16 : newSpeed;
 
-        if (this.video.playbackRate === newSpeed) {
-            let event = new Event("ratenotchange");
-            this.video.dispatchEvent(event);
-        } else {
-            let event = new Event("hvm_ratechange");
-            this.video.dispatchEvent(event);
-        }
-
         this.video.playbackRate = newSpeed;
+
+        this.video.dispatchEvent(new Event("hvm_ratechanged"));
+
     }
 
     setSpeed(playbackRate) {
 
-        if (this.video.playbackRate === playbackRate) {
-            let event = new Event("ratenotchange");
-            this.video.dispatchEvent(event);
-        } else {
-            this.video.playbackRate = playbackRate;
-            let event = new Event("hvm_ratechange");
-            this.video.dispatchEvent(event);
-        }
+        this.video.playbackRate = playbackRate;
+
+        this.video.dispatchEvent(new Event("hvm_ratechanged"));
     }
 
     setDefaultSpeed() {
 
-        if (this.video.playbackRate === this.video.defaultPlaybackRate) {
-            let event = new Event("ratenotchange");
-            this.video.dispatchEvent(event);
-        } else {
-            this.video.playbackRate = this.video.defaultPlaybackRate;
-            let event = new Event("hvm_ratechange");
-            this.video.dispatchEvent(event);
-        }
+        this.video.playbackRate = this.video.defaultPlaybackRate;
+
+        this.video.dispatchEvent(new Event("hvm_ratechanged"));
     }
 
     changeCurrentTime(amount) {
@@ -195,13 +168,7 @@ class Video {
         newCurrentTime = newCurrentTime < 0 ? 0 : newCurrentTime;
         newCurrentTime = this.video.duration - 1 < newCurrentTime ? this.video.duration - 1 : newCurrentTime;
 
-        if (newCurrentTime === this.video.currentTime) {
-            let event = new Event("currenttimenotchange");
-            this.video.dispatchEvent(event);
-        } else {
-            let event = new Event("currenttimechange");
-            this.video.dispatchEvent(event);
-        }
+        this.video.dispatchEvent(new Event("trycurrenttimechange"));
 
         this.video.currentTime = newCurrentTime;
     }
@@ -241,13 +208,7 @@ class Video {
         newVolume = newVolume < 0 ? 0 : newVolume;
         newVolume = 1 < newVolume ? 1 : newVolume;
 
-        if (this.video.volume === newVolume) {
-            let event = new Event("volumenotchange");
-            this.video.dispatchEvent(event);
-        } else {
-            let event = new Event("volumechange");
-            this.video.dispatchEvent(event);
-        }
+        this.video.dispatchEvent(new Event("tryvolumechange"));
 
         if (newVolume === 0) {
             this.video.muted = true;
@@ -260,13 +221,15 @@ class Video {
 
     setVolume(volume) {
 
-        this.video.muted = false;
-        if (this.video.volume === volume) {
-            let event = new Event("volumenotchange");
-            this.video.dispatchEvent(event);
+        if (volume === 0) {
+            this.video.muted = true;
         } else {
-            this.video.volume = volume;
+            this.video.muted = false;
         }
+
+        this.video.dispatchEvent(new Event("tryvolumechange"));
+
+        this.video.volume = volume;
     }
 
     //This function is NOT thread safe.
