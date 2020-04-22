@@ -8,6 +8,7 @@ class Video {
     abLoopTimeoutID;
 
     setSpeedAsLastSpeed = () => {
+
         chrome.storage.sync.get("lastSpeed", storage => {
 
             if (storage.lastSpeed !== undefined) {
@@ -58,6 +59,7 @@ class Video {
     }
 
     constructor(video) {
+
         this.video = video;
         this.videoId = Math.random().toString().substr(2, 6);
 
@@ -67,8 +69,6 @@ class Video {
 
         this.setBadgeText();
         this.setSpeedAsLastSpeed();
-
-
 
 
 
@@ -120,18 +120,22 @@ class Video {
     }
 
     paused() {
+
         return this.video.paused;
     }
 
     currentSpeed() {
+
         return this.video.playbackRate;
     }
 
     play() {
+
         this.video.play();
     }
 
     pause() {
+
         this.video.pause();
     }
 
@@ -145,7 +149,6 @@ class Video {
         this.video.playbackRate = newSpeed;
 
         this.video.dispatchEvent(new Event("hvm_ratechanged"));
-
     }
 
     setSpeed(playbackRate) {
@@ -266,9 +269,9 @@ class Video {
             infoPanel.setAttribute("id", "hvm_infopanel" + this.videoId + infoPanelTag);
 
             const style = `
-    top:${window.pageYOffset + this.video.getBoundingClientRect().top + 5}px;
-    left:${window.pageXOffset + this.video.getBoundingClientRect().left + 5}px;
-    `;
+            top:${window.pageYOffset + this.video.getBoundingClientRect().top + 5}px;
+            left:${window.pageXOffset + this.video.getBoundingClientRect().left + 5}px;
+            `;
             infoPanel.setAttribute("style", style);
             infoPanel.innerHTML = "";
 
@@ -324,5 +327,4 @@ class Video {
         //removeInfoPanel(this.latestInfoPanelTag) removes the infoPanel.
         setTimeout(removeInfoPanel, 3 * 1000, infoPanelTag);
     }
-
 }
