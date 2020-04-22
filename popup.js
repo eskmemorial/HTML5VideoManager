@@ -84,7 +84,6 @@ document.querySelectorAll("input[name='keyCodeStr']").forEach(input => input.add
 
     const monitorKey = keyUpEvent => {
 
-        clickEvent.target.value = keyUpEvent.code;
         clickEvent.target.setAttribute("value", keyUpEvent.code);
 
         document.removeEventListener("keyup", monitorKey);
@@ -94,7 +93,6 @@ document.querySelectorAll("input[name='keyCodeStr']").forEach(input => input.add
 
     const monitorMouseDown = mouseDownEvent => {
 
-        clickEvent.target.value = oldVal;
         clickEvent.target.setAttribute("value", oldVal);
         document.removeEventListener("keyup", monitorKey);
         document.removeEventListener("mousedown", monitorMouseDown);
@@ -146,11 +144,7 @@ function disableExtension() {
             }
         );
 
-        chrome.runtime.sendMessage(
-            {
-                type: "removeBadgeText"
-            }
-        );
+        chrome.runtime.sendMessage({ type: "removeBadgeText" });
 
         chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
 
@@ -189,34 +183,16 @@ document.querySelector("header>img").addEventListener("click", () => {
 
 
 const enableControllPanel = () => {
+    document.querySelectorAll("div.action,div.action input,div.action button").forEach(elem => {
 
-    document.querySelectorAll("div.action").forEach(action => {
-
-        action.removeAttribute("disabled");
-    });
-    document.querySelectorAll("div.action input").forEach(input => {
-
-        input.removeAttribute("disabled");
-    });
-    document.querySelectorAll("div.action button").forEach(button => {
-
-        button.removeAttribute("disabled");
+        elem.removeAttribute("disabled");
     });
 };
 
 const disableControllPanel = () => {
+    document.querySelectorAll("div.action,div.action input,div.action button").forEach(elem => {
 
-    document.querySelectorAll("div.action").forEach(action => {
-
-        action.setAttribute("disabled", "");
-    });
-    document.querySelectorAll("div.action input").forEach(input => {
-
-        input.setAttribute("disabled", "");
-    });
-    document.querySelectorAll("div.action button").forEach(button => {
-
-        button.setAttribute("disabled", "");
+        elem.setAttribute("disabled", "");
     });
 };
 
