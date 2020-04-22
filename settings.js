@@ -110,13 +110,13 @@ let settings = {
             });
         }
     },
-    showController: {
+    showInfoPanel: {
         keyCodeStr: "KeyR",
         isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.showController({ speed: true, volume: true, currentTime: true });
+                video.showInfoPanel({ speed: true, volume: true, currentTime: true });
             });
         }
     }

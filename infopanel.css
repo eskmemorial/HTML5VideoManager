@@ -1,0 +1,46 @@
+div[id^="hvm_infopanel"] {
+    position: absolute;
+    z-index: 65535;
+    color: white;
+    background: black;
+    opacity: 0.6;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+div[id^="hvm_infopanel"]>div {
+    font-size: 15px;
+}
+
+div[id^="hvm_infopanel"]>div::before {
+    content: "";
+    height: 15px;
+    width: 15px;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: -2.25px;
+}
+
+div.speed::before {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/speed.svg");
+}
+
+div.volume::before {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/volume.svg");
+}
+
+div.time::before {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/time.svg");
+}
+
+div.ab-loop-a::before {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/loop.svg");
+}
+
+div.ab-loop-ab::before {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/loop.svg");
+}
+
+div.ab-loop-clear {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/loop_clear.svg");
+}

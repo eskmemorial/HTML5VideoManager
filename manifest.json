@@ -26,7 +26,7 @@
             "Video.js"
          ],
          "css": [
-            "controller.css"
+            "infopanel.css"
          ],
          "matches": [
             "https://*/*",

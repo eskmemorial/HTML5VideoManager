@@ -3,7 +3,7 @@ class Video {
     video;
     videoId;
     defaultVolume = 1;
-    latestControllerTag = "";
+    latestInfoPanelTag = "";
     abLoopTime = { a: null, b: null };
     abLoopTimeoutID;
 
@@ -31,19 +31,19 @@ class Video {
         );
     };
 
-    showControllerSpeed = () => {
+    showInfoPanelSpeed = () => {
 
-        this.showController({ speed: true });
+        this.showInfoPanel({ speed: true });
     };
 
-    showControllerCurrentTime = () => {
+    showInfoPanelCurrentTime = () => {
 
-        this.showController({ currentTime: true });
+        this.showInfoPanel({ currentTime: true });
     };
 
-    showControllerVolume = () => {
+    showInfoPanelVolume = () => {
 
-        this.showController({ volume: true });
+        this.showInfoPanel({ volume: true });
     };
 
     checkInAB = () => {
@@ -77,14 +77,14 @@ class Video {
         this.video.addEventListener("hvm_ratechanged", this.saveLastSpeed);
 
         this.video.addEventListener("ratechange", this.setBadgeText);
-        this.video.addEventListener("ratechange", this.showControllerSpeed);
+        this.video.addEventListener("ratechange", this.showInfoPanelSpeed);
 
         this.video.addEventListener("seeked", this.checkInAB);
 
-        this.video.addEventListener("trycurrenttimechange", this.showControllerCurrentTime);
+        this.video.addEventListener("trycurrenttimechange", this.showInfoPanelCurrentTime);
         this.video.addEventListener("trycurrenttimechange", this.checkInAB);
 
-        this.video.addEventListener("tryvolumechange", this.showControllerVolume);
+        this.video.addEventListener("tryvolumechange", this.showInfoPanelVolume);
     }
 
     release() {
@@ -93,6 +93,7 @@ class Video {
         if (this.video.defaultMuted) {
             this.video.muted = true;
         } else {
+            this.video.muted = false;
             this.video.volume = this.defaultVolume;
         }
         this.video.playbackRate = this.video.defaultPlaybackRate;
@@ -108,14 +109,14 @@ class Video {
         this.video.removeEventListener("hvm_ratechanged", this.saveLastSpeed);
 
         this.video.removeEventListener("ratechange", this.setBadgeText);
-        this.video.removeEventListener("ratechange", this.showControllerSpeed);
+        this.video.removeEventListener("ratechange", this.showInfoPanelSpeed);
 
         this.video.removeEventListener("seeked", this.checkInAB);
 
-        this.video.removeEventListener("trycurrenttimechange", this.showControllerCurrentTime);
+        this.video.removeEventListener("trycurrenttimechange", this.showInfoPanelCurrentTime);
         this.video.removeEventListener("trycurrenttimechange", this.checkInAB);
 
-        this.video.removeEventListener("tryvolumechange", this.showControllerVolume);
+        this.video.removeEventListener("tryvolumechange", this.showInfoPanelVolume);
     }
 
     paused() {
@@ -178,7 +179,7 @@ class Video {
         if (this.abLoopTime.a === null && this.abLoopTime.b === null) {
 
             this.abLoopTime.a = this.video.currentTime;
-            this.showController({ abLoopA: true, abLoopB: false });
+            this.showInfoPanel({ abLoopA: true });
         } else if (this.abLoopTime.a !== null && this.abLoopTime.b === null) {
 
             this.abLoopTime.b = this.video.currentTime;
@@ -187,7 +188,7 @@ class Video {
 
                 this.video.currentTime = Math.min(this.abLoopTime.a, this.abLoopTime.b);
                 this.abLoopTimeoutID = setTimeout(abLoopRecursive, Math.abs(this.abLoopTime.a - this.abLoopTime.b) * 1000 / this.video.playbackRate);
-                this.showController({ abLoopA: false, abLoopB: true });
+                this.showInfoPanel({ abLoopAB: true });
             };
 
             abLoopRecursive();
@@ -197,7 +198,7 @@ class Video {
             clearTimeout(this.abLoopTimeoutID);
             this.abLoopTime.a = null;
             this.abLoopTime.b = null;
-            this.showController({ abLoopClear: true });
+            this.showInfoPanel({ abLoopClear: true });
         }
     }
 
@@ -234,11 +235,11 @@ class Video {
 
     //This function is NOT thread safe.
     //You can read comment about flow of process near the end of this function.
-    showController(config) {
+    showInfoPanel(config) {
 
-        const removeController = (controllerTag) => {
-            if (document.querySelector(`div[id^="hvm_controller${this.videoId}${controllerTag}"]`) !== null) {
-                document.querySelector(`div[id^="hvm_controller${this.videoId}${controllerTag}"]`).remove();
+        const removeInfoPanel = (infoPanelTag) => {
+            if (document.querySelector(`div[id^="hvm_infopanel${this.videoId}${infoPanelTag}"]`) !== null) {
+                document.querySelector(`div[id^="hvm_infopanel${this.videoId}${infoPanelTag}"]`).remove();
             }
         };
 
@@ -259,70 +260,69 @@ class Video {
             return formattedTime;
         };
 
-        const createControllerNode = (controllerTag) => {
+        const createInfoPanelNode = (infoPanelTag) => {
 
-            let controller = document.createElement("div");
-            controller.setAttribute("id", "hvm_controller" + this.videoId + controllerTag);
+            let infoPanel = document.createElement("div");
+            infoPanel.setAttribute("id", "hvm_infopanel" + this.videoId + infoPanelTag);
 
             const style = `
     top:${window.pageYOffset + this.video.getBoundingClientRect().top + 5}px;
     left:${window.pageXOffset + this.video.getBoundingClientRect().left + 5}px;
     `;
-            controller.setAttribute("style", style);
-            controller.innerHTML = "";
+            infoPanel.setAttribute("style", style);
+            infoPanel.innerHTML = "";
 
             if (config.speed === true) {
-                controller.innerHTML += `
+                infoPanel.innerHTML += `
             <div class="speed">x${(Math.round(this.video.playbackRate * 100) / 100).toFixed(2)}</div>
             `;
             }
             if (config.volume === true) {
-                controller.innerHTML += `
+                infoPanel.innerHTML += `
             <div class="volume">${(Math.round(this.video.volume * 100) / 100).toFixed(2)}</div>
             `;
             }
             if (config.currentTime === true) {
 
-                controller.innerHTML += `
+                infoPanel.innerHTML += `
             <div class="time">${formatTime(this.video.currentTime)}</div>
             `;
             }
             if (config.abLoopA === true) {
-                controller.innerHTML += `
+                infoPanel.innerHTML += `
                 <div class="ab-loop-a">${formatTime(Math.min(this.abLoopTime.a || this.video.duration, this.abLoopTime.b || this.video.duration))} -> </div>
                 `;
             }
-            if (config.abLoopB === true) {
-                controller.innerHTML += `
-                <div class="ab-loop-b">${formatTime(Math.min(this.abLoopTime.a || this.video.duration, this.abLoopTime.b || this.video.duration))} -> ${formatTime(Math.max(this.abLoopTime.a || 0, this.abLoopTime.b || 0))}</div>
+            if (config.abLoopAB === true) {
+                infoPanel.innerHTML += `
+                <div class="ab-loop-ab">${formatTime(Math.min(this.abLoopTime.a || this.video.duration, this.abLoopTime.b || this.video.duration))} -> ${formatTime(Math.max(this.abLoopTime.a || 0, this.abLoopTime.b || 0))}</div>
                 `;
             }
             if (config.abLoopClear === true) {
-                controller.innerHTML += `
+                infoPanel.innerHTML += `
                 <div class="ab-loop-clear"></div>
                 `;
             }
 
-            return controller;
+            return infoPanel;
         }
 
-        //controllerTag is a unique id of controller.
-        //This tag is given to controller when controller node is created.
+        //infoPanelTag is a unique id of infoPanel.
+        //This tag is given to infoPanel when infoPanel node is created.
 
-        //remove controller if it already exists.
-        removeController(this.latestControllerTag);
+        //remove infoPanel if it already exists.
+        removeInfoPanel(this.latestInfoPanelTag);
 
-        const controllerTag = Math.random().toString().substr(2, 6);
+        const infoPanelTag = Math.random().toString().substr(2, 6);
 
-        document.firstElementChild.appendChild(createControllerNode(controllerTag));
+        document.firstElementChild.appendChild(createInfoPanelNode(infoPanelTag));
 
-        this.latestControllerTag = controllerTag;
+        this.latestInfoPanelTag = infoPanelTag;
 
-        //find controller identified by controllerTag and remove it after specific time pass.
-        //if showController() is called before controller is removed by function below,
-        //removeController(this.latestControllerTag) removes the controller.
-        setTimeout(removeController, 3 * 1000, controllerTag);
-
+        //find infoPanel identified by infoPanelTag and remove it after specific time pass.
+        //if showInfoPanel() is called before infoPanel is removed by function below,
+        //removeInfoPanel(this.latestInfoPanelTag) removes the infoPanel.
+        setTimeout(removeInfoPanel, 3 * 1000, infoPanelTag);
     }
 
 }
