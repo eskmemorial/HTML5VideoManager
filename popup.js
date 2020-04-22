@@ -85,14 +85,17 @@ document.querySelectorAll("input[name='keyCodeStr']").forEach(input => input.add
     const monitorKey = keyUpEvent => {
 
         clickEvent.target.value = keyUpEvent.code;
+        clickEvent.target.setAttribute("value", keyUpEvent.code);
 
         document.removeEventListener("keyup", monitorKey);
         document.removeEventListener("mousedown", monitorMouseDown);
+        clickEvent.target.dispatchEvent(new Event("change"));
     };
 
-    const monitorMouseDown = () => {
+    const monitorMouseDown = mouseDownEvent => {
 
         clickEvent.target.value = oldVal;
+        clickEvent.target.setAttribute("value", oldVal);
         document.removeEventListener("keyup", monitorKey);
         document.removeEventListener("mousedown", monitorMouseDown);
     };
