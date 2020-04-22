@@ -146,28 +146,22 @@ class Video {
         this.video.pause();
     }
 
-    speedUp(amount) {
+    changeSpeed(amount) {
 
-        if (this.video.playbackRate === 16) {
+        let newSpeed = Math.round((this.video.playbackRate + amount) * 100) / 100;
+
+        newSpeed = newSpeed < 0 ? 0 : newSpeed;
+        newSpeed = 16 < newSpeed ? 16 : newSpeed;
+
+        if (this.video.playbackRate === newSpeed) {
             let event = new Event("ratenotchange");
             this.video.dispatchEvent(event);
         } else {
-            this.video.playbackRate = Math.min(this.video.playbackRate + amount, 16);
             let event = new Event("hvm_ratechange");
             this.video.dispatchEvent(event);
         }
-    }
 
-    speedDown(amount) {
-
-        if (this.video.playbackRate === 0.1) {
-            let event = new Event("ratenotchange");
-            this.video.dispatchEvent(event);
-        } else {
-            this.video.playbackRate = Math.max(this.video.playbackRate - amount, 0.1);
-            let event = new Event("hvm_ratechange");
-            this.video.dispatchEvent(event);
-        }
+        this.video.playbackRate = newSpeed;
     }
 
     setSpeed(playbackRate) {
@@ -194,30 +188,22 @@ class Video {
         }
     }
 
-    advance(amount) {
+    changeCurrentTime(amount) {
 
-        if (this.video.currentTime === this.video.duration - 1) {
+        let newCurrentTime = this.video.currentTime + amount;
+
+        newCurrentTime = newCurrentTime < 0 ? 0 : newCurrentTime;
+        newCurrentTime = this.video.duration - 1 < newCurrentTime ? this.video.duration - 1 : newCurrentTime;
+
+        if (newCurrentTime === this.video.currentTime) {
             let event = new Event("currenttimenotchange");
             this.video.dispatchEvent(event);
         } else {
-            this.video.currentTime = Math.min(this.video.currentTime + amount, this.video.duration - 1);
-
             let event = new Event("currenttimechange");
             this.video.dispatchEvent(event);
         }
-    }
 
-    rewind(amount) {
-
-        if (this.video.currentTime === 0) {
-            let event = new Event("currenttimenotchange");
-            this.video.dispatchEvent(event);
-        } else {
-            this.video.currentTime = Math.max(this.video.currentTime - amount, 0);
-
-            let event = new Event("currenttimechange");
-            this.video.dispatchEvent(event);
-        }
+        this.video.currentTime = newCurrentTime;
     }
 
     abLoop() {
@@ -248,25 +234,28 @@ class Video {
         }
     }
 
-    volumeUp(amount) {
+    changeVolume(amount) {
 
-        this.video.muted = false;
-        if (this.video.volume === 1) {
+        let newVolume = Math.round((this.video.volume + amount) * 100) / 100;
+
+        newVolume = newVolume < 0 ? 0 : newVolume;
+        newVolume = 1 < newVolume ? 1 : newVolume;
+
+        if (this.video.volume === newVolume) {
             let event = new Event("volumenotchange");
             this.video.dispatchEvent(event);
         } else {
-            this.video.volume = Math.min(this.video.volume + amount, 1);
-        }
-    }
-
-    volumeDown(amount) {
-
-        if (this.video.volume === 0) {
-            let event = new Event("volumenotchange");
+            let event = new Event("volumechange");
             this.video.dispatchEvent(event);
-        } else {
-            this.video.volume = Math.max(this.video.volume - amount, 0);
         }
+
+        if (newVolume === 0) {
+            this.video.muted = true;
+        } else {
+            this.video.muted = false;
+        }
+
+        this.video.volume = newVolume;
     }
 
     setVolume(volume) {

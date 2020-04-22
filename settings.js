@@ -6,7 +6,7 @@ let settings = {
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.speedUp(setting.amount);
+                video.changeSpeed(setting.amount);
             });
         }
     },
@@ -17,7 +17,7 @@ let settings = {
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.speedDown(setting.amount);
+                video.changeSpeed(-setting.amount);
             });
         }
     },
@@ -43,7 +43,7 @@ let settings = {
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.advance(setting.amount);
+                video.changeCurrentTime(setting.amount);
             });
         }
     },
@@ -54,7 +54,7 @@ let settings = {
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.rewind(setting.amount);
+                video.changeCurrentTime(-setting.amount);
             });
         }
     },
@@ -85,7 +85,7 @@ let settings = {
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.volumeUp(setting.amount);
+                video.changeVolume(setting.amount);
             });
         }
     },
@@ -96,7 +96,7 @@ let settings = {
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.volumeDown(setting.amount);
+                video.changeVolume(-setting.amount);
             });
         }
     },
