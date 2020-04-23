@@ -1,60 +1,60 @@
 let settings = {
     speedUp: {
         keyCodeStr: "KeyS",
-        amount: 0.1,
+        value: 0.1,
         isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.changeSpeed(setting.amount);
+                video.changeSpeed(setting.value);
             });
         }
     },
     speedDown: {
         keyCodeStr: "KeyA",
-        amount: 0.1,
+        value: 0.1,
         isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.changeSpeed(-setting.amount);
+                video.changeSpeed(-setting.value);
             });
         }
     },
     favoriteSpeed: {
         keyCodeStr: "KeyD",
-        favoriteSpeed: 2,
+        value: 2,
         isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                if (video.currentSpeed() === setting.favoriteSpeed) {
+                if (video.currentSpeed() === setting.value) {
                     video.setSpeed(1);
                 } else {
-                    video.setSpeed(setting.favoriteSpeed);
+                    video.setSpeed(setting.value);
                 }
             });
         }
     },
     advanceTime: {
         keyCodeStr: "KeyX",
-        amount: 15,
+        value: 15,
         isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.changeCurrentTime(setting.amount);
+                video.changeCurrentTime(setting.value);
             });
         }
     },
     rewindTime: {
         keyCodeStr: "KeyZ",
-        amount: 15,
+        value: 15,
         isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.changeCurrentTime(-setting.amount);
+                video.changeCurrentTime(-setting.value);
             });
         }
     },
@@ -80,23 +80,23 @@ let settings = {
     },
     volumeUp: {
         keyCodeStr: "KeyW",
-        amount: 0.05,
+        value: 0.05,
         isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.changeVolume(setting.amount);
+                video.changeVolume(setting.value);
             });
         }
     },
     volumeDown: {
         keyCodeStr: "KeyQ",
-        amount: 0.05,
+        value: 0.05,
         isEnabled: true,
         func: (targetVideos, setting) => {
 
             targetVideos.forEach(video => {
-                video.changeVolume(-setting.amount);
+                video.changeVolume(-setting.value);
             });
         }
     },

@@ -1,20 +1,174 @@
-document.querySelectorAll("input[name='isEnabled']").forEach(checkbox => checkbox.addEventListener("change", event => {
+// syncs settings, storage.settings,value in dom.
+Object.keys(settings).forEach(action => {
 
-    if (event.srcElement.checked) {
-        event.target.value = "true";
-        event.srcElement.parentElement.parentElement.setAttribute("isEnabled", "true");
-    } else {
-        event.target.value = "false";
-        event.srcElement.parentElement.parentElement.setAttribute("isEnabled", "false");
+    settings[action].enable = () => {
+
+        const htmlElem = document.querySelector(`#${action}`);
+
+        htmlElem.setAttribute("isEnabled", "true");
+        htmlElem.querySelector("input[name='isEnabled']").setAttribute("checked", "");
+        htmlElem.querySelector("input[name='isEnabled']").setAttribute("value", "true");
+
+        settings[action].unlockInput();
+
+        if (settings[action].isEnabled !== true) {
+
+            settings[action].isEnabled = true;
+            chrome.storage.sync.set({ settings: settings });
+        }
+    };
+
+    settings[action].disable = () => {
+
+        const htmlElem = document.querySelector(`#${action}`);
+
+        htmlElem.setAttribute("isEnabled", "false");
+        htmlElem.querySelector("input[name='isEnabled']").removeAttribute("checked");
+        htmlElem.querySelector("input[name='isEnabled']").setAttribute("value", "false");
+
+        settings[action].lockInput();
+
+        if (settings[action].isEnabled !== false) {
+
+            settings[action].isEnabled = false;
+            chrome.storage.sync.set({ settings: settings });
+        }
     }
-}));
+
+    settings[action].lockInput = () => {
+
+        document.querySelector(`#${action}`)
+            .querySelectorAll("input[name='keyCodeStr'],input[type='number'],button")
+            .forEach(input => {
+                input.setAttribute("disabled", "");
+            });
+    };
+
+    settings[action].unlockInput = () => {
+
+        document.querySelector(`#${action}`)
+            .querySelectorAll("input[name='keyCodeStr'],input[type='number'],button")
+            .forEach(input => {
+                input.removeAttribute("disabled");
+            });
+    };
+
+    settings[action].setShortcutKey = keyCodeStr => {
+
+        const textbox = document.querySelector(`#${action} input[name='keyCodeStr']`);
+
+        textbox.value = keyCodeStr;
+        textbox.setAttribute("value", keyCodeStr);
+
+        if (settings[action].keyCodeStr !== keyCodeStr) {
+
+            settings[action].keyCodeStr = keyCodeStr;
+            chrome.storage.sync.set({ settings: settings });
+        }
+    };
+
+    settings[action].setValue = value => {
+
+        const numbox = document.querySelector(`#${action} input[name='value']`);
+
+        value = value < Number(numbox.getAttribute("min")) ? Number(numbox.getAttribute("min")) : value;
+        value = Number(numbox.getAttribute("max")) < value ? Number(numbox.getAttribute("max")) : value;
+
+        value = Math.round(value * 100) / 100;
+
+        numbox.value = value;
+        numbox.setAttribute("value", value);
+
+        if (settings[action].value !== value) {
+
+            settings[action].value = value;
+            chrome.storage.sync.set({ settings: settings });
+        }
+    }
+
+    settings[action].initialize = () => {
+
+        if (settings[action].isEnabled) {
+            settings[action].enable();
+        } else {
+            settings[action].disable();
+        }
+
+        settings[action].setShortcutKey(settings[action].keyCodeStr);
+
+        if (settings[action].value !== undefined) {
+            settings[action].setValue(settings[action].value);
+        }
 
 
-chrome.storage.sync.get("settings", storage => {
+
+        const htmlElem = document.querySelector(`#${action}`);
+
+        htmlElem.querySelector("input[name='isEnabled']").addEventListener("change", changeEvent => {
+
+            if (changeEvent.srcElement.checked) {
+                settings[action].enable();
+            } else {
+                settings[action].disable();
+            }
+        });
+
+        htmlElem.querySelector("input[name='keyCodeStr']").addEventListener("click", clickEvent => {
+
+            const oldVal = clickEvent.target.value;
+
+            const monitorKey = keyUpEvent => {
+
+                settings[action].setShortcutKey(keyUpEvent.code);
+
+                document.removeEventListener("keyup", monitorKey);
+                document.removeEventListener("mousedown", monitorMouseDown);
+            };
+
+            const monitorMouseDown = mouseDownEvent => {
+
+                settings[action].setShortcutKey(oldVal);
+
+                document.removeEventListener("keyup", monitorKey);
+                document.removeEventListener("mousedown", monitorMouseDown);
+            };
+
+            clickEvent.target.value = "press a key . . .";
+            document.addEventListener("keyup", monitorKey);
+            document.addEventListener("mousedown", monitorMouseDown);
+        });
+
+        if (settings[action].value !== undefined) {
+
+            htmlElem.querySelector("input[name='value']").addEventListener("change", changeEvent => {
+
+                settings[action].setValue(Number(changeEvent.srcElement.value));
+            });
+
+            htmlElem.querySelectorAll("button").forEach(button => {
+
+                button.addEventListener("click", clickEvent => {
+
+                    const oldVal = Number(htmlElem.querySelector("input[name='value']").getAttribute("value"));
+                    const step = Number(button.getAttribute("step"));
+
+                    settings[action].setValue(oldVal + step);
+                });
+            });
+        }
+    };
+});
+
+
+
+
+
+
+chrome.storage.sync.get(["isEnabled", "settings"], storage => {
 
     if (storage.settings !== undefined) {
-        Object.keys(storage.settings).forEach(action => {
 
+        Object.keys(storage.settings).forEach(action => {
             Object.keys(storage.settings[action]).forEach(prop => {
 
                 settings[action][prop] = storage.settings[action][prop];
@@ -24,87 +178,28 @@ chrome.storage.sync.get("settings", storage => {
 
     Object.keys(settings).forEach(action => {
 
-        Object.keys(settings[action]).filter(prop => prop !== "func").forEach(prop => {
+        settings[action].initialize();
+    });
 
-            document.querySelector(`#${action} input[name="${prop}"]`).setAttribute("value", settings[action][prop]);
-        });
+    if (storage.isEnabled === false) {
+        disableExtension();
+    }
+});
 
 
-        if (settings[action].isEnabled) {
-            document.querySelector(`#${action} input[name='isEnabled']`).setAttribute("checked", "");
-            document.querySelector(`#${action}`).setAttribute("isEnabled", "true");
+
+
+document.querySelector("header>img").addEventListener("click", () => {
+
+    chrome.storage.sync.get("isEnabled", storage => {
+
+        if (storage.isEnabled !== false) {
+            chrome.storage.sync.set({ isEnabled: false }, disableExtension);
         } else {
-            document.querySelector(`#${action} input[name='isEnabled']`).removeAttribute("checked");
-            document.querySelector(`#${action}`).setAttribute("isEnabled", "false");
+            chrome.storage.sync.set({ isEnabled: true }, enableExtension);
         }
     });
 });
-
-
-
-
-
-
-document.querySelectorAll("input").forEach(input => {
-
-    input.addEventListener("change", event => {
-
-        Object.keys(settings).forEach(action => {
-            Object.keys(settings[action]).filter(prop => prop !== "func").forEach(prop => {
-
-                const elem = document.querySelector(`#${action} input[name="${prop}"]`);
-
-                switch (elem.type) {
-                    case "text":
-                        settings[action][prop] = elem.value;
-                        break;
-                    case "number":
-                        settings[action][prop] = Number(elem.value);
-                        break;
-                    case "checkbox":
-                        if (elem.value === "true") {
-                            settings[action][prop] = true;
-                        } else {
-                            settings[action][prop] = false;
-                        }
-                        break;
-                }
-            });
-        });
-
-        chrome.storage.sync.set({ settings: settings });
-    });
-});
-
-
-
-document.querySelectorAll("input[name='keyCodeStr']").forEach(input => input.addEventListener("click", clickEvent => {
-
-    const oldVal = clickEvent.target.value;
-
-    const monitorKey = keyUpEvent => {
-
-        clickEvent.target.setAttribute("value", keyUpEvent.code);
-
-        document.removeEventListener("keyup", monitorKey);
-        document.removeEventListener("mousedown", monitorMouseDown);
-        clickEvent.target.dispatchEvent(new Event("change"));
-    };
-
-    const monitorMouseDown = mouseDownEvent => {
-
-        clickEvent.target.setAttribute("value", oldVal);
-        document.removeEventListener("keyup", monitorKey);
-        document.removeEventListener("mousedown", monitorMouseDown);
-    };
-
-    clickEvent.target.value = "press a key . . .";
-    document.addEventListener("keyup", monitorKey);
-    document.addEventListener("mousedown", monitorMouseDown);
-}));
-
-
-
 
 
 
@@ -125,9 +220,14 @@ function enableExtension() {
         chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
             chrome.tabs.sendMessage(tabs[0].id, { type: "enableExtension", value: true });
         });
-    });
 
-    enableControllPanel();
+        Object.keys(settings).forEach(action => {
+
+            document.querySelector(`#${action}`).removeAttribute("disabled");
+            document.querySelector(`#${action} input[name='isEnabled']`).removeAttribute("disabled");
+            settings[action].initialize();
+        });
+    });
 }
 
 
@@ -150,68 +250,12 @@ function disableExtension() {
 
             chrome.tabs.sendMessage(tabs[0].id, { type: "enableExtension", value: false });
         });
-    });
 
-    disableControllPanel();
+        Object.keys(settings).forEach(action => {
+
+            document.querySelector(`#${action}`).setAttribute("disabled", "");
+            document.querySelector(`#${action} input[name='isEnabled']`).setAttribute("disabled", "");
+            settings[action].lockInput();
+        });
+    });
 }
-
-
-
-chrome.storage.sync.get("isEnabled", storage => {
-
-    if (storage.isEnabled !== false) {
-        enableExtension();
-    } else {
-        disableExtension();
-    }
-});
-
-
-
-document.querySelector("header>img").addEventListener("click", () => {
-
-    chrome.storage.sync.get("isEnabled", storage => {
-
-        if (storage.isEnabled !== false) {
-            chrome.storage.sync.set({ isEnabled: false }, disableExtension);
-        } else {
-            chrome.storage.sync.set({ isEnabled: true }, enableExtension);
-        }
-    });
-});
-
-
-
-const enableControllPanel = () => {
-    document.querySelectorAll("div.action,div.action input,div.action button").forEach(elem => {
-
-        elem.removeAttribute("disabled");
-    });
-};
-
-const disableControllPanel = () => {
-    document.querySelectorAll("div.action,div.action input,div.action button").forEach(elem => {
-
-        elem.setAttribute("disabled", "");
-    });
-};
-
-
-document.querySelectorAll("div.action button").forEach(button => {
-
-    button.addEventListener("click", clickEvent => {
-
-        const input = clickEvent.srcElement.parentElement.querySelector("input");
-        const newVal = Math.round((Number(input.value) + Number(button.getAttribute("step"))) * 100) / 100;
-
-        if (newVal < Number(input.min)) {
-            input.value = Number(input.min);
-        } else if (Number(input.max) < newVal) {
-            input.value = Number(input.max);
-        } else {
-            input.value = newVal;
-        }
-
-        input.dispatchEvent(new Event("change"));
-    });
-});

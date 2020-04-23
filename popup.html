@@ -25,24 +25,16 @@
       border-radius: 5px;
       padding: 12px 0px;
       margin: 10px 0px;
-
     }
 
-    div.action[isEnabled="true"] {
-
+    div.action[isEnabled='true'] {
       background-color: rgb(242, 255, 240);
+      color: black;
     }
 
-    div.action[isEnabled="false"] {
-
-      background-color: rgb(240, 240, 240);
-    }
-
+    div.action[isEnabled='false'],
     div.action[disabled] {
       background-color: rgb(240, 240, 240);
-    }
-
-    div.action[disabled] {
       color: rgb(118, 118, 118);
     }
 
@@ -107,7 +99,7 @@
         <div class="bottom">
           <button step="-0.1">&lt;&lt;</button>
           <button step="-0.01">&lt;</button>
-          <input type="number" name="amount" step="0.1" min="0" max="16" value="0.10" valType="float">
+          <input type="number" name="value" step="0.1" min="0" max="16" value="0.10">
           <button step="0.01">&gt;</button>
           <button step="0.1">&gt;&gt;</button>
         </div>
@@ -125,7 +117,7 @@
         <div class="bottom">
           <button step="-0.1">&lt;&lt;</button>
           <button step="-0.01">&lt;</button>
-          <input type="number" name="amount" step="0.1" min="0" max="16" value="0.10" valType="float">
+          <input type="number" name="value" step="0.1" min="0" max="16" value="0.10">
           <button step="0.01">&gt;</button>
           <button step="0.1">&gt;&gt;</button>
         </div>
@@ -143,7 +135,7 @@
         <div class="bottom">
           <button step="-0.1">&lt;&lt;</button>
           <button step="-0.01">&lt;</button>
-          <input type="number" name="favoriteSpeed" step="0.1" min="0" max="16" value="0.10" valType="float">
+          <input type="number" name="value" step="0.1" min="0" max="16" value="0.10">
           <button step="0.01">&gt;</button>
           <button step="0.1">&gt;&gt;</button>
         </div>
@@ -161,7 +153,7 @@
         <div class="bottom">
           <button step="-5">&lt;&lt;</button>
           <button step="-1">&lt;</button>
-          <input type="number" name="amount" step="5" min="0" max="1024" value="10" valType="int">
+          <input type="number" name="value" step="5" min="0" max="1024" value="10">
           <button step="1">&gt;</button>
           <button step="5">&gt;&gt;</button>
         </div>
@@ -179,7 +171,7 @@
         <div class="bottom">
           <button step="-5">&lt;&lt;</button>
           <button step="-1">&lt;</button>
-          <input type="number" name="amount" step="5" min="0" max="1024" value="10" valType="int">
+          <input type="number" name="value" step="5" min="0" max="1024" value="10">
           <button step="1">&gt;</button>
           <button step="5">&gt;&gt;</button>
         </div>
@@ -219,7 +211,7 @@
         <div class="bottom">
           <button step="-0.1">&lt;&lt;</button>
           <button step="-0.01">&lt;</button>
-          <input type="number" name="amount" step="0.1" min="0" max="1" value="0.05" valType="float">
+          <input type="number" name="value" step="0.1" min="0" max="1" value="0.05">
           <button step="0.01">&gt;</button>
           <button step="0.1">&gt;&gt;</button>
         </div>
@@ -237,7 +229,7 @@
         <div class="bottom">
           <button step="-0.1">&lt;&lt;</button>
           <button step="-0.01">&lt;</button>
-          <input type="number" name="amount" step="0.1" min="0" max="1" value="0.05" valType="float">
+          <input type="number" name="value" step="0.1" min="0" max="1" value="0.05">
           <button step="0.01">&gt;</button>
           <button step="0.1">&gt;&gt;</button>
         </div>
