@@ -7,14 +7,14 @@ Download from <a href="https://microsoftedge.microsoft.com/addons/detail/afmgoim
 <ul>
     <li>s : increase playback speed</li>
     <li>a : decrease playback speed</li>
-    <li>s : set playback speed as favorite speed</li>
+    <li>d : set playback speed as favorite speed</li>
     <li>x : advance video by 15 seconds</li>
     <li>z : rewind video by 15 seconds</li>
     <li>c : pause video</li>
+    <li>v : AB loop</li>
     <li>w : increse volume</li>
     <li>q : decrease volume</li>
     <li>e : mute</li>
     <li>r : show info panel</li>
-    <li>v : AB loop</li>
 </ul>
 <img src="img/screenshot.png">
