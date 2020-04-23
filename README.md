@@ -33,5 +33,4 @@
     <li>Matecafe</li>
     <li>Tangi</li>
 </ul>
-<p>etc...</p>
 <img src="img/screenshot.png">
