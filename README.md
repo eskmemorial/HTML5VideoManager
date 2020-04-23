@@ -1,7 +1,6 @@
 <h1>HTML5 Video Manager</h1>
 <h2>Download</h2>
-Download from <a href="https://microsoftedge.microsoft.com/addons/detail/afmgoimoifomnlifnmkenmdhhlmfnhon">Microsoft
-    Edge Addons</a>
+<a href="https://microsoftedge.microsoft.com/addons/detail/afmgoimoifomnlifnmkenmdhhlmfnhon">Microsoft Edge Addons</a>
 <h2>Usage</h2>
 <h3>Default shortcut keys and their functions</h3>
 <ul>
