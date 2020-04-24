@@ -3,13 +3,16 @@ Object.keys(settings).forEach(action => {
 
     settings[action].enable = () => {
 
-        const htmlElem = document.querySelector(`#${action}`);
+        const actionElem = document.querySelector(`#${action}`);
 
-        htmlElem.setAttribute("isEnabled", "true");
-        htmlElem.querySelector("input[name='isEnabled']").setAttribute("checked", "");
-        htmlElem.querySelector("input[name='isEnabled']").setAttribute("value", "true");
-
-        settings[action].unlockInput();
+        actionElem.setAttribute("isEnabled", "true");
+        actionElem.querySelector("input[name='isEnabled']").setAttribute("checked", "");
+        actionElem.querySelector("input[name='isEnabled']").setAttribute("value", "true");
+        actionElem
+            .querySelectorAll("input[name='keyCodeStr'],input[type='number'],button")
+            .forEach(input => {
+                input.removeAttribute("disabled");
+            });
 
         if (settings[action].isEnabled !== true) {
 
@@ -20,13 +23,16 @@ Object.keys(settings).forEach(action => {
 
     settings[action].disable = () => {
 
-        const htmlElem = document.querySelector(`#${action}`);
+        const actionElem = document.querySelector(`#${action}`);
 
-        htmlElem.setAttribute("isEnabled", "false");
-        htmlElem.querySelector("input[name='isEnabled']").removeAttribute("checked");
-        htmlElem.querySelector("input[name='isEnabled']").setAttribute("value", "false");
-
-        settings[action].lockInput();
+        actionElem.setAttribute("isEnabled", "false");
+        actionElem.querySelector("input[name='isEnabled']").removeAttribute("checked");
+        actionElem.querySelector("input[name='isEnabled']").setAttribute("value", "false");
+        actionElem
+            .querySelectorAll("input[name='keyCodeStr'],input[type='number'],button")
+            .forEach(input => {
+                input.setAttribute("disabled", "");
+            });
 
         if (settings[action].isEnabled !== false) {
 
@@ -35,22 +41,32 @@ Object.keys(settings).forEach(action => {
         }
     }
 
-    settings[action].lockInput = () => {
+    settings[action].lockActionElem = () => {
 
-        document.querySelector(`#${action}`)
+        const actionElem = document.querySelector(`#${action}`);
+
+        actionElem
             .querySelectorAll("input[name='keyCodeStr'],input[type='number'],button")
             .forEach(input => {
                 input.setAttribute("disabled", "");
             });
+
+        actionElem.setAttribute("disabled", "");
+        actionElem.querySelector("input[name='isEnabled']").setAttribute("disabled", "");
     };
 
-    settings[action].unlockInput = () => {
+    settings[action].unlockActionElem = () => {
 
-        document.querySelector(`#${action}`)
+        const actionElem = document.querySelector(`#${action}`);
+
+        actionElem
             .querySelectorAll("input[name='keyCodeStr'],input[type='number'],button")
             .forEach(input => {
                 input.removeAttribute("disabled");
             });
+
+        actionElem.removeAttribute("disabled");
+        actionElem.querySelector("input[name='isEnabled']").removeAttribute("disabled");
     };
 
     settings[action].setShortcutKey = keyCodeStr => {
@@ -102,9 +118,9 @@ Object.keys(settings).forEach(action => {
 
 
 
-        const htmlElem = document.querySelector(`#${action}`);
+        const actionElem = document.querySelector(`#${action}`);
 
-        htmlElem.querySelector("input[name='isEnabled']").addEventListener("change", changeEvent => {
+        actionElem.querySelector("input[name='isEnabled']").addEventListener("change", changeEvent => {
 
             if (changeEvent.srcElement.checked) {
                 settings[action].enable();
@@ -113,7 +129,7 @@ Object.keys(settings).forEach(action => {
             }
         });
 
-        htmlElem.querySelector("input[name='keyCodeStr']").addEventListener("click", clickEvent => {
+        actionElem.querySelector("input[name='keyCodeStr']").addEventListener("click", clickEvent => {
 
             const oldVal = clickEvent.target.value;
 
@@ -140,16 +156,16 @@ Object.keys(settings).forEach(action => {
 
         if (settings[action].value !== undefined) {
 
-            htmlElem.querySelector("input[name='value']").addEventListener("change", changeEvent => {
+            actionElem.querySelector("input[name='value']").addEventListener("change", changeEvent => {
 
                 settings[action].setValue(Number(changeEvent.srcElement.value));
             });
 
-            htmlElem.querySelectorAll("button").forEach(button => {
+            actionElem.querySelectorAll("button").forEach(button => {
 
                 button.addEventListener("click", clickEvent => {
 
-                    const oldVal = Number(htmlElem.querySelector("input[name='value']").getAttribute("value"));
+                    const oldVal = Number(actionElem.querySelector("input[name='value']").getAttribute("value"));
                     const step = Number(button.getAttribute("step"));
 
                     settings[action].setValue(oldVal + step);
@@ -176,12 +192,9 @@ chrome.storage.sync.get(["isEnabled", "settings"], storage => {
         });
     }
 
-    Object.keys(settings).forEach(action => {
-
-        settings[action].initialize();
-    });
-
-    if (storage.isEnabled === false) {
+    if (storage.isEnabled !== false) {
+        enableExtension();
+    } else {
         disableExtension();
     }
 });
@@ -223,8 +236,7 @@ function enableExtension() {
 
         Object.keys(settings).forEach(action => {
 
-            document.querySelector(`#${action}`).removeAttribute("disabled");
-            document.querySelector(`#${action} input[name='isEnabled']`).removeAttribute("disabled");
+            settings[action].unlockActionElem();
             settings[action].initialize();
         });
     });
@@ -253,9 +265,7 @@ function disableExtension() {
 
         Object.keys(settings).forEach(action => {
 
-            document.querySelector(`#${action}`).setAttribute("disabled", "");
-            document.querySelector(`#${action} input[name='isEnabled']`).setAttribute("disabled", "");
-            settings[action].lockInput();
+            settings[action].lockActionElem();
         });
     });
 }
