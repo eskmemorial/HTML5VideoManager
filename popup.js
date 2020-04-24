@@ -102,7 +102,7 @@ Object.keys(settings).forEach(action => {
         }
     }
 
-    settings[action].initialize = () => {
+    settings[action].initialize = (addEventListener) => {
 
         if (settings[action].isEnabled) {
             settings[action].enable();
@@ -116,6 +116,7 @@ Object.keys(settings).forEach(action => {
             settings[action].setValue(settings[action].value);
         }
 
+        if (!addEventListener) { return; }
 
 
         const actionElem = document.querySelector(`#${action}`);
@@ -193,7 +194,12 @@ chrome.storage.sync.get(["isEnabled", "settings"], storage => {
     }
 
     if (storage.isEnabled !== false) {
-        enableExtension();
+        
+        Object.keys(settings).forEach(action => {
+
+            settings[action].unlockActionElem();
+            settings[action].initialize(true);
+        });
     } else {
         disableExtension();
     }
@@ -237,7 +243,7 @@ function enableExtension() {
         Object.keys(settings).forEach(action => {
 
             settings[action].unlockActionElem();
-            settings[action].initialize();
+            settings[action].initialize(false);
         });
     });
 }
