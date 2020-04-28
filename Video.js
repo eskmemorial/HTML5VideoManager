@@ -76,17 +76,18 @@ class Video {
 
         this.video.addEventListener("play", this.setSpeedAsLastSpeed);
 
-        this.video.addEventListener("hvm_ratechanged", this.saveLastSpeed);
+        this.video.addEventListener("hvm_ratechange", this.saveLastSpeed);
+        this.video.addEventListener("hvm_ratechange", this.showInfoPanelSpeed);
 
         this.video.addEventListener("ratechange", this.setBadgeText);
         this.video.addEventListener("ratechange", this.showInfoPanelSpeed);
 
         this.video.addEventListener("seeked", this.checkInAB);
 
-        this.video.addEventListener("trycurrenttimechange", this.showInfoPanelCurrentTime);
-        this.video.addEventListener("trycurrenttimechange", this.checkInAB);
+        this.video.addEventListener("hvm_currenttimechange", this.showInfoPanelCurrentTime);
+        this.video.addEventListener("hvm_currenttimechange", this.checkInAB);
 
-        this.video.addEventListener("tryvolumechange", this.showInfoPanelVolume);
+        this.video.addEventListener("hvm_volumechange", this.showInfoPanelVolume);
     }
 
     release() {
@@ -108,17 +109,18 @@ class Video {
 
         this.video.removeEventListener("play", this.setSpeedAsLastSpeed);
 
-        this.video.removeEventListener("hvm_ratechanged", this.saveLastSpeed);
+        this.video.removeEventListener("hvm_ratechange", this.saveLastSpeed);
+        this.video.removeEventListener("hmv_ratechange", this.showInfoPanelSpeed);
 
         this.video.removeEventListener("ratechange", this.setBadgeText);
         this.video.removeEventListener("ratechange", this.showInfoPanelSpeed);
 
         this.video.removeEventListener("seeked", this.checkInAB);
 
-        this.video.removeEventListener("trycurrenttimechange", this.showInfoPanelCurrentTime);
-        this.video.removeEventListener("trycurrenttimechange", this.checkInAB);
+        this.video.removeEventListener("hvm_currenttimechange", this.showInfoPanelCurrentTime);
+        this.video.removeEventListener("hvm_currenttimechange", this.checkInAB);
 
-        this.video.removeEventListener("tryvolumechange", this.showInfoPanelVolume);
+        this.video.removeEventListener("hvm_volumechange", this.showInfoPanelVolume);
     }
 
     paused() {
@@ -149,22 +151,19 @@ class Video {
         newSpeed = 16 < newSpeed ? 16 : newSpeed;
 
         this.video.playbackRate = newSpeed;
-
-        this.video.dispatchEvent(new Event("hvm_ratechanged"));
+        this.video.dispatchEvent(new Event("hvm_ratechange"));
     }
 
     setSpeed(playbackRate) {
 
         this.video.playbackRate = playbackRate;
-
-        this.video.dispatchEvent(new Event("hvm_ratechanged"));
+        this.video.dispatchEvent(new Event("hvm_ratechange"));
     }
 
     setDefaultSpeed() {
 
         this.video.playbackRate = this.video.defaultPlaybackRate;
-
-        this.video.dispatchEvent(new Event("hvm_ratechanged"));
+        this.video.dispatchEvent(new Event("hvm_ratechange"));
     }
 
     changeCurrentTime(amount) {
@@ -174,9 +173,8 @@ class Video {
         newCurrentTime = newCurrentTime < 0 ? 0 : newCurrentTime;
         newCurrentTime = this.video.duration - 1 < newCurrentTime ? this.video.duration - 1 : newCurrentTime;
 
-        this.video.dispatchEvent(new Event("trycurrenttimechange"));
-
         this.video.currentTime = newCurrentTime;
+        this.video.dispatchEvent(new Event("hvm_currenttimechange"));
     }
 
     abLoop() {
@@ -214,8 +212,6 @@ class Video {
         newVolume = newVolume < 0 ? 0 : newVolume;
         newVolume = 1 < newVolume ? 1 : newVolume;
 
-        this.video.dispatchEvent(new Event("tryvolumechange"));
-
         if (newVolume === 0) {
             this.video.muted = true;
         } else {
@@ -223,6 +219,7 @@ class Video {
         }
 
         this.video.volume = newVolume;
+        this.video.dispatchEvent(new Event("hvm_volumechange"));
     }
 
     setVolume(volume) {
@@ -233,9 +230,8 @@ class Video {
             this.video.muted = false;
         }
 
-        this.video.dispatchEvent(new Event("tryvolumechange"));
-
         this.video.volume = volume;
+        this.video.dispatchEvent(new Event("hvm_volumechange"));
     }
 
     //This function is NOT thread safe.
