@@ -1,47 +1,45 @@
 {
-   "manifest_version": 2,
-   "name": "HTML5 Video Manager",
-   "version": "2.1.0",
-   "description": "You can control speed, volume, current time and AB loop of videos with shortcut keys.",
-   "homepage_url": "https://github.com/eskmemorial/HTML5VideoManager",
-   "icons": {
-      "64": "img/icon64.png"
-   },
-   "permissions": [
-      "storage",
-      "tabs"
-   ],
-   "browser_action": {
-      "default_icon": {
-         "64": "img/icon64.png"
-      },
-      "default_popup": "popup.html"
-   },
-   "content_scripts": [
-      {
-         "all_frames": true,
-         "js": [
+    "manifest_version": 2,
+    "name": "HTML5 Video Manager",
+    "version": "2.2.0",
+    "description": "You can control speed, volume, current time and AB loop of videos with shortcut keys.",
+    "homepage_url": "https://github.com/eskmemorial/HTML5VideoManager",
+    "icons": {
+        "64": "img/icon64.png"
+    },
+    "permissions": [
+        "storage",
+        "tabs"
+    ],
+    "browser_action": {
+        "default_icon": {
+            "64": "img/icon64.png"
+        },
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [{
+        "all_frames": true,
+        "js": [
             "settings.js",
             "main.js",
             "Video.js"
-         ],
-         "css": [
+        ],
+        "css": [
             "infopanel.css"
-         ],
-         "matches": [
+        ],
+        "matches": [
             "https://*/*",
             "http://*/*",
             "file://*/*"
-         ],
-         "run_at": "document_start"
-      }
-   ],
-   "background": {
-      "scripts": [
-         "background.js"
-      ]
-   },
-   "web_accessible_resources": [
-      "*.svg"
-   ]
+        ],
+        "run_at": "document_start"
+    }],
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "web_accessible_resources": [
+        "*.svg"
+    ]
 }
