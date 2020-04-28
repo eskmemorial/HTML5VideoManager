@@ -47,7 +47,6 @@ class Video {
         } else {
             this.showInfoPanel({ volume: true });
         }
-
     };
 
     checkInAB = () => {
