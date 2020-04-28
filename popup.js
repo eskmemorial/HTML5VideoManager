@@ -102,7 +102,54 @@ Object.keys(settings).forEach(action => {
         }
     }
 
-    settings[action].initialize = (addEventListener) => {
+    settings[action].isEnabledBtnChangeEventHandler = changeEvent => {
+
+        if (changeEvent.srcElement.checked) {
+            settings[action].enable();
+        } else {
+            settings[action].disable();
+        }
+    };
+
+    settings[action].keyCodeStrClickEventHandler = clickEvent => {
+
+        const oldVal = clickEvent.target.value;
+
+        const monitorKey = keyUpEvent => {
+
+            settings[action].setShortcutKey(keyUpEvent.code);
+
+            document.removeEventListener("keyup", monitorKey);
+            document.removeEventListener("mousedown", monitorMouseDown);
+        };
+
+        const monitorMouseDown = mouseDownEvent => {
+
+            settings[action].setShortcutKey(oldVal);
+
+            document.removeEventListener("keyup", monitorKey);
+            document.removeEventListener("mousedown", monitorMouseDown);
+        };
+
+        clickEvent.target.value = "press a key . . .";
+        document.addEventListener("keyup", monitorKey);
+        document.addEventListener("mousedown", monitorMouseDown);
+    };
+
+    settings[action].valueChangeEventHandler = changeEvent => {
+
+        settings[action].setValue(Number(changeEvent.srcElement.value));
+    };
+
+    settings[action].valueBtnClickEventHandler = clickEvent => {
+
+        const oldVal = Number(actionElem.querySelector("input[name='value']").getAttribute("value"));
+        const step = Number(button.getAttribute("step"));
+
+        settings[action].setValue(oldVal + step);
+    };
+
+    settings[action].initialize = () => {
 
         if (settings[action].isEnabled) {
             settings[action].enable();
@@ -116,61 +163,39 @@ Object.keys(settings).forEach(action => {
             settings[action].setValue(settings[action].value);
         }
 
-        if (!addEventListener) { return; }
-
 
         const actionElem = document.querySelector(`#${action}`);
 
-        actionElem.querySelector("input[name='isEnabled']").addEventListener("change", changeEvent => {
+        actionElem.querySelector("input[name='isEnabled']").addEventListener("change", settings[action].isEnabledBtnChangeEventHandler);
 
-            if (changeEvent.srcElement.checked) {
-                settings[action].enable();
-            } else {
-                settings[action].disable();
-            }
-        });
-
-        actionElem.querySelector("input[name='keyCodeStr']").addEventListener("click", clickEvent => {
-
-            const oldVal = clickEvent.target.value;
-
-            const monitorKey = keyUpEvent => {
-
-                settings[action].setShortcutKey(keyUpEvent.code);
-
-                document.removeEventListener("keyup", monitorKey);
-                document.removeEventListener("mousedown", monitorMouseDown);
-            };
-
-            const monitorMouseDown = mouseDownEvent => {
-
-                settings[action].setShortcutKey(oldVal);
-
-                document.removeEventListener("keyup", monitorKey);
-                document.removeEventListener("mousedown", monitorMouseDown);
-            };
-
-            clickEvent.target.value = "press a key . . .";
-            document.addEventListener("keyup", monitorKey);
-            document.addEventListener("mousedown", monitorMouseDown);
-        });
+        actionElem.querySelector("input[name='keyCodeStr']").addEventListener("click", settings[action].keyCodeStrClickEventHandler);
 
         if (settings[action].value !== undefined) {
 
-            actionElem.querySelector("input[name='value']").addEventListener("change", changeEvent => {
-
-                settings[action].setValue(Number(changeEvent.srcElement.value));
-            });
+            actionElem.querySelector("input[name='value']").addEventListener("change", settings[action].valueChangeEventHandler);
 
             actionElem.querySelectorAll("button").forEach(button => {
 
-                button.addEventListener("click", clickEvent => {
+                button.addEventListener("click", settings[action].valueBtnClickEventHandler);
+            });
+        }
+    };
 
-                    const oldVal = Number(actionElem.querySelector("input[name='value']").getAttribute("value"));
-                    const step = Number(button.getAttribute("step"));
+    settings[action].dispose = () => {
 
-                    settings[action].setValue(oldVal + step);
-                });
+        const actionElem = document.querySelector(`#${action}`);
+
+        actionElem.querySelector("input[name='isEnabled']").removeEventListener("change", settings[action].isEnabledBtnChangeEventHandler);
+
+        actionElem.querySelector("input[name='keyCodeStr']").removeEventListener("click", settings[action].keyCodeStrClickEventHandler);
+
+        if (settings[action].value !== undefined) {
+
+            actionElem.querySelector("input[name='value']").removeEventListener("change", settings[action].valueChangeEventHandler);
+
+            actionElem.querySelectorAll("button").forEach(button => {
+
+                button.removeEventListener("click", settings[action].valueBtnClickEventHandler);
             });
         }
     };
@@ -194,12 +219,8 @@ chrome.storage.sync.get(["isEnabled", "settings"], storage => {
     }
 
     if (storage.isEnabled !== false) {
-        
-        Object.keys(settings).forEach(action => {
 
-            settings[action].unlockActionElem();
-            settings[action].initialize(true);
-        });
+        enableExtension();
     } else {
         disableExtension();
     }
@@ -243,7 +264,7 @@ function enableExtension() {
         Object.keys(settings).forEach(action => {
 
             settings[action].unlockActionElem();
-            settings[action].initialize(false);
+            settings[action].initialize();
         });
     });
 }
@@ -272,6 +293,7 @@ function disableExtension() {
         Object.keys(settings).forEach(action => {
 
             settings[action].lockActionElem();
+            settings[action].dispose();
         });
     });
 }
