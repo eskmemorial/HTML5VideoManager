@@ -224,6 +224,8 @@ chrome.storage.sync.get(["isEnabled", "settings"], storage => {
     } else {
         disableExtension();
     }
+
+    chrome.storage.sync.set({ settings: settings });
 });
 
 
@@ -258,7 +260,9 @@ function enableExtension() {
         );
 
         chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-            chrome.tabs.sendMessage(tabs[0].id, { type: "enableExtension", value: true });
+            tabs.forEach(tab => {
+                chrome.tabs.sendMessage(tab.id, { type: "enableExtension", value: true });
+            });
         });
 
         Object.keys(settings).forEach(action => {
@@ -287,8 +291,9 @@ function disableExtension() {
         chrome.runtime.sendMessage({ type: "removeBadgeText" });
 
         chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-
-            chrome.tabs.sendMessage(tabs[0].id, { type: "enableExtension", value: false });
+            tabs.forEach(tab => {
+                chrome.tabs.sendMessage(tab.id, { type: "enableExtension", value: false });
+            });
         });
 
         Object.keys(settings).forEach(action => {

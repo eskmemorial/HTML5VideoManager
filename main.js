@@ -109,20 +109,22 @@ document.addEventListener("keydown", keyDownEvent => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
-    if (message.type === "enableExtension") {
+    switch (message.type) {
+        case "enableExtension":
 
-        if (message.value) {
+            if (message.value) {
 
-            videoObserver.observe(document, { childList: true, subtree: true });
+                videoObserver.observe(document, { childList: true, subtree: true });
 
-            findVideos();
-        } else {
+                findVideos();
+            } else {
 
-            videoObserver.disconnect();
+                videoObserver.disconnect();
 
-            videos.forEach(video => { video.release(); });
+                videos.forEach(video => { video.release(); });
 
-            videos = [];
-        }
+                videos = [];
+            }
+            break;
     }
 });
