@@ -24,12 +24,10 @@ class Video {
 
     setBadgeText = () => {
 
-        chrome.runtime.sendMessage(
-            {
-                type: "setBadgeText",
-                value: "x" + this.video.playbackRate.toFixed(2)
-            }
-        );
+        chrome.runtime.sendMessage({
+            type: "setBadgeText",
+            value: "x" + this.video.playbackRate.toFixed(2)
+        });
     };
 
     showInfoPanelSpeed = () => {
@@ -44,7 +42,12 @@ class Video {
 
     showInfoPanelVolume = () => {
 
-        this.showInfoPanel({ volume: true });
+        if (this.video.volume === 0) {
+            this.showInfoPanel({ mute: true });
+        } else {
+            this.showInfoPanel({ volume: true });
+        }
+
     };
 
     checkInAB = () => {
@@ -283,6 +286,11 @@ class Video {
             if (config.volume === true) {
                 infoPanel.innerHTML += `
             <div class="volume">${(Math.round(this.video.volume * 100) / 100).toFixed(2)}</div>
+            `;
+            }
+            if (config.mute === true) {
+                infoPanel.innerHTML += `
+            <div class="mute"></div>
             `;
             }
             if (config.currentTime === true) {

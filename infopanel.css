@@ -29,11 +29,16 @@ div.volume::before {
     background: url("chrome-extension://__MSG_@@extension_id__/img/volume.svg");
 }
 
+div.mute {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/mute.svg");
+}
+
 div.time::before {
     background: url("chrome-extension://__MSG_@@extension_id__/img/time.svg");
 }
 
-div.ab-loop-a::before, div.ab-loop-ab::before {
+div.ab-loop-a::before,
+div.ab-loop-ab::before {
     background: url("chrome-extension://__MSG_@@extension_id__/img/loop.svg");
 }
 
