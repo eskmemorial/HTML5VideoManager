@@ -27,7 +27,7 @@
     <li>Instagram</li>
     <li>Dailymotion</li>
     <li>Veoh</li>
-    <li>Viemo</li>
+    <li>Vimeo</li>
     <li>ニコニコ動画(niconico)</li>
     <li>FC2動画</li>
     <li>Matecafe</li>
