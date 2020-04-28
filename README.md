@@ -30,7 +30,5 @@
     <li>Vimeo</li>
     <li>ニコニコ動画(niconico)</li>
     <li>FC2動画</li>
-    <li>Metacafe</li>
-    <li>Tangi</li>
 </ul>
 <img src="img/screenshot.png">
