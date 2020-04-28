@@ -299,7 +299,7 @@ function disableExtension() {
 }
 
 
-document.querySelector("#reset_btn").addEventListener("click", () => {
+document.querySelector("#reset_btn").addEventListener("click", clickEvent => {
 
     if (confirm("Reset all settings?")) {
 

@@ -96,9 +96,15 @@
       padding: 5px;
       color: red;
       background-color: rgb(255, 242, 242);
-      border: solid 1.5px red;
-      border-radius: 3px;
+      border: solid 1.5px rgb(255, 150, 150);
+      border-radius: 5px;
       font-size: 18px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    #reset_btn:hover {
+      background-color: rgb(255, 226, 226);
     }
   </style>
 </head>
@@ -277,7 +283,7 @@
         </div>
       </div>
     </div>
-    <button id="reset_btn">RESET</button>
+    <div id="reset_btn">RESET</div>
   </main>
   <script src="settings.js"></script>
   <script src="popup.js">
