@@ -143,8 +143,8 @@ Object.keys(settings).forEach(action => {
 
     settings[action].valueBtnClickEventHandler = clickEvent => {
 
-        const oldVal = Number(actionElem.querySelector("input[name='value']").getAttribute("value"));
-        const step = Number(button.getAttribute("step"));
+        const oldVal = Number(document.querySelector(`#${action} input[name='value']`).getAttribute("value"));
+        const step = Number(clickEvent.target.getAttribute("step"));
 
         settings[action].setValue(oldVal + step);
     };
@@ -297,3 +297,13 @@ function disableExtension() {
         });
     });
 }
+
+
+document.querySelector("#reset_btn").addEventListener("click", () => {
+
+    if (confirm("Reset all settings?")) {
+
+        chrome.storage.sync.set({ isEnabled: true, settings: {} });
+        location.href = "";
+    }
+});
