@@ -266,6 +266,7 @@ function enableExtension() {
             settings[action].unlockActionElem();
             settings[action].initialize();
         });
+        document.querySelector("#reset_btn").removeAttribute("disabled");
     });
 }
 
@@ -295,13 +296,17 @@ function disableExtension() {
             settings[action].lockActionElem();
             settings[action].dispose();
         });
+        document.querySelector("#reset_btn").setAttribute("disabled", "");
     });
 }
 
 
 document.querySelector("#reset_btn").addEventListener("click", clickEvent => {
 
-    if (confirm("Reset all settings?")) {
+    console.log(clickEvent.target.getAttribute("disabled"));
+    console.log(clickEvent.target.getAttribute("disabled") !== "");
+
+    if (clickEvent.target.getAttribute("disabled") !== "" && confirm("Reset all settings?")) {
 
         chrome.storage.sync.set({ isEnabled: true, settings: {} });
         location.href = "";
