@@ -211,6 +211,10 @@ chrome.storage.sync.get(["isEnabled", "settings"], storage => {
     if (storage.settings !== undefined) {
 
         Object.keys(storage.settings).forEach(action => {
+
+            if (settings[action] === undefined) {
+                settings[action] = {};
+            }
             Object.keys(storage.settings[action]).forEach(prop => {
 
                 settings[action][prop] = storage.settings[action][prop];
@@ -252,12 +256,10 @@ function enableExtension() {
 
         document.querySelector("#switch_btn").src = "img/on.png";
 
-        chrome.runtime.sendMessage(
-            {
-                type: "setIcon",
-                value: { path: "img/icon64.png" }
-            }
-        );
+        chrome.runtime.sendMessage({
+            type: "setIcon",
+            value: { path: "img/icon64.png" }
+        });
 
         chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
             tabs.forEach(tab => {
@@ -281,12 +283,10 @@ function disableExtension() {
 
         document.querySelector("#switch_btn").src = "img/off.png";
 
-        chrome.runtime.sendMessage(
-            {
-                type: "setIcon",
-                value: { path: "img/icon64_disabled.png" }
-            }
-        );
+        chrome.runtime.sendMessage({
+            type: "setIcon",
+            value: { path: "img/icon64_disabled.png" }
+        });
 
         chrome.runtime.sendMessage({ type: "removeBadgeText" });
 

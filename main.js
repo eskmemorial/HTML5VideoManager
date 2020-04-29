@@ -60,12 +60,10 @@ chrome.storage.sync.get("isEnabled", storage => {
             findVideos();
         }
     } else {
-        chrome.runtime.sendMessage(
-            {
-                type: "setIcon",
-                value: { path: "icon64_disabled.png" }
-            }
-        );
+        chrome.runtime.sendMessage({
+            type: "setIcon",
+            value: { path: "icon64_disabled.png" }
+        });
     }
 });
 
@@ -84,6 +82,9 @@ document.addEventListener("keydown", keyDownEvent => {
         if (storage.settings !== undefined) {
             Object.keys(storage.settings).forEach(action => {
 
+                if (settings[action] === undefined) {
+                    settings[action] = {};
+                }
                 Object.keys(storage.settings[action]).forEach(prop => {
 
                     settings[action][prop] = storage.settings[action][prop];
