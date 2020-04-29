@@ -82,12 +82,13 @@ document.addEventListener("keydown", keyDownEvent => {
         if (storage.settings !== undefined) {
             Object.keys(storage.settings).forEach(action => {
 
-                if (settings[action] === undefined) {
-                    settings[action] = {};
-                }
                 Object.keys(storage.settings[action]).forEach(prop => {
 
-                    settings[action][prop] = storage.settings[action][prop];
+                    // action 'showController' is a legacy and replaced to 'showInfoPanel'
+                    if (settings[action] !== undefined) {
+
+                        settings[action][prop] = storage.settings[action][prop];
+                    }
                 });
             });
         }
