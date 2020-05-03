@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "HTML5 Video Manager",
-    "version": "2.2.2",
+    "version": "2.2.3",
     "description": "You can control speed, volume, current time and AB loop of videos with shortcut keys.",
     "homepage_url": "https://github.com/eskmemorial/HTML5VideoManager",
     "icons": {
